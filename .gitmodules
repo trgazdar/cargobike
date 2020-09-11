@@ -1,34 +1,34 @@
 [submodule "OCA/sale-workflow"]
 	path = OCA/sale-workflow
 	url = git@github.com:OCA/sale-workflow.git
-	branch = 12.0
+	branch = 13.0
 
 [submodule "OCA/server-tools"]
 	path = OCA/server-tools
 	url = git@github.com:OCA/server-tools.git
-	branch = 12.0
+	branch = 13.0
 
 [submodule "OCA/server-ux"]
 	path = OCA/server-ux
 	url = git@github.com:OCA/server-ux.git
-	branch = 12.0
+	branch = 13.0
 
 [submodule "OCA/web"]
 	path = OCA/web
 	url = git@github.com:OCA/web.git
-	branch = 12.0
+	branch = 13.0
 
 [submodule "OCA/mis-builder"]
 	path = OCA/mis-builder
 	url = git@github.com:OCA/mis-builder.git
-	branch = 12.0
+	branch = 13.0
 
 [submodule "OCA/reporting-engine"]
 	path = OCA/reporting-engine
 	url = git@github.com:OCA/reporting-engine.git
-	branch = 12.0
+	branch = 13.0
 
 [submodule "OCA/server-backend"]
 	path = OCA/server-backend
 	url = git@github.com:OCA/server-backend.git
-	branch = 12.0
+	branch = 13.0
