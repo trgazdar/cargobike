@@ -9,15 +9,17 @@
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='order_line']//tree//field[@name='name']"
 					position="after">
-					<field name="sol_warehouse_id" 
+					<field name="sol_warehouse_id" options="{'no_create': True}"
 						groups="stock.group_stock_multi_warehouses,stock.group_stock_multi_locations"
-						attrs="{'readonly': [('product_updatable', '=', True)]}"  />
+						attrs="{'readonly': [('product_updatable', '=', False)]}" required="1"
+						 />
 				</xpath>
 				<xpath
 					expr="//field[@name='order_line']//form//field[@name='product_packaging']"
 					position="before">
-					<field name="sol_warehouse_id" 
+					<field name="sol_warehouse_id" options="{'no_create': True}"
 						groups="stock.group_stock_multi_warehouses,stock.group_stock_multi_locations"
+						attrs="{'readonly': [('product_updatable', '=', False)]}" required="1"
 						 />
 				</xpath>
 			</field>
