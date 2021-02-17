@@ -11,16 +11,16 @@
 					position="after">
 					<field name="sol_warehouse_id" options="{'no_create': True}"
 						groups="stock.group_stock_multi_warehouses,stock.group_stock_multi_locations"
-						attrs="{'readonly': [('product_updatable', '=', False)]}" required="1"
-						 />
+						attrs="{'readonly': [('product_updatable', '=', False)]}" required="0"
+						force_save="1" />
 				</xpath>
 				<xpath
 					expr="//field[@name='order_line']//form//field[@name='product_packaging']"
 					position="before">
 					<field name="sol_warehouse_id" options="{'no_create': True}"
 						groups="stock.group_stock_multi_warehouses,stock.group_stock_multi_locations"
-						attrs="{'readonly': [('product_updatable', '=', False)]}" required="1"
-						 />
+						attrs="{'readonly': [('product_updatable', '=', False)]}" required="0"
+						force_save="1" />
 				</xpath>
 			</field>
 		</record>
