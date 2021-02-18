@@ -1,0 +1,4 @@
+Order_no,Picking_ref,Product_code,Quantity,Company_name,First_name,Street1,Street2,Country,State,City,Zip,Email,Contact_no
+P00017,DS/00008,534450,5,My Company,Deco Addict,77 Santa Barbara Rd,,United States,California,Pleasant Hill,94523,deco.addict82@example.com,(603)-996-3829
+P00017,DS/00008,534560,3,My Company,Deco Addict,77 Santa Barbara Rd,,United States,California,Pleasant Hill,94523,deco.addict82@example.com,(603)-996-3829
+P00018,DS/00009,541250,1,My Company,Douglas Fletcher,77 Santa Barbara Rd,,United States,California,Pleasant Hill,94523,douglas.fletcher51@example.com,(132)-553-7242

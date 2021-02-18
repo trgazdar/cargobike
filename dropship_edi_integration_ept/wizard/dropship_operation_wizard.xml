@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_dropship_operation_ept_wizard" model="ir.ui.view">
+        <field name="name">Dropship EDI Operations</field>
+        <field name="model">dropship.operation.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Dropship Operation Wizard">
+                <group invisible="context.get('process','') in ['add_update_catalog']">
+                    <group>
+                        <field name="partner_ids" options="{'no_create':True,'no_open':True}"
+                               domain="[('is_allow_edi_integrate','=',True)]"
+                               widget="many2many_tags"/>
+                    </group>
+                </group>
+                <group invisible="context.get('process','') in ['add_update_catalog']">
+                    <group>
+                        <field name="operations" attrs="{'invisible':[('partner_ids','==',False)]}"/>
+                    </group>
+                </group>
+                <group invisible="context.get('process','') in ['add_update_catalog']">
+                    <group>
+                        <field name="import_operations" attrs="{'invisible':[('operations','!=','import')]}"/>
+                        <field name="export_operations" attrs="{'invisible':[('operations','!=','export')]}"/>
+                    </group>
+                </group>
+                <group invisible="context.get('process','') in ['add_update_catalog']">
+                    <div class="alert alert-info" role="alert">
+                        <a href="/dropship_edi_integration_ept/static/demo_data/import/import_product.csv"
+                           target="_self" title="Download Product Sample CSV File">
+                            <strong style="margin-right: 5px;">Product Import Sample CSV File</strong>
+                            <i aria-label="Download" role="img" class="fa fa-download"/>
+                        </a>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        <a href="/dropship_edi_integration_ept/static/demo_data/import/import_stock.csv"
+                           target="_self" title="Download Stock Sample CSV File">
+                            <strong style="margin-right: 5px;">Stock Import Sample CSV File</strong>
+                            <i aria-label="Download" role="img" class="fa fa-download"/>
+                        </a>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        <a href="/dropship_edi_integration_ept/static/demo_data/export/export_shipment.csv"
+                           target="_self" title="Download Order Export Sample CSV File">
+                            <strong style="margin-right: 5px;">Order Export Sample CSV File</strong>
+                            <i aria-label="Download" role="img" class="fa fa-download"/>
+                        </a>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        <a href="/dropship_edi_integration_ept/static/demo_data/import/import_shipment.csv"
+                           target="_self" title="Download Shipmemt Sample CSV File">
+                            <strong style="margin-right: 5px;">Shipment Import Sample CSV File</strong>
+                            <i aria-label="Download" role="img" class="fa fa-download"/>
+                        </a>
+                    </div>
+                </group>
+                <group invisible="context.get('process','') not in ['add_update_catalog']">
+                    <div>
+                        Are you sure want to Add/Update this Product?
+                    </div>
+                </group>
+                <group invisible="context.get('process','') in ['add_update_catalog']" colspan="2">
+                    <field name="picking_ids" nolabel="1"
+                           attrs="{'invisible':[('export_operations','!=','export_shipment_orders')]}"
+                           domain="[('picking_type_id.is_dropship_process','=',True),
+                           ('partner_id','in',partner_ids),('state','not in',('cancel','done')),
+                           ('is_exported','=',False)]"
+                           context="{'tree_view_ref':'stock.vpicktree_ept'}">
+                        <tree string="Purchase Orders">
+                            <field name="state" invisible="1"/>
+                            <field name="name"/>
+                            <field name="origin"/>
+                            <field name="partner_id"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button class="oe_highlight" invisible="context.get('process','') in ['add_update_catalog']"
+                            string="Perform" name="perform_edi_operations"
+                            type="object"/>
+                    <button class="oe_highlight" invisible="context.get('process','') not in ['add_update_catalog']"
+                            name="create_update_products_to_catalog" string="Execute"
+                            type="object"/>
+                    <button class="oe_highlight" special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dropship_operations_wizard" model="ir.actions.act_window">
+        <field name="name">Dropship EDI Operations</field>
+        <field name="res_model">dropship.operation.wizard</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_dropship_operation_ept_wizard"/>
+        <field name="target">new</field>
+    </record>
+
+    <act_window name="Add/Update to Catalog"
+                id="action_add_update_to_catalog"
+                res_model="dropship.operation.wizard"
+                binding_model="dropship.product.ept"
+                view_mode="form"
+                target="new"
+                view_id="view_dropship_operation_ept_wizard"
+                context="{'process':'add_update_catalog'}"/>
+
+    <menuitem action="action_dropship_operations_wizard" id="menu_dropship_operation_wizard"
+              sequence="3" parent="dropship_edi_integration_ept.main_menu_shipping_operations"/>
+</odoo>

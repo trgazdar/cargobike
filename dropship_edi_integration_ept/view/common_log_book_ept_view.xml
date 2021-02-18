@@ -1,0 +1,136 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="view_common_log_book_ept_tree_dropship" model="ir.ui.view">
+        <field name="name">common.log.book.ept.tree.inherited.dropship</field>
+        <field name="model">common.log.book.ept</field>
+        <field name="inherit_id" ref="common_connector_library.action_common_log_book_ept_tree"/>
+        <field name="arch" type="xml">
+            <field name="type" position="before">
+                <field name="partner_id"/>
+                <field name="application"/>
+            </field>
+            <field name="type" position="after">
+                <field name="filename"/>
+                <field name="message"/>
+            </field>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_common_log_lines_ept_form_dropship" model="ir.ui.view">
+        <field name="name">common.log.lines.ept.form</field>
+        <field name="model">common.log.lines.ept</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Common Log Line" create='false'>
+                <sheet>
+                    <group>
+                        <field name="log_line_id" readonly="1"/>
+                        <field name="tracking_no" readonly="1"
+                               attrs="{'invisible':[('tracking_no','=',False)]}"/>
+                        <field name="default_code" readonly="1" attrs="{'invisible':[('default_code','=',False)]}"/>
+                        <field name="message" readonly="1"/>
+                        <field name="product_id" readonly="1" attrs="{'invisible':[('product_id','=',False)]}"/>
+                        <field name="order_ref" readonly="1" attrs="{'invisible':[('order_ref','=',False)]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_common_log_book_ept_form_dropship" model="ir.ui.view">
+        <field name="name">common.log.book.ept.form.inherited.dropship</field>
+        <field name="model">common.log.book.ept</field>
+        <field name="inherit_id" ref="common_connector_library.action_common_log_book_ept_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">false</attribute>
+            </xpath>
+            <field name="type" position="before">
+                <field name="partner_id" attrs='{"invisible": [("module", "!=", "dropship_edi_integration_ept")]}'/>
+                <field name="application" attrs='{"invisible": [("module", "!=", "dropship_edi_integration_ept")]}'/>
+            </field>
+            <field name="active" position="before">
+                <field name="filename" attrs='{"invisible": [("module", "!=", "dropship_edi_integration_ept")]}'/>
+                <field name="company_id" attrs='{"invisible": [("module", "!=", "dropship_edi_integration_ept")]}'/>
+            </field>
+            <field name="res_id" position="attributes">
+                <attribute name="attrs">{'invisible': [("module", "=", "dropship_edi_integration_ept")]}
+                </attribute>
+            </field>
+            <field name="model_id" position="attributes">
+                <attribute name="attrs">{'invisible': [("module", "=", "dropship_edi_integration_ept")]}
+                </attribute>
+            </field>
+            <field name="log_lines" position="inside">
+                <tree create="false" edit="false">
+                    <field name="message"/>
+                    <field name="default_code"/>
+                    <field name="product_id"/>
+                    <field name="order_ref"/>
+                </tree>
+            </field>
+            <xpath expr="//notebook" position="before">
+                <group string="Note" colspan="4">
+                    <field name="message" readonly="1" nolabel="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//sheet" position="after">
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_common_log_book_ept_search" model="ir.ui.view">
+        <field name="name">common.log.book.ept.search</field>
+        <field name="model">common.log.book.ept</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Common Log Book">
+                <field name="name"/>
+                <field name="application"/>
+                <field name="type"/>
+                <field name="filename"/>
+                <field name="partner_id"/>
+                <filter name="filter_app_sales" string="Sales" domain="[('application','=','sales')]"/>
+                <filter name="filter_app_shipment" string="Shipment" domain="[('application','=','shipment')]"/>
+                <filter name="filter_app_inventory" string="Inventory" domain="[('application','=','inventory')]"/>
+                <filter name="filter_app_product" string="Product" domain="[('application','=','product')]"/>
+                <filter name="filter_app_other" string="Other" domain="[('application','=','other')]"/>
+                <newline/>
+                <filter name="filter_operation_export" string="Export" domain="[('type','=','export')]"/>
+                <filter name="filter_operation_import" string="Import" domain="[('type','=','import')]"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Create Date" name="groupby_create_date" icon="terp-personal"
+                            context="{'group_by':'create_date'}"/>
+                    <filter string="Application" name="groupby_application" icon="terp-personal"
+                            context="{'group_by':'application'}"/>
+                    <filter string="Operation" name="groupby_type" icon="terp-personal"
+                            context="{'group_by':'type'}"/>
+                    <filter string="Message" name="groupby_message" icon="terp-personal"
+                            context="{'group_by':'message'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dropship_file_process_job_ept" model="ir.actions.act_window">
+        <field name="name">Common Log Book</field>
+        <field name="res_model">common.log.book.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_common_log_book_ept_tree_dropship"/>
+        <field name="search_view_id" ref="view_common_log_book_ept_search"/>
+    </record>
+
+    <menuitem id="dropship_file_process_job_log_ept" name="Dropship Common Log"
+              parent="dropship_edi_integration_ept.main_menu_shipping_operations"
+              action="action_dropship_file_process_job_ept" sequence="5"/>
+
+</odoo>

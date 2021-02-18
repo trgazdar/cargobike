@@ -1,0 +1,5 @@
+Main_product_id,Product_code,Name,Price,Quantity,Category,Description,Attributes,Attribute_values,Image_url,Barcode,Weight
+70788145,DESK004,Customizable Desk,129,100,Office Furniture,Desk which is made with Excellent material and color with large legs.,"Legs,Color","Steel,White",,DESKSTWH24,3
+70788145,FURN_005,Customizable Desk,150,200,Office Furniture,Desk which is made with Excellent material and color with large legs.,"Legs,Color","Steel,Black",,DESKSTBLC12,3
+70788145,DESK0067,Customizable Desk,350,50,Office Furniture,Desk which is made with Excellent material and color with large legs.,"Legs,Color","Aluminium,White",,DESKALMWHT5,4.5
+98504165,E_COM08,Storage Box,79,,Antique,Storage Box with large space,,,,STOBOX1223,12
