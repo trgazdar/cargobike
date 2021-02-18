@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_partner_dropship_config" model="ir.ui.view">
+        <field name="name">res.partner.dropship.config</field>
+        <field name="model">res.partner</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='sales_purchases']/group[@name='container_row_2']/group[2]"
+                   position="inside">
+                <field name="is_allow_edi_integrate"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='sales_purchases']" position="after">
+                <page string="Dropship FTP Configuration" name='dropship_ftp_config'
+                      attrs="{'invisible':[('is_allow_edi_integrate','=',False)]}">
+                    <group>
+                        <group>
+                            <field name="ftp_server_id" options="{'no_create':True,'no_open':True}"
+                                   attrs="{'required':[('is_allow_edi_integrate','=',True)]}"/>
+                        </group>
+                        <group>
+                            <field name="csv_delimiter"
+                                   attrs="{'required':[('is_allow_edi_integrate','=',True)]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Product" name='ftp_product'>
+                            <group>
+                                <group string="Product Import">
+                                    <field name="prefix_import_product"/>
+                                    <field name="product_import_directory_id"/>
+                                    <field name="product_archive_directory_id"/>
+                                </group>
+                                <group string="Search By">
+                                    <field name="search_by_vendor_code"/>
+                                </group>
+                            </group>
+                            <div>
+                                <div>
+                                    <label for="auto_import_product"/>
+                                    <field name="auto_import_product" class="oe_inline"/>
+                                </div>
+                                <div attrs="{'invisible': [('auto_import_product', '=', False)]}">
+                                    <label for="id" string="Import products at every"/>
+                                    <field name="product_import_interval_number"
+                                           attrs="{'required': [('auto_import_product', '=', True)]}"
+                                           class="oe_inline"/>
+                                    <field name="product_import_interval_type"
+                                           attrs="{'required': [('auto_import_product', '=', True)]}"
+                                           class="oe_inline"/>
+                                    <label for="id" string="from"/>
+                                    <field name="product_import_next_execution"
+                                           attrs="{'required': [('auto_import_product', '=', True)]}"
+                                           class="oe_inline"/>
+                                    <label for="id" string="by user"/>
+                                    <field name="product_import_user_id"
+                                           attrs="{'required': [('auto_import_product', '=', True)]}"
+                                           class="oe_inline"/>
+                                </div>
+                                <div>
+                                    <label for="auto_create_product"/>
+                                    <field name="auto_create_product" class="oe_inline"/>
+                                </div>
+                                <div>
+                                    <label for="auto_create_category"
+                                           attrs="{'invisible':[('auto_create_product','=',False)]}"/>
+                                    <field name="auto_create_category"
+                                           attrs="{'invisible':[('auto_create_product','=',False)]}"
+                                           class="oe_inline"/>
+                                </div>
+                                <div attrs="{'invisible': [('auto_create_product', '=', False)]}" class="oe_inline">
+                                    <label for="id" string="Create/Update products at every"
+                                           class="oe_inline"/>
+                                    <field name="product_creation_interval_number"
+                                           attrs="{'required': [('auto_create_product', '=', True)]}"
+                                           class="oe_inline"/>
+                                    <field name="product_creation_interval_type"
+                                           attrs="{'required': [('auto_create_product', '=', True)]}"
+                                           class="oe_inline"/>
+                                    <label for="id" string="from"/>
+                                    <field name="product_creation_next_execution"
+                                           attrs="{'required': [('auto_create_product', '=', True)]}"
+                                           class="oe_inline"/>
+                                    <label for="id" string="by user"/>
+                                    <field name="product_creation_user_id"
+                                           attrs="{'required': [('auto_create_product', '=', True)]}"
+                                           class="oe_inline"/>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Stock" name='ftp_inventory'>
+                            <group string="Import Stock">
+                                <group>
+                                    <field name="prefix_import_stock"/>
+                                    <field name="stock_import_directory_id"/>
+                                    <field name="stock_archive_directory_id"/>
+                                </group>
+                            </group>
+                            <div>
+                                <label for="auto_import_inventory"/>
+                                <field name="auto_import_inventory" class="oe_inline"/>
+                            </div>
+                            <div attrs="{'invisible': [('auto_import_inventory', '=', False)]}">
+                                <label for="id" string="Import stock at every"/>
+                                <field name="stock_import_interval_number"
+                                       attrs="{'required': [('auto_import_inventory', '=', True)]}"
+                                       class="oe_inline"/>
+                                <field name="stock_import_interval_type"
+                                       attrs="{'required': [('auto_import_inventory', '=', True)]}"
+                                       class="oe_inline"/>
+                                <label for="id" string="from"/>
+                                <field name="stock_import_next_execution"
+                                       attrs="{'required': [('auto_import_inventory', '=', True)]}"
+                                       class="oe_inline"/>
+                                <label for="id" string="by user"/>
+                                <field name="stock_import_user_id"
+                                       attrs="{'required': [('auto_import_inventory', '=', True)]}"
+                                       class="oe_inline"/>
+                            </div>
+                        </page>
+                        <page string="Shipment" name='ftp_shipment'>
+                            <group string="Export Shipment">
+                                <group>
+                                    <field name="prefix_shipment_export"/>
+                                    <field name="shipment_export_directory_id"/>
+                                </group>
+                            </group>
+                            <div>
+                                <label for="auto_export_shipment"/>
+                                <field name="auto_export_shipment" class="oe_inline"/>
+                            </div>
+                            <div attrs="{'invisible': [('auto_export_shipment', '=', False)]}">
+                                <label for="id" string="Export shipment orders at every"/>
+                                <field name="shipment_export_interval_number"
+                                       attrs="{'required': [('auto_export_shipment', '=', True)]}"
+                                       class="oe_inline"/>
+                                <field name="shipment_export_interval_type"
+                                       attrs="{'required': [('auto_export_shipment', '=', True)]}"
+                                       class="oe_inline"/>
+                                <label for="id" string="from"/>
+                                <field name="shipment_export_next_execution"
+                                       attrs="{'required': [('auto_export_shipment', '=', True)]}"
+                                       class="oe_inline"/>
+                                <label for="id" string="by user"/>
+                                <field name="shipment_export_user_id"
+                                       attrs="{'required': [('auto_export_shipment', '=', True)]}"
+                                       class="oe_inline"/>
+                            </div>
+                            <group string="Import Shipment">
+                                <group>
+                                    <field name="prefix_import_shipment"/>
+                                    <field name="shipment_import_directory_id"/>
+                                    <field name="shipment_archive_directory_id"/>
+                                </group>
+                            </group>
+                            <div>
+                                <label for="auto_import_shipment"/>
+                                <field name="auto_import_shipment" class="oe_inline"/>
+                            </div>
+                            <div attrs="{'invisible': [('auto_import_shipment', '=', False)]}">
+                                <label for="id" string="Import shipment orders at every"/>
+                                <field name="shipment_import_interval_number"
+                                       attrs="{'required': [('auto_import_shipment', '=', True)]}"
+                                       class="oe_inline"/>
+                                <field name="shipment_import_interval_type"
+                                       attrs="{'required': [('auto_import_shipment', '=', True)]}"
+                                       class="oe_inline"/>
+                                <label for="id" string="from"/>
+                                <field name="shipment_import_next_execution"
+                                       attrs="{'required': [('auto_import_shipment', '=', True)]}"
+                                       class="oe_inline"/>
+                                <label for="id" string="by user"/>
+                                <field name="shipment_import_user_id"
+                                       attrs="{'required': [('auto_import_shipment', '=', True)]}"
+                                       class="oe_inline"/>
+                            </div>
+                        </page>
+                    </notebook>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="dropship_product_ept_form_view" model="ir.ui.view">
+        <field name="name">dropship.product.ept.form</field>
+        <field name="model">dropship.product.ept</field>
+        <field name="arch" type="xml">
+            <form string="Dropship Product" class="o_sale_order" create="0">
+                <sheet>
+                    <div class="oe_button_box" name="button_box"/>
+                    <field name="image_1920" widget="image" class="oe_avatar" readonly="1"
+                           options="{'preview_image': 'image_128'}"/>
+                    <div class="oe_title">
+                        <label class="oe_edit_only" for="name" string="Product Name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="main_product_id" readonly="1"/>
+                            <field name="product_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="filename" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="General Information">
+                        <group>
+                            <field name="category" options="{'no_create':True,'no_open':True}"/>
+                            <field name="attribute_name"/>
+                            <field name="attribute_value"/>
+                            <field name="price"/>
+                            <field name="quantity"/>
+                        </group>
+                        <group>
+                            <field name="default_code" readonly="1"/>
+                            <field name="vendor_code" readonly="1"/>
+                            <field name="barcode"/>
+                            <field name="weight"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="image_url" widget="url"/>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"
+                           groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="dropship_product_ept_tree_view" model="ir.ui.view">
+        <field name="name">dropship.product.ept.tree</field>
+        <field name="model">dropship.product.ept</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Dropship Products" create="0">
+                <field name="name"/>
+                <field name="main_product_id"/>
+                <field name="partner_id"/>
+                <field name="price"/>
+                <field name="quantity"/>
+                <field name="category"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="dropship_product_ept_search_view" model="ir.ui.view">
+        <field name="name">dropship.product.ept.search</field>
+        <field name="model">dropship.product.ept</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Dropship Products">
+                <field name="name"/>
+                <field name="main_product_id"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="default_code"/>
+                <field name="vendor_code"/>
+                <field name="barcode"/>
+                <field name="filename"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Supplier" name="partner" icon="terp-personal"
+                            context="{'group_by':'partner_id'}"/>
+                    <filter string="Main Product ID" name="main_product_id" icon="terp-personal"
+                            context="{'group_by':'main_product_id'}"/>
+                    <filter string="Category" name="category" icon="terp-personal"
+                            context="{'group_by':'category'}"/>
+                    <filter string="Is Processed" name="is_processed" icon="terp-personal"
+                            context="{'group_by':'is_processed'}"/>
+                    <filter string="Create Date" name="create_date" icon="terp-personal"
+                            context="{'group_by':'create_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dropship_products" model="ir.actions.act_window">
+        <field name="name">Dropship Products</field>
+        <field name="res_model">dropship.product.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="dropship_product_ept_search_view"/>
+    </record>
+
+    <menuitem id="menu_dropship_products" name="Dropship Products"
+              parent="dropship_edi_integration_ept.main_menu_shipping_operations"
+              action="action_dropship_products" sequence="4"/>
+</odoo>
