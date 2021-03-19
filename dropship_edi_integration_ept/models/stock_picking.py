@@ -19,9 +19,12 @@ class StockPicking(models.Model):
         :return: True
         """
         for partner_id in partner_ids:
+            #picking_ids = self.search(
+             #   [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
+              #   ('is_exported', '!=', True)])
             picking_ids = self.search(
-                [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
-                 ('is_exported', '!=', True)])
+                [('id', 'in', pickings.ids),
+                 ('is_exported', '!=', True)])                 
 
             if picking_ids:
                 buffer = StringIO()
