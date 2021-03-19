@@ -4,7 +4,7 @@
         <field name="name">Active Suppliers</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('is_allow_edi_integrate', '=', True)]</field>
+        <field name="domain">[('is_allow_edi_integrate', '=', False)]</field>
     </record>
 
     <menuitem id="menu_active_suppliers" name="Active Suppliers" sequence="2"
