@@ -55,8 +55,8 @@ class StockPicking(models.Model):
                 for picking_id in picking_ids:
                     order_not_matched = \
                         self.check_mismatch_details_for_dropship_orders(partner_id, picking_id, job)
-                    if order_not_matched:
-                        continue
+                    #if order_not_matched:
+                     #   continue
                     for move_line in picking_id.move_lines:
                         product_supplier = self.env['product.supplierinfo'].search(
                             [('product_id', '=', move_line.product_id.id),
