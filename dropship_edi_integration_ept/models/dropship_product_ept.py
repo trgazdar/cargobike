@@ -12,7 +12,7 @@ class DropshipProductEpt(models.Model):
     name = fields.Char(string='Product Name', help='Name of the dropship product.')
     main_product_id = fields.Char(string="Main Product ID",
                                   help='Product will be defined as unique by Main product ID.')
-    partner_id = fields.Many2one('res.partner', 'Supplier',
+    partner_id = fields.Many2one('res.partner', 'Customer',
                                  help='Name of the supplier who supplies this product.')
     is_processed = fields.Boolean(string="Is Processed?", default=False,
                                   help='Checked if this product is created in odoo.')

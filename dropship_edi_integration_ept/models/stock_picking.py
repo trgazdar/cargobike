@@ -18,11 +18,7 @@ class StockPicking(models.Model):
         :param partner_ids: suppliers data
         :return: True
         """
-        picking_ids2 = self.search(
-                [('id', 'in', pickings.ids),
-                 ('is_exported', '!=', True)]) 
-        #for partner_id in partner_ids:
-        for picking_id2 in picking_ids2:
+        for partner_id in partner_ids:
             #picking_ids = self.search(
              #   [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
               #   ('is_exported', '!=', True)])
