@@ -22,7 +22,7 @@ class StockPicking(models.Model):
             #picking_ids = self.search(
              #   [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
               #   ('is_exported', '!=', True)])
-            stock = stock_location_id[0]
+            #stock = stock_location_id[0]
             picking_ids = self.search(
                [('is_exported', '!=', True), ('location_id', '=', 41), ('state', '=', 'confirmed'), ])                 
 
