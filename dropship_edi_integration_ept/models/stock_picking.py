@@ -31,8 +31,8 @@ class StockPicking(models.Model):
                 buffer = StringIO()
                 # Start CSV Writer
                 #column_headers = ['1','EL','CBD','countObect','Order_no', 'Picking_ref', 'Product_code', 'Quantity',
-                                  'First_name', 'Street1', 'Street2',
-                                  'Zip', 'City', 'Email', 'Contact_no', 'Country']
+                                 # 'First_name', 'Street1', 'Street2',
+                                  #'Zip', 'City', 'Email', 'Contact_no', 'Country']
                 export_time = datetime.now()
                 filename = "%s_%s" % (
                     partner_id.prefix_shipment_export or "Export_Order",
