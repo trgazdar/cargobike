@@ -30,9 +30,9 @@ class StockPicking(models.Model):
             if picking_ids: 
                 buffer = StringIO()
                 # Start CSV Writer
-                #column_headers = ['1','EL','CBD','countObect','Order_no', 'Picking_ref', 'Product_code', 'Quantity',
-                                 # 'First_name', 'Street1', 'Street2',
-                                  #'Zip', 'City', 'Email', 'Contact_no', 'Country']
+                column_headers = ['1','EL','CBD','countObect','Order_no', 'Picking_ref', 'Product_code', 'Quantity',
+                                  'First_name', 'Street1', 'Street2',
+                                  'Zip', 'City', 'Email', 'Contact_no', 'Country']
                 export_time = datetime.now()
                 filename = "%s_%s" % (
                     partner_id.prefix_shipment_export or "Export_Order",
@@ -53,7 +53,7 @@ class StockPicking(models.Model):
                                           (partner_id.name)})
                     break
 
-                csv_writer = DictWriter(buffer, 
+                csv_writer = DictWriter(buffer, column_headers,
                                         delimiter=partner_id.csv_delimiter or ';')
                 #csv_writer.writer.writerow(column_headers)
                 commande = 0
