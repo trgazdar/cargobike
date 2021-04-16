@@ -22,17 +22,17 @@ class StockPicking(models.Model):
             #picking_ids = self.search(
              #   [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
               #   ('is_exported', '!=', True)])
-            #stock = stock_location_id[0]
+            #47 pour la prod
             picking_ids = self.search(
-               [('is_exported', '!=', True), ('location_id', '=', 47), ('state', '=', 'assigned'), ])                 
+               [('is_exported', '!=', True), ('location_id', '=', 41), ('state', '=', 'confirmed'), ])                 
 
             #picking_ids = self.pool.get('stock.picking').search(self._cr, self._uid, [('is_exported', '=', 'false')])
             if picking_ids: 
                 buffer = StringIO()
                 # Start CSV Writer
-                column_headers = ['Order_no', 'Picking_ref', 'Product_code', 'Quantity',
-                                  'Company_name', 'First_name', 'Street1', 'Street2',
-                                  'Country', 'State', 'City', 'Zip', 'Email', 'Contact_no']
+                column_headers = ['1','EL','CBD','countObect','Order_no', 'Picking_ref', 'Product_code', 'Quantity',
+                                  'First_name', 'Street1', 'Street2',
+                                  'Zip', 'City', 'Email', 'Contact_no', 'Country']
                 export_time = datetime.now()
                 filename = "%s_%s" % (
                     partner_id.prefix_shipment_export or "Export_Order",
@@ -56,11 +56,35 @@ class StockPicking(models.Model):
                 csv_writer = DictWriter(buffer, column_headers,
                                         delimiter=partner_id.csv_delimiter or ';')
                 csv_writer.writer.writerow(column_headers)
+                commande = 0
                 for picking_id in picking_ids:
                     order_not_matched = \
                         self.check_mismatch_details_for_dropship_orders(partner_id, picking_id, job)
+                    commande = commande + 1
                     #if order_not_matched:
                      #   continue
+
+                    data = {
+                            '1': commande,
+                            'EL': 'E',
+                            'CBD': 'CBD',
+                            'countObect': len(picking_id.move_lines),
+                            'Order_no': picking_id.origin,
+                            'Picking_ref': picking_id.name,
+                            'Product_code': picking_id.scheduled_date,
+                            'Quantity': '',
+                            'First_name': picking_id.partner_id.name,
+                            'Street1': picking_id.partner_id.street,
+                            'Street2': picking_id.partner_id.street2 or '',
+                            'Zip': picking_id.partner_id.zip,                            
+                            'City': picking_id.partner_id.city,
+                            'Email': picking_id.partner_id.email or '',
+                            'Contact_no': picking_id.partner_id.mobile
+                                          or picking_id.partner_id.phone or '',
+                            'Country': picking_id.partner_id.country_id.code,                                          
+                        }
+                    csv_writer.writerow(data) 
+                    line = 1
                     for move_line in picking_id.move_lines:
                         product_supplier = self.env['product.supplierinfo'].search(
                             [('product_id', '=', move_line.product_id.id),
@@ -72,23 +96,25 @@ class StockPicking(models.Model):
                             product_code = move_line.product_id.default_code
 
                         data = {
-                            'Order_no': picking_id.origin,
-                            'Picking_ref': picking_id.name,
+                            '1': commande,
+                            'EL': 'L',
+                            'CBD': 'CBD',
+                            'countObect': len(picking_id.move_lines),
+                            'Order_no': '',
+                            'Picking_ref': '',
                             'Product_code': product_code,
                             'Quantity': move_line.product_uom_qty,
-                            'Company_name': picking_id.partner_id.company_id.name
-                                            or '',
-                            'First_name': picking_id.partner_id.name,
-                            'Street1': picking_id.partner_id.street,
-                            'Street2': picking_id.partner_id.street2 or '',
-                            'Country': picking_id.partner_id.country_id.name,
-                            'State': picking_id.partner_id.state_id.name,
-                            'City': picking_id.partner_id.city,
-                            'Zip': picking_id.partner_id.zip,
-                            'Email': picking_id.partner_id.email or '',
-                            'Contact_no': picking_id.partner_id.mobile
-                                          or picking_id.partner_id.phone or '',
+                            'First_name': 'UUC',
+                            'Street1': line,
+                            'Street2': '',
+                            'Zip': '',
+                            'City': '',
+                            'Email': '',
+                            'Contact_no': '',
+                            'Country': '',                                          
                         }
+                        line = line + 1
+                        
                         csv_writer.writerow(data)
                         log_message = (_("Dropship order has been exported successfully. "
                                          "| Sale order - %s") % picking_id.sale_id.name)

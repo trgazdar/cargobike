@@ -29,56 +29,13 @@
                         <field name="export_operations" attrs="{'invisible':[('operations','!=','export')]}"/>
                     </group>
                 </group>
-                <group invisible="context.get('process','') in ['add_update_catalog']">
-                    <div class="alert alert-info" role="alert">
-                        <a href="/dropship_edi_integration_ept/static/demo_data/import/import_product.csv"
-                           target="_self" title="Download Product Sample CSV File">
-                            <strong style="margin-right: 5px;">Product Import Sample CSV File</strong>
-                            <i aria-label="Download" role="img" class="fa fa-download"/>
-                        </a>
-                    </div>
-                    <div class="alert alert-info" role="alert">
-                        <a href="/dropship_edi_integration_ept/static/demo_data/import/import_stock.csv"
-                           target="_self" title="Download Stock Sample CSV File">
-                            <strong style="margin-right: 5px;">Stock Import Sample CSV File</strong>
-                            <i aria-label="Download" role="img" class="fa fa-download"/>
-                        </a>
-                    </div>
-                    <div class="alert alert-info" role="alert">
-                        <a href="/dropship_edi_integration_ept/static/demo_data/export/export_shipment.csv"
-                           target="_self" title="Download Order Export Sample CSV File">
-                            <strong style="margin-right: 5px;">Order Export Sample CSV File</strong>
-                            <i aria-label="Download" role="img" class="fa fa-download"/>
-                        </a>
-                    </div>
-                    <div class="alert alert-info" role="alert">
-                        <a href="/dropship_edi_integration_ept/static/demo_data/import/import_shipment.csv"
-                           target="_self" title="Download Shipmemt Sample CSV File">
-                            <strong style="margin-right: 5px;">Shipment Import Sample CSV File</strong>
-                            <i aria-label="Download" role="img" class="fa fa-download"/>
-                        </a>
-                    </div>
-                </group>
+
                 <group invisible="context.get('process','') not in ['add_update_catalog']">
                     <div>
                         Are you sure want to Add/Update this Product?
                     </div>
                 </group>
-                <group invisible="context.get('process','') in ['add_update_catalog']" colspan="2">
-                    <field name="picking_ids" nolabel="1"
-                           attrs="{'invisible':[('export_operations','!=','export_shipment_orders')]}"
-                           domain="[('picking_type_id.is_dropship_process','=',True),
-                           ('partner_id','in',partner_ids),('state','not in',('cancel','done')),
-                           ('is_exported','=',False)]"
-                           context="{'tree_view_ref':'stock.vpicktree_ept'}">
-                        <tree string="Purchase Orders">
-                            <field name="state" invisible="1"/>
-                            <field name="name"/>
-                            <field name="origin"/>
-                            <field name="partner_id"/>
-                        </tree>
-                    </field>
-                </group>
+
                 <footer>
                     <button class="oe_highlight" invisible="context.get('process','') in ['add_update_catalog']"
                             string="Perform" name="perform_edi_operations"

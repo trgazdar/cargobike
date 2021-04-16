@@ -1,16 +1,16 @@
 {
     # App information
-    'name': "Dropshipping EDI Integration in Odoo",
-    'category': 'Purchases',
+    'name': "FTP EDI Integration in Odoo",
+    'category': 'Stock',
     'version': '13.0',
-    'summary': 'Odoo Dropshipping EDI Integration helps dropshipper to manage orders,'
+    'summary': 'Odoo  EDI Integration helps orders to carriers by FTP,'
                ' products & inventory via EDI Integration through FTP server.',
     'license': 'OPL-1',
 
     # Author
-    "author": "Emipro Technologies Pvt. Ltd.",
-    'website': 'http://www.emiprotechnologies.com/',
-    'maintainer': 'Emipro Technologies Pvt. Ltd.',
+    "author": "Tripode-Services.fr",
+    'website': 'http://www.tripode-services.fr',
+    'maintainer': 'Tripode-Services',
 
     # Dependencies
     'depends': ['sale', 'stock', 'delivery', 'purchase', 'stock_dropshipping', 'ftp_connector_ept',
@@ -30,11 +30,8 @@
              'security/ir.model.access.csv',
              ],
 
-    'images': ['static/description/Dropshipping-EDI-Integration.jpg'],
+    'images': ['static/description/Tripode-Services-LOGO.png'],
     'installable': True,
     'auto_install': False,
     'application': True,
-    'live_test_url': 'https://www.emiprotechnologies.com/free-trial?app=dropship-edi-integration-ept&version=13&edition=enterprise',
-    'currency': 'EUR',
-    'price': '699',
 }

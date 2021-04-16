@@ -110,7 +110,7 @@
         <field name="search_view_id" ref="dropship_product_ept_search_view"/>
     </record>
 
-    <menuitem id="menu_dropship_products" name="Dropship Products"
+    <!-- <menuitem id="menu_dropship_products" name="Dropship Products"
               parent="dropship_edi_integration_ept.main_menu_shipping_operations"
-              action="action_dropship_products" sequence="4"/>
+              action="action_dropship_products" sequence="4"/> -->
 </odoo>
