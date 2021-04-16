@@ -11,7 +11,7 @@ class StockPicking(models.Model):
 
     is_exported = fields.Boolean(string="Is Exported?", default=False)
 
-    def export_shipment_orders_to_ftp(self, pickings=False, partner_ids=False, stock_location_id=False):
+    def export_shipment_orders_to_ftp(self, pickings=False, partner_ids=False):
         """
         It will export shipment orders in CSV file to the supplier's FTP directory path.
         :param pickings: shipment orders
