@@ -24,7 +24,7 @@ class StockPicking(models.Model):
               #   ('is_exported', '!=', True)])
             #stock = stock_location_id[0]
             picking_ids = self.search(
-               [('is_exported', '!=', True), ('location_id', '=', 47), ('state', '=', 'confirmed'), ])                 
+               [('is_exported', '!=', True), ('location_id', '=', 47), ('state', '=', 'assigned'), ])                 
 
             #picking_ids = self.pool.get('stock.picking').search(self._cr, self._uid, [('is_exported', '=', 'false')])
             if picking_ids: 
