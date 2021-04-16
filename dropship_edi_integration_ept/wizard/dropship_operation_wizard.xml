@@ -18,6 +18,11 @@
                         <field name="operations" attrs="{'invisible':[('partner_ids','==',False)]}"/>
                     </group>
                 </group>
+               <!--  <group invisible="context.get('process','') in ['add_update_catalog']">
+                    <group>
+                        <field name="stock_location_id" attrs="{'invisible':[('partner_ids','==',False)]}" />
+                    </group>
+                </group>  -->               
                 <group invisible="context.get('process','') in ['add_update_catalog']">
                     <group>
                         <field name="import_operations" attrs="{'invisible':[('operations','!=','import')]}"/>

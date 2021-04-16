@@ -8,6 +8,7 @@ class DropshipOperationWizard(models.TransientModel):
     partner_ids = fields.Many2many('res.partner', string="Suppliers",
                                    help='Select the supplier whose FTP server will be'
                                         ' used to perform the dropship operation.')
+    stock_location_id = fields.Many2one('stock.location', string="Stock départ")                                       
     picking_ids = fields.Many2many('stock.picking', string="Purchase Orders")
     operations = fields.Selection([('import', 'Import Operations'), ('export', 'Export Operations')],
                                   string='Operations')
@@ -25,13 +26,8 @@ class DropshipOperationWizard(models.TransientModel):
     def perform_edi_operations(self):
         product_obj = self.env['product.product']
         stock_picking_obj = self.env['stock.picking']
-
-        if self.import_operations == 'import_products':
-            product_obj.import_products_from_ftp(self.partner_ids)
-        elif self.import_operations == 'import_stock':
-            product_obj.import_stock_from_ftp(self.partner_ids)
-        elif self.export_operations == 'export_shipment_orders':
-            stock_picking_obj.export_shipment_orders_to_ftp(self.picking_ids, self.partner_ids)
+        if self.export_operations == 'export_shipment_orders':
+            stock_picking_obj.export_shipment_orders_to_ftp(self.picking_ids, self.partner_ids, self.stock_location_id)
         elif self.import_operations == 'import_shipment_orders':
             stock_picking_obj.import_shipment_orders_from_ftp(self.partner_ids)
         return {
@@ -41,6 +37,13 @@ class DropshipOperationWizard(models.TransientModel):
             'view_mode': 'tree,form',
             'target': 'current',
         }
+
+        #if self.import_operations == 'import_products':
+         #   product_obj.import_products_from_ftp(self.partner_ids)
+        #elif self.import_operations == 'import_stock':
+        #    product_obj.import_stock_from_ftp(self.partner_ids)
+        #el 
+
 
     def create_update_products_to_catalog(self):
         """
