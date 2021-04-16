@@ -30,7 +30,7 @@ class StockPicking(models.Model):
             if picking_ids: 
                 buffer = StringIO()
                 # Start CSV Writer
-                column_headers = ['1','EL','CBD','countObect','Order_no', 'Picking_ref', 'Product_code', 'Quantity',
+                #column_headers = ['1','EL','CBD','countObect','Order_no', 'Picking_ref', 'Product_code', 'Quantity',
                                   'First_name', 'Street1', 'Street2',
                                   'Zip', 'City', 'Email', 'Contact_no', 'Country']
                 export_time = datetime.now()
