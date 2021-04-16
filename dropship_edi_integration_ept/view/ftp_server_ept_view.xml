@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <odoo>
-    <menuitem id="main_menu_shipping_operations" name="Drop Shipping Operations"
+    <menuitem id="main_menu_shipping_operations" name="Shipping Operations"
               parent="stock.menu_stock_root"/>
     <menuitem id="menu_server_config" name="FTP Server Details"
               parent="dropship_edi_integration_ept.main_menu_shipping_operations"

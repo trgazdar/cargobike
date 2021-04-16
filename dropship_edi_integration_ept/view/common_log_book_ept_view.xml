@@ -129,7 +129,7 @@
         <field name="search_view_id" ref="view_common_log_book_ept_search"/>
     </record>
 
-    <menuitem id="dropship_file_process_job_log_ept" name="Dropship Common Log"
+    <menuitem id="dropship_file_process_job_log_ept" name="Logs"
               parent="dropship_edi_integration_ept.main_menu_shipping_operations"
               action="action_dropship_file_process_job_ept" sequence="5"/>
 

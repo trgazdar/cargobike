@@ -7,7 +7,7 @@
         <field name="domain">[('is_allow_edi_integrate', '=', False)]</field>
     </record>
 
-    <menuitem id="menu_active_suppliers" name="Active Suppliers" sequence="2"
+    <menuitem id="menu_active_suppliers" name="Carriers" sequence="2"
               parent="dropship_edi_integration_ept.main_menu_shipping_operations"
               action="action_active_suppliers_ept"/>
 </odoo>
