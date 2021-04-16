@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record id="view_ftp_config_settings" model="ir.ui.view">
+            <field name="name">FTP Settings</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="FTP"
+                         data-key="ftp_connector_ept" id="ftp_settings">
+                        <h2>FTP Settings</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <span class="o_form_label">FTP Server</span>
+                                    <field name="ftp_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

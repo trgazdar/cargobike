@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_picking_tree_dropship" model="ir.ui.view">
+            <field name="name">view.stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="is_exported" optional="hide"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
