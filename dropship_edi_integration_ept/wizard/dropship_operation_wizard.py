@@ -27,7 +27,7 @@ class DropshipOperationWizard(models.TransientModel):
         product_obj = self.env['product.product']
         stock_picking_obj = self.env['stock.picking']
         if self.export_operations == 'export_shipment_orders':
-            stock_picking_obj.export_shipment_orders_to_ftp(self.picking_ids, self.partner_ids, self.stock_location_id)
+            stock_picking_obj.export_shipment_orders_to_ftp(self.picking_ids, self.partner_ids)
         elif self.import_operations == 'import_shipment_orders':
             stock_picking_obj.import_shipment_orders_from_ftp(self.partner_ids)
         return {
