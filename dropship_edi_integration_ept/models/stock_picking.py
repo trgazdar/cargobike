@@ -11,7 +11,7 @@ class StockPicking(models.Model):
 
     is_exported = fields.Boolean(string="Is Exported?", default=False)
 
-    def export_shipment_orders_to_ftp(self, pickings=False, partner_ids=False):
+    def export_shipment_orders_to_ftp(self, pickings=False, partner_ids=False, stock_location_id=False):
         """
         It will export shipment orders in CSV file to the supplier's FTP directory path.
         :param pickings: shipment orders
@@ -22,12 +22,12 @@ class StockPicking(models.Model):
             #picking_ids = self.search(
              #   [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
               #   ('is_exported', '!=', True)])
-            #picking_ids = self.search(
-             #   [('id', 'in', pickings.ids),
-              #   ('is_exported', '!=', True)])                 
+            stock = stock_location_id[0]
+            picking_ids = self.search(
+               [('is_exported', '!=', True), ('location_id', '=', 41), ('state', '=', 'confirmed'), ])                 
 
-            picking_ids = self.pool.get('stock.picking').search(self._cr, self._uid, [('is_exported', '=', 'false')])
-            if picking_ids:
+            #picking_ids = self.pool.get('stock.picking').search(self._cr, self._uid, [('is_exported', '=', 'false')])
+            if picking_ids: 
                 buffer = StringIO()
                 # Start CSV Writer
                 column_headers = ['Order_no', 'Picking_ref', 'Product_code', 'Quantity',
@@ -72,22 +72,22 @@ class StockPicking(models.Model):
                             product_code = move_line.product_id.default_code
 
                         data = {
-                            'Order_no': picking_id.purchase_id.name,
+                            'Order_no': picking_id.origin,
                             'Picking_ref': picking_id.name,
                             'Product_code': product_code,
                             'Quantity': move_line.product_uom_qty,
-                            'Company_name': picking_id.sale_id.partner_shipping_id.company_id.name
+                            'Company_name': picking_id.partner_id.company_id.name
                                             or '',
-                            'First_name': picking_id.sale_id.partner_shipping_id.name,
-                            'Street1': picking_id.sale_id.partner_shipping_id.street,
-                            'Street2': picking_id.sale_id.partner_shipping_id.street2 or '',
-                            'Country': picking_id.sale_id.partner_shipping_id.country_id.name,
-                            'State': picking_id.sale_id.partner_shipping_id.state_id.name,
-                            'City': picking_id.sale_id.partner_shipping_id.city,
-                            'Zip': picking_id.sale_id.partner_shipping_id.zip,
-                            'Email': picking_id.sale_id.partner_shipping_id.email or '',
-                            'Contact_no': picking_id.sale_id.partner_shipping_id.mobile
-                                          or picking_id.sale_id.partner_shipping_id.phone or '',
+                            'First_name': picking_id.partner_id.name,
+                            'Street1': picking_id.partner_id.street,
+                            'Street2': picking_id.partner_id.street2 or '',
+                            'Country': picking_id.partner_id.country_id.name,
+                            'State': picking_id.partner_id.state_id.name,
+                            'City': picking_id.partner_id.city,
+                            'Zip': picking_id.partner_id.zip,
+                            'Email': picking_id.partner_id.email or '',
+                            'Contact_no': picking_id.partner_id.mobile
+                                          or picking_id.partner_id.phone or '',
                         }
                         csv_writer.writerow(data)
                         log_message = (_("Dropship order has been exported successfully. "
@@ -132,13 +132,13 @@ class StockPicking(models.Model):
         """
         order_not_matched = False
         missing_values = []
-        order_no = picking_id.purchase_id.name
-        first_name = picking_id.sale_id.partner_shipping_id.name or ''
-        street1 = picking_id.sale_id.partner_shipping_id.street
-        country = picking_id.sale_id.partner_shipping_id.country_id.name or ''
-        state = picking_id.sale_id.partner_shipping_id.state_id.name or ''
-        city = picking_id.sale_id.partner_shipping_id.city or ''
-        zip = picking_id.sale_id.partner_shipping_id.zip or ''
+        order_no = picking_id.origin
+        first_name = picking_id.partner_id.name or ''
+        street1 = picking_id.partner_id.street
+        country = picking_id.partner_id.country_id.name or ''
+        state = picking_id.partner_id.state_id.name or ''
+        city = picking_id.partner_id.city or ''
+        zip = picking_id.partner_id.zip or ''
 
         if not first_name:
             missing_values.append('First_name')
