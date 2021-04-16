@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_dropship_import_products_from_ftp" model="ir.cron">
+            <field name="name">Import Products From FTP</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field eval="False" name="active"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_product_product"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_import_products_from_ftp()</field>
+        </record>
+
+        <record id="ir_cron_dropship_create_or_update_products" model="ir.cron">
+            <field name="name">Create or Update Products From Primary Data</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field eval="False" name="active"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_create_or_update_products()</field>
+        </record>
+
+        <record id="ir_cron_dropship_import_stock_from_ftp" model="ir.cron">
+            <field name="name">Import Stock From FTP</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field eval="False" name="active"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_product_product"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_import_stock_from_ftp()
+            </field>
+        </record>
+
+        <record id="ir_cron_dropship_export_shipment_orders_to_ftp" model="ir.cron">
+            <field name="name">Export Shipment Orders To FTP</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field eval="False" name="active"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_export_shipment_orders_to_ftp()</field>
+        </record>
+
+        <record id="ir_cron_dropship_import_shipment_orders_from_ftp" model="ir.cron">
+            <field name="name">Import Shipment Orders From FTP</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field eval="False" name="active"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_import_shipment_orders_from_ftp()
+            </field>
+        </record>
+    </data>
+</odoo>

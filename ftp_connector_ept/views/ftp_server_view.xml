@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="tpw_ftp_server_ept" model="ir.ui.view">
+            <field name="name">File Server</field>
+            <field name="model">ftp.server.ept</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Ftp Server">
+                    <field name="name"/>
+                    <field name="ftp_host"/>
+                    <field name="is_passive_mode"/>
+                </tree>
+            </field>
+        </record>
+        <record id="ftp_server_form_view_ept" model="ir.ui.view">
+            <field name="name">File Server</field>
+            <field name="model">ftp.server.ept</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="File Server">
+                    <header>
+                        <button name="do_test" class="oe_highlight"
+                                string="Test Connection" type="object"/>
+                        <button name="add_directory" class="oe_highlight"
+                                string="Load Directory List" type="object"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="buttons">
+                            <field name="is_production_environment" invisible="1"/>
+                            <button attrs="{'invisible': [('is_production_environment', '=', False)]}"
+                                    class="oe_stat_button" name="toggle_prod_environment_value"
+                                    type="object" icon="fa-play">
+                                <div class="o_stat_info o_form_field">
+                                    <span class="text-success">Production</span>
+                                    <span class="o_stat_text">Environment</span>
+                                </div>
+                            </button>
+                            <button attrs="{'invisible': [('is_production_environment', '=', True)]}"
+                                    class="oe_stat_button" name="toggle_prod_environment_value"
+                                    type="object" icon="fa-stop">
+                                <div class="o_stat_info o_form_field">
+                                    <span class="o_warning_text">Test</span>
+                                    <span class="o_stat_text">Environment</span>
+                                </div>
+                            </button>
+                        </div>
+                        <group string="Server Info">
+                            <group>
+                                <field name="name"/>
+                                <field name="ftp_host"/>
+                                <field name="ftp_port"/>
+                                <field name="ftp_username"/>
+                                <field name="ftp_password" password="1" attrs="{'required':[('conn_type','=','ftp')]}"/>
+                                <field name="key_filename" attrs="{'invisible':[('conn_type','!=','sftp')]}"/>
+                            </group>
+                            <group>
+                                <field name="server_type"/>
+                                <field name="conn_type"/>
+                                <field name="is_passive_mode"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Directory List">
+                                <field name="directory_ids" nolabel="1">
+                                    <tree editable="top">
+                                        <field name="name"/>
+                                        <field name="path"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_tpw_ftp_details_ept" model="ir.actions.act_window">
+            <field name="name">FTP Details</field>
+            <field name="res_model">ftp.server.ept</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_tpw_details" name="FTP Configurations"
+                  parent="stock.menu_stock_config_settings" action="action_tpw_ftp_details_ept" sequence="5"
+                  groups="stock.group_stock_manager"/>
+
+    </data>
+</odoo>	
