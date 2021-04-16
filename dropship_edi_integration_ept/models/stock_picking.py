@@ -22,10 +22,11 @@ class StockPicking(models.Model):
             #picking_ids = self.search(
              #   [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
               #   ('is_exported', '!=', True)])
-            picking_ids = self.search(
-                [('id', 'in', pickings.ids),
-                 ('is_exported', '!=', True)])                 
+            #picking_ids = self.search(
+             #   [('id', 'in', pickings.ids),
+              #   ('is_exported', '!=', True)])                 
 
+            picking_ids = self.pool.get('stock.picking').search(cr, uid, [('is_exported', '=', 'false')])
             if picking_ids:
                 buffer = StringIO()
                 # Start CSV Writer
