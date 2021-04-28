@@ -18,7 +18,7 @@ class StockPicking(models.Model):
         :param partner_ids: suppliers data
         :return: True
         """
-        partner_ids = partner_ids.sorted(key=lambda r: r.partner_id.id)
+        partner_ids.sorted(key=lambda r: r.id)
         for partner_id in partner_ids:
             #picking_ids = self.search(
              #   [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
