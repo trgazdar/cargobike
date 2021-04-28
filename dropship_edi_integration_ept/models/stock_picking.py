@@ -64,7 +64,7 @@ class StockPicking(models.Model):
                     commande = commande + 1
                     #if order_not_matched:
                      #   continue
-                    total_objets2 = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
+                    total_objets2 = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', picking_id.id)]) 
                     data = {
                             '1': commande,
                             'EL': 'E',
@@ -95,7 +95,7 @@ class StockPicking(models.Model):
                             product_code = product_supplier.product_code
                         elif move_line.product_id.default_code:
                             product_code = move_line.product_id.default_code
-                        total_objets = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', picking_id.id)]) 
+                        total_objets = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
                         data = {
                             '1': commande,
                             'EL': 'L',
