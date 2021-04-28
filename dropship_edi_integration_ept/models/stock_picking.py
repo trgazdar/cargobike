@@ -33,7 +33,7 @@ class StockPicking(models.Model):
                 # Start CSV Writer
                 column_headers = ['1','EL','CBD','countObect','Order_no', 'Picking_ref', 'Product_code', 'Quantity',
                                   'First_name', 'Street1', 'Street2',
-                                  'Zip', 'City', 'Email', 'Contact_no', 'Country']
+                                  'Zip', 'City', 'Contact_no', 'Country','Carrier', 'Email']
                 export_time = datetime.now()
                 filename = "%s_%s" % (
                     partner_id.prefix_shipment_export or "Export_Order",
@@ -79,10 +79,11 @@ class StockPicking(models.Model):
                             'Street2': picking_id.partner_id.street2 or '',
                             'Zip': picking_id.partner_id.zip,                            
                             'City': picking_id.partner_id.city,
-                            'Email': picking_id.partner_id.email or '',
                             'Contact_no': picking_id.partner_id.mobile
                                           or picking_id.partner_id.phone or '',
-                            'Country': picking_id.partner_id.country_id.code,                                          
+                            'Country': picking_id.partner_id.country_id.code,
+                            'Carrier': picking_id.partner_id.carrier_id.name,                                 
+                            'Email': picking_id.partner_id.email or '',                                                                 
                         }
                     csv_writer.writerow(data) 
                     line = 1
@@ -110,9 +111,10 @@ class StockPicking(models.Model):
                             'Street2': '',
                             'Zip': '',
                             'City': '',
-                            'Email': '',
                             'Contact_no': '',
-                            'Country': '',                                          
+                            'Country': '',
+                            'Carrier': '',                             
+                            'Email': '',                                                                      
                         }
                         
                         if (move_line.product_uom_qty > 0):
