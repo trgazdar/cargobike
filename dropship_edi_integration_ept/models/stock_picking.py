@@ -64,12 +64,12 @@ class StockPicking(models.Model):
                     commande = commande + 1
                     #if order_not_matched:
                      #   continue
-
+                    total_objets2 = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
                     data = {
                             '1': commande,
                             'EL': 'E',
                             'CBD': 'CBD',
-                            'countObect': len(picking_id.move_lines),
+                            'countObect': total_objets2,#len(picking_id.move_lines),
                             'Order_no': picking_id.origin,
                             'Picking_ref': picking_id.name,
                             'Product_code': picking_id.scheduled_date,
