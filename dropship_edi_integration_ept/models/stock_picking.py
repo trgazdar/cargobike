@@ -95,12 +95,12 @@ class StockPicking(models.Model):
                             product_code = product_supplier.product_code
                         elif move_line.product_id.default_code:
                             product_code = move_line.product_id.default_code
-
+                        total_objets = picking_id.move_lines.search_count([('product_uom_qty', '>', 0)])
                         data = {
                             '1': commande,
                             'EL': 'L',
                             'CBD': 'CBD',
-                            'countObect': len(picking_id.move_lines),
+                            'countObect': total_objets, #len(picking_id.move_lines),
                             'Order_no': '',
                             'Picking_ref': '',
                             'Product_code': product_code,
@@ -114,9 +114,10 @@ class StockPicking(models.Model):
                             'Contact_no': '',
                             'Country': '',                                          
                         }
-                        line = line + 1
+                        
                         if (move_line.product_uom_qty > 0):
                             csv_writer.writerow(data)
+                            line = line + 1
                             log_message = (_("Dropship order has been exported successfully. "
                                          "| Sale order - %s") % picking_id.sale_id.name)
                         self._create_common_log_line(job, False, log_message,
