@@ -105,7 +105,7 @@ class StockPicking(models.Model):
                             'Order_no': '',
                             'Picking_ref': '',
                             'Product_code': product_code,
-                            'Quantity': round(move_line.product_uom_qty, 0),
+                            'Quantity': int(move_line.product_uom_qty),
                             'First_name': 'UUC',
                             'Street1': line,
                             'Street2': '',
