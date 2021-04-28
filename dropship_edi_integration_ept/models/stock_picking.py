@@ -72,7 +72,7 @@ class StockPicking(models.Model):
                             'countObect': total_objets2,#len(picking_id.move_lines),
                             'Order_no': picking_id.origin,
                             'Picking_ref': picking_id.name,
-                            'Product_code': picking_id.scheduled_date,
+                            'Product_code': picking_id.scheduled_date.strftime("%Y%m%d"),
                             'Quantity': '',
                             'First_name': picking_id.partner_id.name,
                             'Street1': picking_id.partner_id.street,
