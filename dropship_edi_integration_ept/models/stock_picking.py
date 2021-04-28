@@ -25,7 +25,7 @@ class StockPicking(models.Model):
               #   ('is_exported', '!=', True)])
             #47 pour la prod
             picking_ids = self.search(
-               [('is_exported', '!=', True), ('location_id', '=', 47), ('state', '=', 'assigned'), ])                 
+               [('is_exported', '!=', True), ('location_id', '=', 47), ('state', '=', 'assigned'), ]).sorted(key=lambda r: r.partner_id)                 
 
             #picking_ids = self.pool.get('stock.picking').search(self._cr, self._uid, [('is_exported', '=', 'false')])
             if picking_ids: 
@@ -58,7 +58,7 @@ class StockPicking(models.Model):
                                         delimiter=partner_id.csv_delimiter or ';')
                 #csv_writer.writer.writerow(column_headers)
                 commande = 0
-                for picking_id in picking_ids.sorted(key=lambda r: r.partner_id):
+                for picking_id in picking_ids:
                     order_not_matched = \
                         self.check_mismatch_details_for_dropship_orders(partner_id, picking_id, job)
                     commande = commande + 1
