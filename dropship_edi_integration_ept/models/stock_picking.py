@@ -18,7 +18,7 @@ class StockPicking(models.Model):
         :param partner_ids: suppliers data
         :return: True
         """
-        partner_ids.sorted(key=lambda r: r.id)
+        
         for partner_id in partner_ids:
             #picking_ids = self.search(
              #   [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
@@ -58,7 +58,7 @@ class StockPicking(models.Model):
                                         delimiter=partner_id.csv_delimiter or ';')
                 #csv_writer.writer.writerow(column_headers)
                 commande = 0
-                for picking_id in picking_ids:
+                for picking_id in picking_ids.sorted(key=lambda r: r.partner_id):
                     order_not_matched = \
                         self.check_mismatch_details_for_dropship_orders(partner_id, picking_id, job)
                     commande = commande + 1
