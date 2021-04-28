@@ -82,10 +82,10 @@ class StockPicking(models.Model):
                             'Contact_no': picking_id.partner_id.mobile
                                           or picking_id.partner_id.phone or '',
                             'Country': picking_id.partner_id.country_id.code,
-                            'Carrier': picking_id.partner_id.carrier_id.name,                                 
+                            'Carrier': picking_id.carrier_id.name,                                 
                             'Email': picking_id.partner_id.email or '',                                                                 
                         }
-                    csv_writer.writerow(data) 
+                    csv_writer.writerow(data)  
                     line = 1
                     for move_line in picking_id.move_lines:
                         product_supplier = self.env['product.supplierinfo'].search(
