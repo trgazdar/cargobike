@@ -115,9 +115,9 @@ class StockPicking(models.Model):
                             'Country': '',                                          
                         }
                         line = line + 1
-                        
-                        csv_writer.writerow(data)
-                        log_message = (_("Dropship order has been exported successfully. "
+                        if (move_line.product_uom_qty > 0):
+                            csv_writer.writerow(data)
+                            log_message = (_("Dropship order has been exported successfully. "
                                          "| Sale order - %s") % picking_id.sale_id.name)
                         self._create_common_log_line(job, False, log_message,
                                                      picking_id.purchase_id.name, '', '',
