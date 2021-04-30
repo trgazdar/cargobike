@@ -85,7 +85,7 @@ class StockPicking(models.Model):
                             'Carrier': picking_id.carrier_id.name,                                 
                             'Email': picking_id.partner_id.email or '',                                                                 
                         }
-                    csv_writer.writerow(data.encode(encoding='iso-8859-1'))  
+                    csv_writer.writerow(data)  
                     line = 1
                     for move_line in picking_id.move_lines:
                         product_supplier = self.env['product.supplierinfo'].search(
@@ -118,7 +118,7 @@ class StockPicking(models.Model):
                         }
                         
                         if (move_line.product_uom_qty > 0):
-                            csv_writer.writerow(data.encode(encoding='iso-8859-1'))
+                            csv_writer.writerow(data)
                             line = line + 1
                             log_message = (_("Dropship order has been exported successfully. "
                                          "| Sale order - %s") % picking_id.sale_id.name)
@@ -137,11 +137,11 @@ class StockPicking(models.Model):
                                           " path. File has not exported to Supplier's FTP." %
                                           (partner_id.name)})
                 buffer.seek(0)
-                file_data = buffer.read()
+                file_data = buffer.read().encode()
                 if file_data:
                     vals = {
                         'name': filename,
-                        'datas': base64.encodestring(file_data.encode(encoding='iso-8859-1')),
+                        'datas': base64.encodestring(file_data),
                         'type': 'binary',
                         'res_model': 'common.log.book.ept',
                     }
