@@ -26,8 +26,8 @@ class StockPicking(models.Model):
               #   ('is_exported', '!=', True)])
             #47 pour la prod
             picking_ids = self.search(
-               [('is_exported', '!=', True), ('location_id', '=', 47), ('state', '=', 'assigned'), ]).sorted(key=lambda r: r.partner_id)                 
-
+               [('is_exported', '!=', True), ('is_blocked', '!=', True),('location_id', '=', 47), ('state', '=', 'assigned'), ]).sorted(key=lambda r: r.partner_id)                 
+            
             #picking_ids = self.pool.get('stock.picking').search(self._cr, self._uid, [('is_exported', '=', 'false')])
             if picking_ids: 
                 buffer = StringIO()
@@ -60,73 +60,74 @@ class StockPicking(models.Model):
                 #csv_writer.writer.writerow(column_headers)
                 commande = 0
                 for picking_id in picking_ids:
-                    order_not_matched = \
-                        self.check_mismatch_details_for_dropship_orders(partner_id, picking_id, job)
-                    commande = commande + 1
-                    #if order_not_matched:
-                     #   continue
-                    total_objets2 = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', picking_id.id)]) 
-                    data = {
-                            '1': commande,
-                            'EL': 'E',
-                            'CBD': 'CBD',
-                            'countObect': total_objets2,#len(picking_id.move_lines),
-                            'Order_no': picking_id.origin,
-                            'Picking_ref': picking_id.name,
-                            'Product_code': picking_id.scheduled_date.strftime("%Y%m%d"),
-                            'Quantity': '',
-                            'First_name': picking_id.partner_id.name,
-                            'Street1': picking_id.partner_id.street,
-                            'Street2': picking_id.partner_id.street2 or '',
-                            'Zip': picking_id.partner_id.zip,                            
-                            'City': picking_id.partner_id.city,
-                            'Contact_no': picking_id.partner_id.mobile
-                                          or picking_id.partner_id.phone or '',
-                            'Country': picking_id.partner_id.country_id.code,
-                            'Carrier': picking_id.carrier_id.name,                                 
-                            'Email': picking_id.partner_id.email or '',                                                                 
-                        }
-                    csv_writer.writerow(data)  
-                    line = 1
-                    for move_line in picking_id.move_lines:
-                        product_supplier = self.env['product.supplierinfo'].search(
-                            [('product_id', '=', move_line.product_id.id),
-                             ('name', '=', partner_id.id)], limit=1)
-                        product_code = False
-                        if product_supplier.product_code:
-                            product_code = product_supplier.product_code
-                        elif move_line.product_id.default_code:
-                            product_code = move_line.product_id.default_code
-                        total_objets = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
+                    if picking_id.scheduled_date <= (datetime.now() + timedelta(days=15)):
+                        order_not_matched = \
+                            self.check_mismatch_details_for_dropship_orders(partner_id, picking_id, job)
+                        commande = commande + 1
+                        #if order_not_matched:
+                        #   continue
+                        total_objets2 = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', picking_id.id)]) 
                         data = {
-                            '1': commande,
-                            'EL': 'L',
-                            'CBD': 'CBD',
-                            'countObect': total_objets, #len(picking_id.move_lines),
-                            'Order_no': '',
-                            'Picking_ref': '',
-                            'Product_code': product_code,
-                            'Quantity': int(move_line.product_uom_qty),
-                            'First_name': 'UUC',
-                            'Street1': line,
-                            'Street2': '',
-                            'Zip': '',
-                            'City': '',
-                            'Contact_no': '',
-                            'Country': '',
-                            'Carrier': '',                             
-                            'Email': '',                                                                      
-                        }
-                        
-                        if (move_line.product_uom_qty > 0):
-                            csv_writer.writerow(data)
-                            line = line + 1
-                            log_message = (_("Dropship order has been exported successfully. "
-                                         "| Sale order - %s") % picking_id.sale_id.name)
-                        self._create_common_log_line(job, False, log_message,
-                                                     picking_id.purchase_id.name, '', '',
-                                                     move_line.product_id.id)
-                        picking_id.write({'is_exported': True})
+                                '1': commande,
+                                'EL': 'E',
+                                'CBD': 'CBD',
+                                'countObect': total_objets2,#len(picking_id.move_lines),
+                                'Order_no': picking_id.origin,
+                                'Picking_ref': picking_id.name,
+                                'Product_code': picking_id.scheduled_date.strftime("%Y%m%d"),
+                                'Quantity': '',
+                                'First_name': picking_id.partner_id.name,
+                                'Street1': picking_id.partner_id.street,
+                                'Street2': picking_id.partner_id.street2 or '',
+                                'Zip': picking_id.partner_id.zip,                            
+                                'City': picking_id.partner_id.city,
+                                'Contact_no': picking_id.partner_id.mobile
+                                            or picking_id.partner_id.phone or '',
+                                'Country': picking_id.partner_id.country_id.code,
+                                'Carrier': picking_id.carrier_id.name,                                 
+                                'Email': picking_id.partner_id.email or '',                                                                 
+                            }
+                        csv_writer.writerow(data)  
+                        line = 1
+                        for move_line in picking_id.move_lines:
+                            product_supplier = self.env['product.supplierinfo'].search(
+                                [('product_id', '=', move_line.product_id.id),
+                                ('name', '=', partner_id.id)], limit=1)
+                            product_code = False
+                            if product_supplier.product_code:
+                                product_code = product_supplier.product_code
+                            elif move_line.product_id.default_code:
+                                product_code = move_line.product_id.default_code
+                            total_objets = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
+                            data = {
+                                '1': commande,
+                                'EL': 'L',
+                                'CBD': 'CBD',
+                                'countObect': total_objets, #len(picking_id.move_lines),
+                                'Order_no': '',
+                                'Picking_ref': '',
+                                'Product_code': product_code,
+                                'Quantity': int(move_line.product_uom_qty),
+                                'First_name': 'UUC',
+                                'Street1': line,
+                                'Street2': '',
+                                'Zip': '',
+                                'City': '',
+                                'Contact_no': '',
+                                'Country': '',
+                                'Carrier': '',                             
+                                'Email': '',                                                                      
+                            }
+                            
+                            if (move_line.product_uom_qty > 0):
+                                csv_writer.writerow(data)
+                                line = line + 1
+                                log_message = (_("Dropship order has been exported successfully. "
+                                            "| Sale order - %s") % picking_id.sale_id.name)
+                            self._create_common_log_line(job, False, log_message,
+                                                        picking_id.purchase_id.name, '', '',
+                                                        move_line.product_id.id)
+                            picking_id.write({'is_exported': True})
                 try:
                     with partner_id.get_dropship_edi_interface(operation="shipment_export") \
                             as dropship_tpw_interface:
