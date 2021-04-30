@@ -141,7 +141,7 @@ class StockPicking(models.Model):
                 if file_data:
                     vals = {
                         'name': filename,
-                        'datas': base64.encodestring(file_data),
+                        'datas': base64.encodestring(file_data.encode(encoding='iso-8859-1')),
                         'type': 'binary',
                         'res_model': 'common.log.book.ept',
                     }
