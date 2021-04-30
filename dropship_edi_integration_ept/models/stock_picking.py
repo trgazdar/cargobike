@@ -129,11 +129,12 @@ class StockPicking(models.Model):
                                                         move_line.product_id.id)
                             picking_id.write({'is_exported': True})
                 try:
-                    with partner_id.get_dropship_edi_interface(operation="shipment_export") \
-                            as dropship_tpw_interface:
-                        buffer.seek(0)
-                        dropship_tpw_interface.push_to_ftp(filename, buffer)
-                        # job.write({'message': "FTP connection has been established successfully."})
+                    if commande > 0:
+                        with partner_id.get_dropship_edi_interface(operation="shipment_export") \
+                                as dropship_tpw_interface:
+                            buffer.seek(0)
+                            dropship_tpw_interface.push_to_ftp(filename, buffer)
+                            # job.write({'message': "FTP connection has been established successfully."})
                 except Exception:
                     job.write({'message': "Supplier %s has problem with FTP connection or file"
                                           " path. File has not exported to Supplier's FTP." %
