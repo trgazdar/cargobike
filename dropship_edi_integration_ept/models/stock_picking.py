@@ -10,6 +10,7 @@ class StockPicking(models.Model):
     _inherit = "stock.picking"
     _order = 'partner_id'
     is_exported = fields.Boolean(string="Is Exported?", default=False)
+    is_blocked = fields.Boolean(string="Is Blocked?", default=False)
 
     def export_shipment_orders_to_ftp(self, pickings=False, partner_ids=False):
         """
