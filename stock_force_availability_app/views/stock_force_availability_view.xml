@@ -11,7 +11,7 @@
             	<xpath expr="//header/button[@name='action_assign']" position="after">
             		<button name="one_click_force_avail" class="oe_highlight" string="Ready ECTRA" type="object" attrs="{'invisible': [('state', 'in',['draft','assigned','done','cancel'])]}"/>
                 </xpath>
-                <xpath expr="//header/button[@name='action_assign']" position="attributes">
+                <xpath expr="//header/button[@name='action_assign']" position="attributes"> 
                     <attribute name="attrs">{'invisible': ['|',('show_check_availability', '=', False),
                         ('state','=','assigned')]}
                     </attribute>
