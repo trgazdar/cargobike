@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+acesss_ftp_server_ept,Access FTP Server,model_ftp_server_ept,,1,1,1,1
+acesss_ftp_directory_ept,Access FTP Directory,model_ftp_directory_ept,,1,1,1,1

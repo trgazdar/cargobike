@@ -1,0 +1,38 @@
+<odoo>
+      <record id="merge_picking_23" model="ir.ui.view">
+          <field name="name">merge.picking.wizard</field>
+          <field name="model">merge.picking</field>
+          <field name="arch" type="xml">
+              <form string="New Form"> 
+                 <sheet placeholder="Picking will be created will all selected picking">  
+                   <field name="merge_picking_line">
+                      <tree string="picking">
+                        <field name='pick_name'/>
+                        <field name='partner_id'/>
+                        <field name='origin'/>
+                        <field name='state'/>
+                      </tree>
+                  </field>
+                   <group>         
+          <footer>
+              <button string="Merge Pickings" name="Create_new_picking_record" type="object" class="oe_highlight"/>
+              <button string="Cancel" class="oe_link" special="cancel"/>
+          </footer>
+          </group> 
+         
+        </sheet>
+      </form>  
+    </field>
+  </record>
+    <record id="merge_picking_action_only" model="ir.actions.act_window">
+            <field name="name">merge picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">merge.picking</field>
+            <field name="view_mode">form</field>
+             <field name="target">new</field>
+            <field name="view_id" ref="merge_picking_23"/>
+             <field name="binding_model_id" ref="stock.model_stock_picking" />
+            <field name="binding_view_types">list</field>
+           
+    </record>
+</odoo>
