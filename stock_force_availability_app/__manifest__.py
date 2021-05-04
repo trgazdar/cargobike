@@ -2,9 +2,8 @@
 
 {
     "name" : "Force Availability button in Delivery/Picking",
-    "author": "Edge Technologies",
+    "author": "Tripode-Services",
     "version" : "13.0.1.0",
-    "live_test_url":'https://youtu.be/3Ptxo_F3-gM',
     "images":["static/description/main_screenshot.png"],
     'summary':'Forcefully Available Stock on delivery Force Availability for delivery order Force Availability for picking Force Availability button in Stock picking Force Availability button in delivery order Force Availability button in picking stock Force Availability',
     "description": """ Force Availability In Stock.""",
@@ -15,8 +14,6 @@
     ],
     "auto_install": False,
     "installable": True,
-    "price": 10,
-    "currency": 'EUR',
     "category" : "Warehouse",
 }
 
