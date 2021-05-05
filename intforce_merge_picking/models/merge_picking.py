@@ -20,7 +20,7 @@ class MergePicking(models.TransientModel):
             'pick_name':stock.name,
             'partner_id':stock.partner_id.id,
             'origin':stock.origin,
-            'state':stock.state
+            'state':stock.state,
             'carrier':stock.carrier_id.name
             }))
 
