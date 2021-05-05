@@ -66,7 +66,10 @@ class StockPicking(models.Model):
                         commande = commande + 1
                         #if order_not_matched:
                         #   continue
-                        total_objets2 = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', picking_id.id)]) 
+                        #self.env.cr.execute('select count(*) from stock_move_line where picking_id=%s ', (picking_id.id[0]))
+                        results = self.env['stock.move.line'].search([('picking_id', '=', picking_id.id)])
+                        #total_objets2 = picking_id.move_lines.search_count([('product_qty', '!=', 0), ( 'picking_id','=', picking_id.id)]) 
+                        total_objets2 = len(results)
                         data = {
                                 '1': commande,
                                 'EL': 'E',
@@ -98,16 +101,16 @@ class StockPicking(models.Model):
                                 product_code = product_supplier.product_code
                             elif move_line.product_id.default_code:
                                 product_code = move_line.product_id.default_code
-                            total_objets = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
+                            #total_objets = picking_id.move_lines.search_count([('product_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
                             data = {
                                 '1': commande,
                                 'EL': 'L',
                                 'CBD': 'CBD',
-                                'countObect': total_objets, #len(picking_id.move_lines),
+                                'countObect': total_objets2, #len(picking_id.move_lines),
                                 'Order_no': '',
                                 'Picking_ref': '',
                                 'Product_code': product_code,
-                                'Quantity': int(move_line.product_uom_qty),
+                                'Quantity': int(move_line.reserved_availability),
                                 'First_name': 'UUC',
                                 'Street1': line,
                                 'Street2': '',
@@ -119,12 +122,12 @@ class StockPicking(models.Model):
                                 'Email': '',                                                                      
                             }
                             
-                            if (move_line.product_uom_qty > 0):
+                            if (move_line.reserved_availability > 0):
                                 csv_writer.writerow(data)
                                 line = line + 1
                                 log_message = (_("Dropship order has been exported successfully. "
                                             "| Sale order - %s") % picking_id.sale_id.name)
-                            self._create_common_log_line(job, False, log_message,
+                                self._create_common_log_line(job, False, log_message,
                                                         picking_id.purchase_id.name, '', '',
                                                         move_line.product_id.id)
                             picking_id.write({'is_exported': True})
