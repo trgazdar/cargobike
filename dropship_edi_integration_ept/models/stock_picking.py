@@ -101,12 +101,12 @@ class StockPicking(models.Model):
                                 product_code = product_supplier.product_code
                             elif move_line.product_id.default_code:
                                 product_code = move_line.product_id.default_code
-                            total_objets = picking_id.move_lines.search_count([('product_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
+                            #total_objets = picking_id.move_lines.search_count([('product_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
                             data = {
                                 '1': commande,
                                 'EL': 'L',
                                 'CBD': 'CBD',
-                                'countObect': total_objets, #len(picking_id.move_lines),
+                                'countObect': total_objets2, #len(picking_id.move_lines),
                                 'Order_no': '',
                                 'Picking_ref': '',
                                 'Product_code': product_code,
