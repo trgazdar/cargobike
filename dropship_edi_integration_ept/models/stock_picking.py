@@ -66,7 +66,7 @@ class StockPicking(models.Model):
                         commande = commande + 1
                         #if order_not_matched:
                         #   continue
-                        total_objets2 = picking_id.move_lines.search_count([('product_qty', '=', 0), ( 'picking_id','=', picking_id.id)]) 
+                        total_objets2 = picking_id.move_lines.search_count([('product_qty', '!=', 0), ( 'picking_id','=', picking_id.id)]) 
                         data = {
                                 '1': commande,
                                 'EL': 'E',
