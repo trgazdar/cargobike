@@ -124,7 +124,7 @@ class StockPicking(models.Model):
                                 line = line + 1
                                 log_message = (_("Dropship order has been exported successfully. "
                                             "| Sale order - %s") % picking_id.sale_id.name)
-                            self._create_common_log_line(job, False, log_message,
+                                self._create_common_log_line(job, False, log_message,
                                                         picking_id.purchase_id.name, '', '',
                                                         move_line.product_id.id)
                             picking_id.write({'is_exported': True})
