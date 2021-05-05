@@ -21,7 +21,7 @@ class MergePicking(models.TransientModel):
             'partner_id':stock.partner_id.id,
             'origin':stock.origin,
             'state':stock.state,
-            'carrier':stock.carrier_id.name
+            'carrier':stock.carrier_id
             }))
 
             res.update({'merge_picking_line': stock_vals})
