@@ -66,7 +66,7 @@ class StockPicking(models.Model):
                         commande = commande + 1
                         #if order_not_matched:
                         #   continue
-                        self.env.cr.execute('select count(*) from stock_move_line where picking_id=%s ', (picking_id.id))
+                        self.env.cr.execute('select count(*) from stock_move_line where picking_id=%s ', (picking_id.id[0]))
                         #total_objets2 = picking_id.move_lines.search_count([('product_qty', '!=', 0), ( 'picking_id','=', picking_id.id)]) 
                         total_objets2 = self.env.cr.fetchone()
                         data = {
