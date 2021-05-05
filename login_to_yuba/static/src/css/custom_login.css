@@ -1,0 +1,38 @@
+.minus {
+    display: inline-block;
+}
+
+.d-none {
+    display: none;
+}
+
+.input-group-prepend-button {
+  display: -ms-flexbox;
+  display: flex;
+}
+
+
+#wrapwrap {
+    background-attachment: fixed;
+    background-image: url(https://yubabikes.fr/wp-content/webpc-passthru.php?src=https://yubabikes.fr/wp-content/uploads/2020/08/Yuba_El_Kombi_Orange_Hotspot.jpg&nocache=3) !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;}
+
+.oe_login_form, .oe_signup_form, .oe_reset_password_form {
+    max-width: 300px;
+    position: relative;
+    margin: 50px auto;
+    background-color: rgba(255,255,255,0.9);
+    padding: 20px;
+    margin-top: 150px;
+}
+
+footer#bottom {
+    display: none;
+}
+
+.o_footer_copyright {
+    padding: 8px;
+    display: none;
+}
