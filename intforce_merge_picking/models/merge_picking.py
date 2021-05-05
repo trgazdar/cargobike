@@ -13,6 +13,7 @@ class MergePicking(models.TransientModel):
         stock_ids=self.env.context.get('active_ids')
         stock_vals=[]
         stock_info=picking_obj.browse(stock_ids)
+        test = 'TNT'
         for stock in stock_info:
             if stock.state=='done':
                     raise UserError(('Merging is not allowed on done picking.'))			
@@ -21,7 +22,7 @@ class MergePicking(models.TransientModel):
             'partner_id':stock.partner_id.id,
             'origin':stock.origin,
             'state':stock.state,
-            'carrier':stock.carrier_id
+            'carrier':test #stock.carrier_id
             }))
 
             res.update({'merge_picking_line': stock_vals})
