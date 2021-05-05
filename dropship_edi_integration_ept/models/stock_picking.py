@@ -66,7 +66,7 @@ class StockPicking(models.Model):
                         commande = commande + 1
                         #if order_not_matched:
                         #   continue
-                        total_objets2 = picking_id.move_lines.search_count([('product_uom_qty', '>', 0), ( 'picking_id','=', picking_id.id)]) 
+                        total_objets2 = picking_id.move_lines.search_count([('product_qty', '>', 0), ( 'picking_id','=', picking_id.id)]) 
                         data = {
                                 '1': commande,
                                 'EL': 'E',
@@ -107,7 +107,7 @@ class StockPicking(models.Model):
                                 'Order_no': '',
                                 'Picking_ref': '',
                                 'Product_code': product_code,
-                                'Quantity': int(move_line.product_qty),
+                                'Quantity': int(move_line.reserved_availability),
                                 'First_name': 'UUC',
                                 'Street1': line,
                                 'Street2': '',
@@ -119,7 +119,7 @@ class StockPicking(models.Model):
                                 'Email': '',                                                                      
                             }
                             
-                            if (move_line.product_uom_qty > 0):
+                            if (move_line.product_qty > 0):
                                 csv_writer.writerow(data)
                                 line = line + 1
                                 log_message = (_("Dropship order has been exported successfully. "
