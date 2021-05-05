@@ -96,6 +96,7 @@ class MergePickingLine(models.TransientModel):
         help="Reference of the document")	
 
     pick_name=fields.Char('Reference')
+    carrier_id = fields.Many2one("delivery.carrier", string="Carrier", check_company=True)
     state = fields.Selection([
         ('draft', 'Draft'), ('cancel', 'Cancelled'),
         ('waiting', 'Waiting Another Operation'),
