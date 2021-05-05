@@ -22,7 +22,7 @@ class MergePicking(models.TransientModel):
             'partner_id':stock.partner_id.id,
             'origin':stock.origin,
             'state':stock.state,
-            'carrier':test #stock.carrier_id
+            'carrier':stock.carrier_id
             }))
 
             res.update({'merge_picking_line': stock_vals})
@@ -97,7 +97,8 @@ class MergePickingLine(models.TransientModel):
         help="Reference of the document")	
 
     pick_name=fields.Char('Reference')
-    carrier_id = fields.Many2one("delivery.carrier", string="Carrier", check_company=True)
+    carrier_id = fields.Many2one("delivery.carrier", 'Carrier',
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
     state = fields.Selection([
         ('draft', 'Draft'), ('cancel', 'Cancelled'),
         ('waiting', 'Waiting Another Operation'),
