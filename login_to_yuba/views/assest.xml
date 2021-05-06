@@ -2,7 +2,7 @@
 <odoo>
     <template id="website_min_qty_app" inherit_id="web.assets_frontend">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/website_page_security_app/static/src/js/website_category_page_app.js"/>         
+            <script type="text/javascript" src="/login_to_yuba/static/src/js/website_category_page_app.js"/>
         </xpath>
     </template>
 

@@ -13,4 +13,4 @@ class Website(http.Controller):
 	@http.route('/accessrestrict', type='http', auth="public", website=True)
 	def restrcit_access(self):
 
-		return request.render("website_page_security_app.accessrestrict",{})
+		return request.render("login_to_yuba.accessrestrict",{})
