@@ -7,6 +7,8 @@
     Merge Incoming Shipment
     Merge Delivery Orders
     """,
+    'author': "Tripode-services",
+    'website': "https://www.tripode-services.fr",
     'category': 'Uncategorized',
     'version': '13.0.1',
     "license" : "Other proprietary",
