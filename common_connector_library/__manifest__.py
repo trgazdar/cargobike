@@ -5,9 +5,8 @@
     'version': '13.0.20',
     'category': 'Sale',
     'license': 'OPL-1',
-    'author': 'Emipro Technologies Pvt. Ltd.',
-    'website': 'http://www.emiprotechnologies.com',
-    'maintainer': 'Emipro Technologies Pvt. Ltd.',
+    'author': 'Tripode-Services.',
+    'maintainer': 'Tripode-Services.',
     'description': """Develope Generalize Method Of Sale Order,
                       Sale Order Line which is use in any Connector
                       to Create Sale Order and Sale Order Line.""",
@@ -30,7 +29,5 @@
              'view/account_move.xml',
              'view/account_move_line_view.xml'],
     'installable': True,
-    'price': 20.00,
-    'currency': 'EUR',
     'images': ['static/description/Common-Connector-Library-Cover.jpg']
 }
