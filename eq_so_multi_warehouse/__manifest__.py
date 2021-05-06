@@ -9,7 +9,7 @@
     'name': "Sale Multi Warehouse",
     'version': '13.0.1.0',
     'category': 'Sales',
-    'author': 'Equick ERP',
+    'author': 'Tripode-Services',
     'summary': """ sale order multi warehouse | Sales multi warehouse | warehouse on sale order line | SO multi warehouse | sale order warehouse | multi picking | multi transfer | so multi picking | sale picking by warehouse.""",
     'description': """
         Sales Multi warehouse
@@ -20,9 +20,6 @@
     """,
     'license': 'OPL-1',
     'depends': ['sale_management', 'sale_stock'],
-    'price': 14,
-    'currency': 'EUR',
-    'website': "",
     'data': [
         'views/sale_view.xml',
         'views/sale_report_template.xml'
