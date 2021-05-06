@@ -52,7 +52,7 @@ class StockPicking(models.Model):
                     break
 
                 csv_writer = DictWriter(buffer, column_headers,
-                                        delimiter=partner_id.csv_delimiter or ';',, encoding="iso-8859-1")
+                                        delimiter=partner_id.csv_delimiter or ';', encoding="iso-8859-1")
                 #csv_writer.writer.writerow(column_headers)
                 commande = 0
                 for picking_id in picking_ids:
