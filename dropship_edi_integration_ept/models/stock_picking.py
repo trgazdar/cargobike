@@ -24,7 +24,7 @@ class StockPicking(models.Model):
             #47 pour la prod
             picking_ids = self.search(
                [('is_exported', '!=', True), ('is_blocked', '!=', True),('location_id', '=', 47), ('state', '=', 'assigned'), ]).sorted(key=lambda r: r.partner_id)                 
-
+ 
             if picking_ids: 
                 buffer = StringIO()
                 # Start CSV Writer
