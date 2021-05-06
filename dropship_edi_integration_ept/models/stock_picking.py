@@ -21,14 +21,10 @@ class StockPicking(models.Model):
         """
         
         for partner_id in partner_ids:
-            #picking_ids = self.search(
-             #   [('partner_id', '=', partner_id.id), ('id', 'in', pickings.ids),
-              #   ('is_exported', '!=', True)])
             #47 pour la prod
             picking_ids = self.search(
                [('is_exported', '!=', True), ('is_blocked', '!=', True),('location_id', '=', 47), ('state', '=', 'assigned'), ]).sorted(key=lambda r: r.partner_id)                 
-            
-            #picking_ids = self.pool.get('stock.picking').search(self._cr, self._uid, [('is_exported', '=', 'false')])
+
             if picking_ids: 
                 buffer = StringIO()
                 # Start CSV Writer
@@ -64,17 +60,13 @@ class StockPicking(models.Model):
                         order_not_matched = \
                             self.check_mismatch_details_for_dropship_orders(partner_id, picking_id, job)
                         commande = commande + 1
-                        #if order_not_matched:
-                        #   continue
-                        #self.env.cr.execute('select count(*) from stock_move_line where picking_id=%s ', (picking_id.id[0]))
                         results = self.env['stock.move.line'].search([('picking_id', '=', picking_id.id)])
-                        #total_objets2 = picking_id.move_lines.search_count([('product_qty', '!=', 0), ( 'picking_id','=', picking_id.id)]) 
                         total_objets2 = len(results)
                         data = {
                                 '1': commande,
                                 'EL': 'E',
                                 'CBD': 'CBD',
-                                'countObect': total_objets2,#len(picking_id.move_lines),
+                                'countObect': total_objets2,
                                 'Order_no': picking_id.id,
                                 'Picking_ref': picking_id.name,
                                 'Product_code': picking_id.scheduled_date.strftime("%Y%m%d"),
@@ -101,12 +93,11 @@ class StockPicking(models.Model):
                                 product_code = product_supplier.product_code
                             elif move_line.product_id.default_code:
                                 product_code = move_line.product_id.default_code
-                            #total_objets = picking_id.move_lines.search_count([('product_qty', '>', 0), ( 'picking_id','=', move_line.picking_id.id)]) 
                             data = {
                                 '1': commande,
                                 'EL': 'L',
                                 'CBD': 'CBD',
-                                'countObect': total_objets2, #len(picking_id.move_lines),
+                                'countObect': total_objets2,
                                 'Order_no': '',
                                 'Picking_ref': '',
                                 'Product_code': product_code,
@@ -137,7 +128,6 @@ class StockPicking(models.Model):
                                 as dropship_tpw_interface:
                             buffer.seek(0)
                             dropship_tpw_interface.push_to_ftp(filename, buffer)
-                            # job.write({'message': "FTP connection has been established successfully."})
                 except Exception:
                     job.write({'message': "Supplier %s has problem with FTP connection or file"
                                           " path. File has not exported to Supplier's FTP." %
