@@ -13,6 +13,7 @@ class MergePicking(models.TransientModel):
         stock_ids=self.env.context.get('active_ids')
         stock_vals=[]
         stock_info=picking_obj.browse(stock_ids)
+        test = 'TNT'
         for stock in stock_info:
             if stock.state=='done':
                     raise UserError(('Merging is not allowed on done picking.'))			
@@ -20,7 +21,8 @@ class MergePicking(models.TransientModel):
             'pick_name':stock.name,
             'partner_id':stock.partner_id.id,
             'origin':stock.origin,
-            'state':stock.state
+            'state':stock.state,
+            'carrier_id':stock.carrier_id.id
             }))
 
             res.update({'merge_picking_line': stock_vals})
@@ -34,10 +36,13 @@ class MergePicking(models.TransientModel):
             raise UserError(('Please select multiple picking to create a list view.'))	
         stock_info=picking_obj.browse(wizard_stock)
         partner_list=[]
+        carrier_list=[]
         state_list=[]
         picking_type_list=[]
         for partner_li in stock_info:
             partner_list.append(partner_li.partner_id.id)
+        for carrier_li in stock_info:
+            carrier_list.append(carrier_li.carrier_id.id)
         for picking_type_li in stock_info:
             picking_type_list.append(picking_type_li.picking_type_id.id)
         for state_li in stock_info:
@@ -52,6 +57,8 @@ class MergePicking(models.TransientModel):
                     raise UserError(('Merging is only allowed on picking of same partner.'))
                 if picking_type_list[0] !=info.picking_type_id.id :
                     raise UserError(('Merging is only allowed on picking of same Types.'))
+                if carrier_list[0] !=info.carrier_id.id :
+                    raise UserError(('Merging is only allowed on same carrier.'))
                 if origin:
                     origin = origin +'-'+info.name
                 else:
@@ -76,7 +83,8 @@ class MergePicking(models.TransientModel):
             'picking_type_id':stock_info[0].picking_type_id.id,
             'priority':stock_info[0].priority,
             'location_id':stock_info[0].location_id.id,
-            'location_dest_id':stock_info[0].location_dest_id.id
+            'location_dest_id':stock_info[0].location_dest_id.id,
+            'carrier_id':stock_info[0].carrier_id.id
             }
             picking = picking_obj.create(vals)
         return True
@@ -95,6 +103,8 @@ class MergePickingLine(models.TransientModel):
         help="Reference of the document")	
 
     pick_name=fields.Char('Reference')
+    carrier_id = fields.Many2one("delivery.carrier", 'Carrier',
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
     state = fields.Selection([
         ('draft', 'Draft'), ('cancel', 'Cancelled'),
         ('waiting', 'Waiting Another Operation'),
