@@ -52,7 +52,7 @@ class StockPicking(models.Model):
                     break
 
                 csv_writer = DictWriter(buffer, column_headers,
-                                        delimiter=partner_id.csv_delimiter or ';')
+                                        delimiter=partner_id.csv_delimiter or ';',, encoding="iso-8859-1")
                 #csv_writer.writer.writerow(column_headers)
                 commande = 0
                 for picking_id in picking_ids:
@@ -82,7 +82,7 @@ class StockPicking(models.Model):
                                 'Carrier': picking_id.carrier_id.name,                                 
                                 'Email': picking_id.partner_id.email or '',                                                                 
                             }
-                        csv_writer.writerow(data).encode("iso-8859-1")
+                        csv_writer.writerow(data)
                         line = 1
                         for move_line in picking_id.move_lines:
                             product_supplier = self.env['product.supplierinfo'].search(
@@ -114,7 +114,7 @@ class StockPicking(models.Model):
                             }
                             
                             if (move_line.reserved_availability > 0):
-                                csv_writer.writerow(data).encode("iso-8859-1")
+                                csv_writer.writerow(data)
                                 line = line + 1
                                 log_message = (_("Dropship order has been exported successfully. "
                                             "| Sale order - %s") % picking_id.sale_id.name)
