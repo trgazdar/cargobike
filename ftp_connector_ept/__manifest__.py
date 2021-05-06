@@ -10,7 +10,6 @@
     'description': '''
         Make Connection to FTP through odoo
     ''',
-    'website': 'http://www.emiprotechnologies.com',
     'depends':  ['stock'],
     'external_dependencies': {'python': ['paramiko']},
     'data': [
