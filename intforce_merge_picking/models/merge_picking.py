@@ -60,9 +60,9 @@ class MergePicking(models.TransientModel):
                 if carrier_list[0] !=info.carrier_id.id :
                     raise UserError(('Merging is only allowed on same carrier.'))
                 if origin:
-                    origin = origin +'-'+info.name
+                    origin = origin + '-' + info.origin + '/'+ info.name
                 else:
-                    origin = info.name
+                    origin = info.origin + '/'+ info.name
                 for product_line in info.move_lines:
                     move_line_val.append((0,0,{
                         'product_id':product_line.product_id.id,
