@@ -57,7 +57,7 @@ class MergePicking(models.TransientModel):
                     raise UserError(('Merging is only allowed on picking of same partner.'))
                 if picking_type_list[0] !=info.picking_type_id.id :
                     raise UserError(('Merging is only allowed on picking of same Types.'))
-                if carrier_list[0] !=info.carrier.id :
+                if carrier_list[0] !=info.carrier_id.id :
                     raise UserError(('Merging is only allowed on same carrier.'))
                 if origin:
                     origin = origin +'-'+info.name
