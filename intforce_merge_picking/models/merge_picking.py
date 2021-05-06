@@ -42,7 +42,7 @@ class MergePicking(models.TransientModel):
         for partner_li in stock_info:
             partner_list.append(partner_li.partner_id.id)
         for carrier_li in stock_info:
-            carrier_list.append(carrier_li.carrierid.id)
+            carrier_list.append(carrier_li.carrier_id.id)
         for picking_type_li in stock_info:
             picking_type_list.append(picking_type_li.picking_type_id.id)
         for state_li in stock_info:
