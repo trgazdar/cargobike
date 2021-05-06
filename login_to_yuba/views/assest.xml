@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="website_min_qty_app" inherit_id="web.assets_frontend">
+    <template id="login_to_yuba" inherit_id="web.assets_frontend">
         <xpath expr="." position="inside">
-            <script type="text/javascript" src="/login_to_yuba/static/src/js/website_category_page_app.js"/>
+            <script type="text/javascript" src="/login_to_yuba/static/src/js/login_to_yuba.js"/>
         </xpath>
     </template>
 
