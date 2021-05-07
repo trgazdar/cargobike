@@ -63,26 +63,26 @@ class StockPicking(models.Model):
                         results = self.env['stock.move.line'].search([('picking_id', '=', picking_id.id)])
                         total_objets2 = len(results)
                         data = {
-                                '1': commande,
+                                '1': commande.encode('iso-8859-1'),
                                 'EL': 'E',
                                 'CBD': 'CBD',
-                                'countObect': total_objets2,
-                                'Order_no': picking_id.id,
-                                'Picking_ref': picking_id.name,
-                                'Product_code': picking_id.scheduled_date.strftime("%Y%m%d"),
+                                'countObect': total_objets2.encode('iso-8859-1'),
+                                'Order_no': picking_id.id.encode('iso-8859-1'),
+                                'Picking_ref': picking_id.name.encode('iso-8859-1'),
+                                'Product_code': picking_id.scheduled_date.strftime("%Y%m%d").encode('iso-8859-1'),
                                 'Quantity': '',
-                                'First_name': picking_id.partner_id.name,
-                                'Street1': picking_id.partner_id.street,
-                                'Street2': picking_id.partner_id.street2 or '',
-                                'Zip': picking_id.partner_id.zip,                            
-                                'City': picking_id.partner_id.city,
-                                'Contact_no': picking_id.partner_id.mobile
-                                            or picking_id.partner_id.phone or '',
-                                'Country': picking_id.partner_id.country_id.code,
-                                'Carrier': picking_id.carrier_id.name,                                 
-                                'Email': picking_id.partner_id.email or '',                                                                 
+                                'First_name': picking_id.partner_id.name.encode('iso-8859-1'),
+                                'Street1': picking_id.partner_id.street.encode('iso-8859-1'),
+                                'Street2': picking_id.partner_id.street2.encode('iso-8859-1') or '',
+                                'Zip': picking_id.partner_id.zip.encode('iso-8859-1'),                            
+                                'City': picking_id.partner_id.city.encode('iso-8859-1'),
+                                'Contact_no': picking_id.partner_id.mobile.encode('iso-8859-1')
+                                            or picking_id.partner_id.phone.encode('iso-8859-1') or '',
+                                'Country': picking_id.partner_id.country_id.code.encode('iso-8859-1'),
+                                'Carrier': picking_id.carrier_id.name.encode('iso-8859-1'),                                 
+                                'Email': picking_id.partner_id.email.encode('iso-8859-1') or '',                                                                 
                             }
-                        csv_writer.writerow(data.encode('iso-8859-1'))
+                        csv_writer.writerow(data)
                         line = 1
                         for move_line in picking_id.move_lines:
                             product_supplier = self.env['product.supplierinfo'].search(
@@ -114,7 +114,7 @@ class StockPicking(models.Model):
                             }
                             
                             if (move_line.reserved_availability > 0):
-                                csv_writer.writerow(data.encode('iso-8859-1'))
+                                csv_writer.writerow(data)
                                 line = line + 1
                                 log_message = (_("Dropship order has been exported successfully. "
                                             "| Sale order - %s") % picking_id.sale_id.name)
