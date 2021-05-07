@@ -4,6 +4,8 @@ from odoo import models, fields, api
 class StockPicking(models.Model):
     _inherit = "stock.picking"
     merge_in = fields.Char(string="Merge in")
+    sale_ids = fields.Many2one('merge.pickingline')
+
 
 class MergePicking(models.TransientModel):
     _name = 'merge.picking'
@@ -78,6 +80,7 @@ class MergePicking(models.TransientModel):
                         'date_expected':product_line.date_expected
                         }))
                 info.action_cancel()
+                info.merge_in = str(picking.name)
 
             vals={
             'partner_id':stock_info[0].partner_id.id,
@@ -93,7 +96,7 @@ class MergePicking(models.TransientModel):
             }
             picking = picking_obj.create(vals)
             #info.note = str(info.note)  + str(picking.name)
-            info.merge_in = str(picking.name)
+            
 
         return True
 
@@ -113,9 +116,14 @@ class MergePickingLine(models.TransientModel):
     pick_name=fields.Char('Reference')
     carrier_id = fields.Many2one("delivery.carrier", 'Carrier',
         states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
-    sale_id = fields.Many2one(
-        'sale.order', 'id',
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})       
+    sale_id = fields.Char(
+        'Source Document id', index=True,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]},
+        help="id of the document")
+    picking_id = fields.Char(
+        'new Document id', index=True,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]},
+        help="id of the document")	        
     state = fields.Selection([
         ('draft', 'Draft'), ('cancel', 'Cancelled'),
         ('waiting', 'Waiting Another Operation'),
