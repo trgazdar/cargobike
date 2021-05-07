@@ -100,7 +100,7 @@ class MergePicking(models.TransientModel):
 
         return True
 
-class MergePickingLine(models.TransientModel):
+class MergePickingLine(models.Model):
     _name='merge.pickingline'
 
 
