@@ -68,19 +68,19 @@ class StockPicking(models.Model):
                                 'CBD': 'CBD',
                                 'countObect': total_objets2,
                                 'Order_no': picking_id.id,
-                                'Picking_ref': picking_id.name.encode('iso-8859-1'),
-                                'Product_code': picking_id.scheduled_date.strftime("%Y%m%d").encode('iso-8859-1'),
+                                'Picking_ref': picking_id.name,
+                                'Product_code': picking_id.scheduled_date.strftime("%Y%m%d"),
                                 'Quantity': '',
-                                'First_name': picking_id.partner_id.name.encode('iso-8859-1'),
-                                'Street1': picking_id.partner_id.street.encode('iso-8859-1'),
-                                'Street2': picking_id.partner_id.street2.encode('iso-8859-1') or '',
+                                'First_name': picking_id.partner_id.name,
+                                'Street1': picking_id.partner_id.street,
+                                'Street2': picking_id.partner_id.street2 or '',
                                 'Zip': picking_id.partner_id.zip,                            
-                                'City': picking_id.partner_id.city.encode('iso-8859-1'),
+                                'City': picking_id.partner_id.city,
                                 'Contact_no': picking_id.partner_id.mobile
                                             or picking_id.partner_id.phone or '',
-                                'Country': picking_id.partner_id.country_id.code.encode('iso-8859-1'),
-                                'Carrier': picking_id.carrier_id.name.encode('iso-8859-1'),                                 
-                                'Email': picking_id.partner_id.email.encode('iso-8859-1') or '',                                                                 
+                                'Country': picking_id.partner_id.country_id.code,
+                                'Carrier': picking_id.carrier_id.name,                                 
+                                'Email': picking_id.partner_id.email or '',                                                                 
                             }
                         csv_writer.writerow(data)
                         line = 1
@@ -133,7 +133,7 @@ class StockPicking(models.Model):
                                           " path. File has not exported to Supplier's FTP." %
                                           (partner_id.name)})
                 buffer.seek(0)
-                file_data = buffer.read().encode()
+                file_data = buffer.read().encode('iso-8859-1')
                 if file_data:
                     vals = {
                         'name': filename,
