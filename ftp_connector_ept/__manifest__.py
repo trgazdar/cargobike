@@ -4,13 +4,12 @@
     'version': '13.0.2',
     'category': 'Sale',
     'license': 'OPL-1',
-    'author': 'Emipro Technologies Pvt. Ltd.',
-    'website': 'http://www.emiprotechnologies.com',
-    'maintainer': 'Emipro Technologies Pvt. Ltd.',
+    'author': 'Tripode-Services.',
+    'website': 'http://www.tripode-services.fr',
+    'maintainer': 'Tripode-services.',
     'description': '''
         Make Connection to FTP through odoo
     ''',
-    'website': 'http://www.emiprotechnologies.com',
     'depends':  ['stock'],
     'external_dependencies': {'python': ['paramiko']},
     'data': [
@@ -21,8 +20,6 @@
     'application': False,
     'installable': True,
     'auto_install': False,
-    'price': 20.00,
-    'currency': 'EUR',
     'images': ['static/description/FTP-Integration.jpg']
 }
 
