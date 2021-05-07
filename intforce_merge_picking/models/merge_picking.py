@@ -4,7 +4,7 @@ from odoo import models, fields, api
 class StockPicking(models.Model):
     _inherit = "stock.picking"
     merge_in = fields.Char(string="Merge in")
-    sale_ids = fields.One2many('merge.pickingline', 'sale_id')
+    #sale_ids = fields.One2many('merge.pickingline', 'sale_id')
 
 
 class MergePicking(models.TransientModel):
