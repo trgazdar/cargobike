@@ -1,6 +1,9 @@
 from odoo.exceptions import UserError
 from odoo import models, fields, api
 
+class StockPicking(models.Model):
+    _inherit = "stock.picking"
+    merge_in = fields.Char(string="Merge in")
 
 class MergePicking(models.TransientModel):
     _name = 'merge.picking'
@@ -89,7 +92,8 @@ class MergePicking(models.TransientModel):
             'carrier_id':stock_info[0].carrier_id.id
             }
             picking = picking_obj.create(vals)
-            info.note = str(info.note)  + str(picking.name)
+            #info.note = str(info.note)  + str(picking.name)
+            info.merge_in = str(picking.name)
 
         return True
 
