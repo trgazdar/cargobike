@@ -1,10 +1,6 @@
 from odoo.exceptions import UserError
 from odoo import models, fields, api
 
-class FindDeliveryOrders(models.TransientModel):
-    _name="find.delivery.orders"
-    sale_id = fields.Char(string="sale ID")
-    picking_id = fields.Char(string="picking ID") 
 
 class MergePicking(models.TransientModel):
     _name = 'merge.picking'
@@ -27,7 +23,8 @@ class MergePicking(models.TransientModel):
             'partner_id':stock.partner_id.id,
             'origin':stock.origin,
             'state':stock.state,
-            'carrier_id':stock.carrier_id.id
+            'carrier_id':stock.carrier_id.id,
+            'sale_id': stock.sale_id.id
             }))
 
             res.update({'merge_picking_line': stock_vals})
@@ -111,6 +108,10 @@ class MergePickingLine(models.TransientModel):
     pick_name=fields.Char('Reference')
     carrier_id = fields.Many2one("delivery.carrier", 'Carrier',
         states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+    sale_id = fields.Char(
+        'Source Document id', index=True,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]},
+        help="id of the document")	        
     state = fields.Selection([
         ('draft', 'Draft'), ('cancel', 'Cancelled'),
         ('waiting', 'Waiting Another Operation'),
