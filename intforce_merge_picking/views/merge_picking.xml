@@ -43,7 +43,7 @@
             <field name="arch" type="xml">
                 <field name="origin" position="after">
                     <field name="merge_in" optional="show"/>
-                    <field name="sale_ids" optional="show"/>
+                    <!--<field name="sale_ids" optional="show"/>-->
                 </field>
             </field>
         </record>
