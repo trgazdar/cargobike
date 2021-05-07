@@ -62,6 +62,7 @@ class StockPicking(models.Model):
                         commande = commande + 1
                         results = self.env['stock.move.line'].search([('picking_id', '=', picking_id.id)])
                         total_objets2 = len(results)
+                        carrier_name = picking_id.carrier_id.name.encode('iso-8859-1')
                         data = {
                                 '1': commande,
                                 'EL': 'E',
@@ -79,7 +80,7 @@ class StockPicking(models.Model):
                                 'Contact_no': picking_id.partner_id.mobile
                                             or picking_id.partner_id.phone or '',
                                 'Country': picking_id.partner_id.country_id.code.encode('iso-8859-1'),
-                                'Carrier': picking_id.carrier_id.name.encode('iso-8859-1'),                                 
+                                'Carrier': carrier_name,                                 
                                 'Email': picking_id.partner_id.email.encode('iso-8859-1') or '',                                                                 
                             }
                         csv_writer.writerow(data)
