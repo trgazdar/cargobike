@@ -113,10 +113,9 @@ class MergePickingLine(models.TransientModel):
     pick_name=fields.Char('Reference')
     carrier_id = fields.Many2one("delivery.carrier", 'Carrier',
         states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
-    sale_id = fields.Char(
-        'Source Document id', index=True,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]},
-        help="id of the document")	        
+    sale_id = fields.Many2one(
+        'sale.order', 'id',
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})       
     state = fields.Selection([
         ('draft', 'Draft'), ('cancel', 'Cancelled'),
         ('waiting', 'Waiting Another Operation'),
