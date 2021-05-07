@@ -63,21 +63,21 @@ class StockPicking(models.Model):
                         results = self.env['stock.move.line'].search([('picking_id', '=', picking_id.id)])
                         total_objets2 = len(results)
                         data = {
-                                '1': commande.encode('iso-8859-1'),
+                                '1': commande,
                                 'EL': 'E',
                                 'CBD': 'CBD',
-                                'countObect': total_objets2.encode('iso-8859-1'),
-                                'Order_no': picking_id.id.encode('iso-8859-1'),
+                                'countObect': total_objets2,
+                                'Order_no': picking_id.id,
                                 'Picking_ref': picking_id.name.encode('iso-8859-1'),
                                 'Product_code': picking_id.scheduled_date.strftime("%Y%m%d").encode('iso-8859-1'),
                                 'Quantity': '',
                                 'First_name': picking_id.partner_id.name.encode('iso-8859-1'),
                                 'Street1': picking_id.partner_id.street.encode('iso-8859-1'),
                                 'Street2': picking_id.partner_id.street2.encode('iso-8859-1') or '',
-                                'Zip': picking_id.partner_id.zip.encode('iso-8859-1'),                            
+                                'Zip': picking_id.partner_id.zip,                            
                                 'City': picking_id.partner_id.city.encode('iso-8859-1'),
-                                'Contact_no': picking_id.partner_id.mobile.encode('iso-8859-1')
-                                            or picking_id.partner_id.phone.encode('iso-8859-1') or '',
+                                'Contact_no': picking_id.partner_id.mobile
+                                            or picking_id.partner_id.phone or '',
                                 'Country': picking_id.partner_id.country_id.code.encode('iso-8859-1'),
                                 'Carrier': picking_id.carrier_id.name.encode('iso-8859-1'),                                 
                                 'Email': picking_id.partner_id.email.encode('iso-8859-1') or '',                                                                 
