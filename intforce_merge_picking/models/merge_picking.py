@@ -89,7 +89,7 @@ class MergePicking(models.TransientModel):
             'carrier_id':stock_info[0].carrier_id.id
             }
             picking = picking_obj.create(vals)
-            info.note = info.note  + picking.name
+            info.note = str(info.note)  + str(picking.name)
 
         return True
 
