@@ -4,7 +4,7 @@ from odoo import models, fields, api
 class FindDeliveryOrders(models.TransientModel):
     _name="find.delivery.orders"
     sale_id = fields.Char(string="sale ID")
-    picking_id = fields.Char(string="picking ID")
+    picking_id = fields.Char(string="picking ID") 
 
 class MergePicking(models.TransientModel):
     _name = 'merge.picking'
