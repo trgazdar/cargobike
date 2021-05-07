@@ -73,7 +73,7 @@ class StockPicking(models.Model):
                                 'Quantity': '',
                                 'First_name': picking_id.partner_id.name.encode('iso-8859-1'),
                                 'Street1': picking_id.partner_id.street.encode('iso-8859-1'),
-                                'Street2': picking_id.partner_id.street2.encode('iso-8859-1'),
+                                'Street2': picking_id.partner_id.street2 or '',
                                 'Zip': picking_id.partner_id.zip,                            
                                 'City': picking_id.partner_id.city.encode('iso-8859-1'),
                                 'Contact_no': picking_id.partner_id.mobile
