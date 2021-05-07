@@ -62,7 +62,15 @@ class StockPicking(models.Model):
                         commande = commande + 1
                         results = self.env['stock.move.line'].search([('picking_id', '=', picking_id.id)])
                         total_objets2 = len(results)
-                        carrier_name = picking_id.carrier_id.name.encode('iso-8859-1')
+                        if picking_id.carrier_id.name:
+                            carrier_name = picking_id.carrier_id.name.encode('iso-8859-1')   
+                        else:
+                            carrier_name = ''   
+
+                        if picking_id.partner_id.street2:
+                            street2_text = picking_id.partner_id.street2.encode('iso-8859-1')
+                        else:
+                            street2_text = ''           
                         data = {
                                 '1': commande,
                                 'EL': 'E',
@@ -74,7 +82,7 @@ class StockPicking(models.Model):
                                 'Quantity': '',
                                 'First_name': picking_id.partner_id.name.encode('iso-8859-1'),
                                 'Street1': picking_id.partner_id.street.encode('iso-8859-1'),
-                                'Street2': picking_id.partner_id.street2 or '',
+                                'Street2': street2_text,
                                 'Zip': picking_id.partner_id.zip,                            
                                 'City': picking_id.partner_id.city.encode('iso-8859-1'),
                                 'Contact_no': picking_id.partner_id.mobile
