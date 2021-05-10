@@ -1,6 +1,32 @@
 from odoo.exceptions import UserError
 from odoo import models, fields, api
 
+
+
+class purchase_order(models.Model):
+    _inherit = 'stock.move'
+    state = fields.Selection([
+        ('draft', 'New'), ('cancel', 'Cancelled'),
+        ('waiting', 'Waiting Another Move'),
+        ('confirmed', 'Waiting Availability'),
+        ('partially_available', 'Partially Available'),
+        ('assigned', 'Available'),
+        ('sent', 'Sent to carrier'),
+        ('done', 'Done')], string='Status',
+        copy=False, default='draft', index=True, readonly=True,
+        help="* New: When the stock move is created and not yet confirmed.\n"
+             "* Waiting Another Move: This state can be seen when a move is waiting for another one, for example in a chained flow.\n"
+             "* Waiting Availability: This state is reached when the procurement resolution is not straight forward. It may need the scheduler to run, a component to be manufactured...\n"
+             "* Available: When products are reserved, it is set to \'Available\'.\n"
+             "* sent to carrier: When CSV file sent to, it is set to \'Available\'.\n"
+             "* Done: When the shipment is processed, the state is \'Done\'.")
+
+class StockPicking(models.Model):
+    _inherit = "stock.picking"
+    merge_in = fields.Char(string="Merge in")
+    #sale_ids = fields.One2many('merge.pickingline', 'sale_id')
+
+
 class MergePicking(models.TransientModel):
     _name = 'merge.picking'
 
@@ -22,7 +48,8 @@ class MergePicking(models.TransientModel):
             'partner_id':stock.partner_id.id,
             'origin':stock.origin,
             'state':stock.state,
-            'carrier_id':stock.carrier_id.id
+            'carrier_id':stock.carrier_id.id,
+            'sale_id': stock.sale_id.id
             }))
 
             res.update({'merge_picking_line': stock_vals})
@@ -73,6 +100,7 @@ class MergePicking(models.TransientModel):
                         'date_expected':product_line.date_expected
                         }))
                 info.action_cancel()
+                info.merge_in = str(picking.name) 
 
             vals={
             'partner_id':stock_info[0].partner_id.id,
@@ -87,9 +115,12 @@ class MergePicking(models.TransientModel):
             'carrier_id':stock_info[0].carrier_id.id
             }
             picking = picking_obj.create(vals)
+            #info.note = str(info.note)  + str(picking.name)
+            
+
         return True
 
-class MergePickingLine(models.TransientModel):
+class MergePickingLine(models.Model):
     _name='merge.pickingline'
 
 
@@ -105,6 +136,14 @@ class MergePickingLine(models.TransientModel):
     pick_name=fields.Char('Reference')
     carrier_id = fields.Many2one("delivery.carrier", 'Carrier',
         states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+    sale_id = fields.Char(
+        'Source Document id', index=True,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]},
+        help="id of the document")
+    picking_id = fields.Char(
+        'new Document id', index=True,
+        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]},
+        help="id of the document")	        
     state = fields.Selection([
         ('draft', 'Draft'), ('cancel', 'Cancelled'),
         ('waiting', 'Waiting Another Operation'),
