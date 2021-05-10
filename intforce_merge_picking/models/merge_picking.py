@@ -3,9 +3,9 @@ from odoo import models, fields, api
 
 
 
-class purchase_order(models.Model):
-    _inherit = 'stock.move'
-    state = fields.Selection(selection_add=[('merge', "merge")])
+#class purchase_order(models.Model):
+#    _inherit = 'stock.move'
+#    state = fields.Selection(selection_add=[('merge', "merge")])
 
     #def action_quotation_approve(self):
      #   self.state = 'merge'
