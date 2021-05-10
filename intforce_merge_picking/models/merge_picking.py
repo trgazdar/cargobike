@@ -13,6 +13,7 @@ from odoo import models, fields, api
 class StockPicking(models.Model):
     _inherit = "stock.picking"
     merge_in = fields.Char(string="Merge in")
+    is_merged = fields.Boolean(string="Is merged ?", default=False)
     #sale_ids = fields.One2many('merge.pickingline', 'sale_id')
 
 
@@ -88,9 +89,9 @@ class MergePicking(models.TransientModel):
                         'name':product_line.product_id.name,
                         'date_expected':product_line.date_expected
                         }))
-                info.action_cancel()
+                #info.action_cancel()
                 info.merge_in = str(picking.name) 
-
+                info.is_merged = True
             vals={
             'partner_id':stock_info[0].partner_id.id,
             'origin':origin,
