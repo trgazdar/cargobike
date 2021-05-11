@@ -3,27 +3,17 @@ from odoo import models, fields, api
 
 
 
-class purchase_order(models.Model):
-    _inherit = 'stock.move'
-    state = fields.Selection([
-        ('draft', 'New'), ('cancel', 'Cancelled'),
-        ('waiting', 'Waiting Another Move'),
-        ('confirmed', 'Waiting Availability'),
-        ('partially_available', 'Partially Available'),
-        ('assigned', 'Available'),
-        ('sent', 'Sent to carrier'),
-        ('done', 'Done')], string='Status',
-        copy=False, default='draft', index=True, readonly=True,
-        help="* New: When the stock move is created and not yet confirmed.\n"
-             "* Waiting Another Move: This state can be seen when a move is waiting for another one, for example in a chained flow.\n"
-             "* Waiting Availability: This state is reached when the procurement resolution is not straight forward. It may need the scheduler to run, a component to be manufactured...\n"
-             "* Available: When products are reserved, it is set to \'Available\'.\n"
-             "* sent to carrier: When CSV file sent to, it is set to \'Available\'.\n"
-             "* Done: When the shipment is processed, the state is \'Done\'.")
+#class purchase_order(models.Model):
+#    _inherit = 'stock.move'
+#    state = fields.Selection(selection_add=[('merge', "merge")])
+
+    #def action_quotation_approve(self):
+     #   self.state = 'merge'
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
     merge_in = fields.Char(string="Merge in")
+    is_merged = fields.Boolean(string="Is merged ?", default=False)
     #sale_ids = fields.One2many('merge.pickingline', 'sale_id')
 
 
@@ -99,9 +89,9 @@ class MergePicking(models.TransientModel):
                         'name':product_line.product_id.name,
                         'date_expected':product_line.date_expected
                         }))
-                info.action_cancel()
+                #info.action_cancel()
                 info.merge_in = str(picking.name) 
-
+                info.is_merged = True
             vals={
             'partner_id':stock_info[0].partner_id.id,
             'origin':origin,
