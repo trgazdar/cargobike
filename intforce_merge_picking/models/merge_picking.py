@@ -91,7 +91,7 @@ class MergePicking(models.TransientModel):
                         }))
                 info.action_cancel()
                 #info.merge_in = str(picking.name) 
-                info.is_merged = True
+                #info.is_merged = True
             vals={
             'partner_id':stock_info[0].partner_id.id,
             'origin':origin,
