@@ -84,20 +84,6 @@ class StockReportQuantityByLocation(models.TransientModel):
 class ReportStockQuantity(models.Model):
     _inherit = 'report.stock.quantity'
     _auto = False
-    _description = 'Stock Quantity Report'
-
-    date = fields.Date(string='Date', readonly=True)
-    product_tmpl_id = fields.Many2one('product.template', related='product_id.product_tmpl_id')
-    product_id = fields.Many2one('product.product', string='Product', readonly=True)
-    state = fields.Selection([
-        ('forecast', 'Forecasted Stock'),
-        ('in', 'Forecasted Receipts'),
-        ('out', 'Forecasted Deliveries'),
-    ], string='State', readonly=True)
-    product_qty = fields.Float(string='Quantity', readonly=True)
-    move_ids = fields.One2many('stock.move', readonly=True)
-    company_id = fields.Many2one('res.company', readonly=True)
-    warehouse_id = fields.Many2one('stock.warehouse', readonly=True)
 
     def init(self):
         tools.drop_view_if_exists(self._cr, 'report_stock_quantity')
