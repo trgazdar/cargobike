@@ -90,7 +90,7 @@ class MergePicking(models.TransientModel):
                         'date_expected':product_line.date_expected
                         }))
                 info.action_cancel()
-                info.merge_in = str(picking.name) 
+                #info.merge_in = str(picking.name) 
                 info.is_merged = True
             vals={
             'partner_id':stock_info[0].partner_id.id,
