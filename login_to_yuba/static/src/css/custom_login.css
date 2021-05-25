@@ -18,7 +18,7 @@ body.o_connected_user > div#wrapwrap {
 
 #wrapwrap {
     background-attachment: fixed;
-    background-image: url(https://yubabikes.fr/wp-content/webpc-passthru.php?src=https://yubabikes.fr/wp-content/uploads/2020/08/Yuba_El_Kombi_Orange_Hotspot.jpg&nocache=3) !important;
+    background-image: url(https://cargobike-staging-13-2102122.dev.odoo.com/web/image/40666) !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;}
@@ -38,28 +38,10 @@ div.clearfix.oe_login_buttons.text-center.mb-1.pt-3 > button {
     border: 0;
 }
 
-#bottom > div.o_footer_copyright > div > div > div.col-sm.text-center.text-sm-left.text-muted > ul > li > div > button {
-    background-color: #406477;
-    color:#FCB731;
-    border: 0;
-}
-
 div#footer {
     display: none;
 }
 
 #wrapwrap > main > div.oe_website_login_container > form > div.clearfix.oe_login_buttons.text-center.mb-1.pt-3 > div.justify-content-between.mt-2.d-flex.small > a {
     color: #406477;
-}
-
-.o_brand_promotion {
-    display: none;
-}
-
-.form-control:focus {
-    color: #495057;
-    background-color: #FFFFFF;
-    border-color: #FCB731;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgb(252 183 49 / 25%);
 }
