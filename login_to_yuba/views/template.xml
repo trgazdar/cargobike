@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="website.submenu" name="Submenu">
+	    <t t-set="has_visible_submenu" t-value="submenu.child_id.filtered(lambda menu: menu.is_visible)"/>
+	    <li t-if="submenu.is_visible and not has_visible_submenu" t-attf-class="#{item_class or ''}">
+
+	    	<t t-if="user_id.partner_id.name == 'Public user' and submenu.page_id.user_login_reqired == True">
+		    	<a href="/accessrestrict"
+		    		t-attf-class="#{link_class or ''} #{'active' if submenu.clean_url() and unslug_url(request.httprequest.path) == unslug_url(submenu.clean_url()) else ''}"
+		            role="menuitem"
+		            t-ignore="true"
+		            t-att-target="'_blank' if submenu.new_window else None">
+		            <span t-field="submenu.name"/>
+		        </a>
+		    </t>
+		    <t t-else="">
+		        <a t-att-href="submenu.clean_url()"
+		            t-attf-class="#{link_class or ''} #{'active' if submenu.clean_url() and unslug_url(request.httprequest.path) == unslug_url(submenu.clean_url()) else ''}"
+		            role="menuitem"
+		            t-ignore="true"
+		            t-att-target="'_blank' if submenu.new_window else None">
+		            <span t-field="submenu.name"/>
+		        </a>
+		    </t>
+	    </li>
+	    <li t-if="has_visible_submenu" t-attf-class="#{item_class or ''} dropdown #{
+	        (submenu.clean_url() and submenu.clean_url() != '/' and any([request.httprequest.path == child.url for child in submenu.child_id if child.url]) or
+	         (submenu.clean_url() and request.httprequest.path == submenu.clean_url())) and 'active'
+	        }">
+	        <a t-attf-class="#{link_class or ''} dropdown-toggle" data-toggle="dropdown" href="#">
+	            <span t-field="submenu.name"/>
+	        </a>
+	        <ul class="dropdown-menu" role="menu">
+	            <t t-foreach="submenu.child_id" t-as="submenu">
+	                <t t-call="website.submenu">
+	                    <t t-set="item_class" t-value="None"/>
+	                    <t t-set="link_class" t-value="'dropdown-item'"/>
+	                </t>
+	            </t>
+	        </ul>
+	    </li>
+	</template>
+
+	<template id="accessrestrict" name="Restrict Access">
+		<t t-call="website.layout">
+			<div class="container" style="">
+				<font size="15px;">Accès limité</font>
+				<br/><br/>
+				Seul les utilisateurs autorisés peuvent accéder à cette page
+				<br/><br/>
+				Merci de vous <a href="/web/login">connecter</a> pour accéder à cette page
+			</div>
+		</t>
+	</template>
+
+	<template id="restrict_product" inherit_id="website_sale.products">
+        <xpath expr="//div[@id='wrap']" position="attributes">
+            <attribute name="groups">base.group_user,base.group_portal</attribute>
+        </xpath>
+    </template>
+
+	<template id="my_portal_login" inherit_id="website.login_layout" name="Login Layout Inherit">
+        <xpath expr="//div[@class='oe_website_login_container']" position="after">
+           <div class="container" style="margin-bottom:5%;">
+			   <t t-if="request.env.lang == 'fr_BE'">
+				  <div class="row">
+					<div class="col" style="text-align:center;">
+						<a href="https://yubabikes.fr/" class="btn btn-primary btn-lg active" style="background-color:#FCB731 !important;border:0px;" role="button" aria-pressed="true">Vous êtes un particulier ?</a>
+					</div>
+					<div class="col" style="text-align:center;">
+					  <a href="https://yubabikes.fr/devenez-revendeur-yuba/" class="btn btn-primary btn-lg active" style="background-color:#FCB731 !important;border:0px;" role="button" aria-pressed="true">Devenir revendeur ?</a>
+					</div>
+				  </div>
+			   </t>
+				<t t-if="request.env.lang == 'en_US'">
+				  <div class="row">
+					<div class="col" style="text-align:center;">
+						<a href="https://yubabikes.eu/" class="btn btn-primary btn-lg active" style="background-color:#FCB731 !important;border:0px;" role="button" aria-pressed="true">Not a company?</a>
+					</div>
+					<div class="col" style="text-align:center;">
+					  <a href="https://yubabikes.eu/become-a-yuba-dealer/" class="btn btn-primary btn-lg active" style="background-color:#FCB731 !important;border:0px;" role="button" aria-pressed="true">Become a Yuba Dealer ?</a>
+					</div>
+				  </div>
+				</t>
+		   </div>
+        </xpath>
+    </template>
+
+	<template id="my_language_selector" inherit_id="website.language_selector" name="Custom footer">
+		 <xpath expr="//ul[1]" position="after">
+			 <t t-if="request.env.lang == 'fr_BE'">
+				 <span style="padding-left:50px;"><a href="https://cargobikedistribution.odoo.com/fr_BE/helpdesk/service-clientele-1/submit">Besoin d'aide ?</a></span>
+			 </t>
+			 <t t-if="request.env.lang == 'en_US'">
+				 <span style="padding-left:50px;"><a href="https://cargobikedistribution.odoo.com/helpdesk/customer-care-1/submit">Need help?</a></span>
+			 </t>
+		 </xpath>
+	</template>
+
+</odoo>
