@@ -55,3 +55,11 @@ div#footer {
 .o_brand_promotion {
     display: none;
 }
+
+.form-control:focus {
+    color: #495057;
+    background-color: #FFFFFF;
+    border-color: #FCB731;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(252 183 49 / 25%);
+}
