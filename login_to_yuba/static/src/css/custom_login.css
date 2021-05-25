@@ -15,6 +15,7 @@ body.o_connected_user > div#wrapwrap {
     background-color: white !important;
     background-image: none !important;
 }
+
 #wrapwrap {
     background-attachment: fixed;
     background-image: url(https://yubabikes.fr/wp-content/webpc-passthru.php?src=https://yubabikes.fr/wp-content/uploads/2020/08/Yuba_El_Kombi_Orange_Hotspot.jpg&nocache=3) !important;
@@ -29,18 +30,18 @@ body.o_connected_user > div#wrapwrap {
     background-color: rgba(255,255,255,0.9);
     padding: 20px;
     margin-top: 150px;
-    border-radius: 5px !important;
 }
 
-.o_connected_user > #wrapwrap > footer#bottom {
-    display: block !important;
+div.clearfix.oe_login_buttons.text-center.mb-1.pt-3 > button {
+    background-color: #406477;
+    color:#FCB731;
+    border: 0;
 }
 
-footer#bottom {
+div#footer {
     display: none;
 }
 
-.o_footer_copyright {
-    padding: 8px;
-    display: none;
+#wrapwrap > main > div.oe_website_login_container > form > div.clearfix.oe_login_buttons.text-center.mb-1.pt-3 > div.justify-content-between.mt-2.d-flex.small > a {
+    color: #406477;
 }
