@@ -62,7 +62,7 @@
 	<template id="my_portal_login" inherit_id="website.login_layout" name="Login Layout Inherit">
         <xpath expr="//div[@class='oe_website_login_container']" position="after">
            <div class="container" style="margin-bottom:5%;">
-			   <t t-if="request.env.lang == 'en_US'">
+			   <t t-if="request.env.lang == 'fr_BE'">
 				  <div class="row">
 					<div class="col" style="text-align:center;">
 						<a href="https://yubabikes.eu/" class="btn btn-primary btn-lg active" style="background-color:#FCB731 !important;border:0px;" role="button" aria-pressed="true">Vous êtes un particulier ?</a>
@@ -72,7 +72,7 @@
 					</div>
 				  </div>
 			   </t>
-				<t t-if="request.env.lang == 'fr_FR'">
+				<t t-if="request.env.lang == 'en_US'">
 				  <div class="row">
 					<div class="col" style="text-align:center;">
 						<a href="https://yubabikes.fr/" class="btn btn-primary btn-lg active" style="background-color:#FCB731 !important;border:0px;" role="button" aria-pressed="true">not a company ?</a>
@@ -88,7 +88,7 @@
 
 	<template id="my_language_selector" inherit_id="website.language_selector" name="Custom footer">
 		 <xpath expr="//ul[1]" position="after">
-			 <t t-if="request.env.lang == 'fr_FR'">
+			 <t t-if="request.env.lang == 'fr_BE'">
 				<span style="padding-left:50px;" href="https://cargobikedistribution.odoo.com/fr_BE/helpdesk/service-clientele-1/submit">Besoin d'aide ?</span>
 			 </t>
 			 <t t-if="request.env.lang == 'en_US'">
