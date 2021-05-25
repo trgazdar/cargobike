@@ -38,10 +38,20 @@ div.clearfix.oe_login_buttons.text-center.mb-1.pt-3 > button {
     border: 0;
 }
 
+#bottom > div.o_footer_copyright > div > div > div.col-sm.text-center.text-sm-left.text-muted > ul > li > div > button {
+    background-color: #406477;
+    color:#FCB731;
+    border: 0;
+}
+
 div#footer {
     display: none;
 }
 
 #wrapwrap > main > div.oe_website_login_container > form > div.clearfix.oe_login_buttons.text-center.mb-1.pt-3 > div.justify-content-between.mt-2.d-flex.small > a {
     color: #406477;
+}
+
+.o_brand_promotion {
+    display: none;
 }
