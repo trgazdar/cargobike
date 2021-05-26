@@ -10,7 +10,7 @@
     "data": [
         'views/assest.xml',
         'views/template.xml',
-        'views/website_category.xml',
+        'views/website_background.xml',
     ],
     'qweb' : [],
     "auto_install": False,
