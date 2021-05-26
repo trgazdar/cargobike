@@ -53,3 +53,40 @@ div#footer {
 #wrapwrap > main > div.oe_website_login_container > form > div.clearfix.oe_login_buttons.text-center.mb-1.pt-3 > button.btn.btn-link.btn-sm.btn-block {
     display: none;
 }
+
+
+form#helpdesk_ticket_form {
+    background-color: gray;
+    /* margin-left: 30%; */
+    /* margin-right: 30px !important; */
+    padding: 50px;
+}
+
+body.o_connected_user > div > main > div > div > div > section > #helpdesk_ticket_form {
+    background-color: unset !important;
+    padding:0;
+}
+
+body > div > main > h2.text-center.text-muted {
+    padding-top: 20px;
+    color: white !important;
+}
+
+body.o_connected_user > div > main >h2.text-center.text-muted {
+    padding-top: 20px;
+    color: #6c757d !important
+}
+
+body > div > main > div > div > div > section > form > div > div > button{
+    background-color: #FCB731;
+}
+
+body > div > main > div > div > div > section > form > div > div > button {
+    background-color: #FCB731 !important;
+    border: 0 !important;
+}
+
+body.o_connected_user > div > main > div > div > div > section > form > div > div > button {
+    background-color: #406477 !important;
+    border: 0 !important;
+}
