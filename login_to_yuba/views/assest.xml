@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="login_to_yuba" inherit_id="web.assets_frontend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/login_to_yuba/static/src/js/login_to_yuba.js"/>
+        </xpath>
+    </template>
+
     <template id="assets_frontend" inherit_id="web.assets_frontend">
             <xpath expr="//link[last()]" position="after">
                 <link rel="stylesheet" href="/login_to_yuba/static/src/css/custom_login.css"/>

@@ -276,11 +276,6 @@
 		</t>
 	</template>
 
-	<template id="restrict_product" inherit_id="website_sale.products">
-        <xpath expr="//div[@id='wrap']" position="attributes">
-            <attribute name="groups">base.group_user,base.group_portal</attribute>
-        </xpath>
-    </template>
 
 	<template id="my_portal_login" inherit_id="website.login_layout" name="Login Layout Inherit">
         <xpath expr="//div[@class='oe_website_login_container']" position="after">
