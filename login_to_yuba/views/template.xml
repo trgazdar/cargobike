@@ -25,19 +25,6 @@
         </t>
 	</template>
 
-	<template id="accessrestrict" name="Restrict Access">
-		<t t-call="website.layout">
-			<div class="container" style="">
-				<font size="15px;">Accès limité</font>
-				<br/><br/>
-				Seul les utilisateurs autorisés peuvent accéder à cette page
-				<br/><br/>
-				Merci de vous <a href="/web/login">connecter</a> pour accéder à cette page
-			</div>
-		</t>
-	</template>
-
-
 	<template id="my_portal_login" inherit_id="website.login_layout" name="Login Layout Inherit">
         <xpath expr="//div[@class='oe_website_login_container']" position="after">
            <div class="container" style="margin-bottom:5%;">
@@ -62,6 +49,12 @@
 				  </div>
 				</t>
 		   </div>
+        </xpath>
+    </template>
+
+    <template id="restrict_product" inherit_id="website_sale.products">
+        <xpath expr="//div[@id='wrap']" position="attributes">
+            <attribute name="groups">base.group_user,base.group_portal</attribute>
         </xpath>
     </template>
 
