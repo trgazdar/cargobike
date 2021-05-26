@@ -56,7 +56,7 @@ div#footer {
 
 
 form#helpdesk_ticket_form {
-    background-color: gray;
+    background-color: #6c757d !important;
     /* margin-left: 30%; */
     /* margin-right: 30px !important; */
     padding: 50px;
@@ -74,16 +74,19 @@ body > div > main > h2.text-center.text-muted {
 
 body.o_connected_user > div > main >h2.text-center.text-muted {
     padding-top: 20px;
-    color: #6c757d !important
+    color: #6c757d !important;
 }
 
 body > div > main > div > div > div > section > form > div > div > button{
     background-color: #FCB731;
 }
 
-body > div > main > div > div > div > section > form > div > div > button {
-    background-color: #FCB731 !important;
-    border: 0 !important;
+body > div > main > div > div > div > section > form > div > div > label {
+   color: white !important;
+}
+
+body.o_connected_user > div > main > div > div > div > section > form > div > div > label {
+   color: black !important;
 }
 
 body.o_connected_user > div > main > div > div > div > section > form > div > div > button {
