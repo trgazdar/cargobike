@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.ui.view" id="res_config_settings_view_form_inherited">
+		<field name="name">website.config.settings.inherited</field>
+		<field name="model">res.config.settings</field>         
+		<field name="inherit_id" ref="website.res_config_settings_view_form"/>  
+		<field name="arch" type="xml">                             
+			<xpath expr="//div[@id='webmaster_settings']" position="after">
+				<h2>Display Stock on Website</h2>
+				<div class="row mt16 o_settings_container">
+					<div class="col-12 col-lg-6 o_setting_box" id="display_stock_setting">
+						<div class="o_setting_left_pane">
+						</div>
+						<div class="o_setting_right_pane">
+							<label for="display_stock"/>
+							<div class="text-muted">
+                                Stock Configuration which you want to display on Webshop(Website)
+                            </div>
+							<div class="content-group">
+								<div class="mt16">
+									<field name="display_stock" widget="radio" class="o_light_label"/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-lg-6 o_setting_box" id="stock_message_setting">
+						<div class="o_setting_left_pane">
+						</div>
+						<div class="o_setting_right_pane">
+							<label for="stock_message_position"/>
+							<div class="text-muted">
+                                Stock availability message on Shop page(Website)
+                            </div>
+							<div class="content-group">
+								<div class="mt16">
+									<field name="stock_message_position" class="o_light_label"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</xpath>
+		</field>                    
+	</record>
+</odoo>
