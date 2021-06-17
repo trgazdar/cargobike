@@ -43,7 +43,7 @@
 		</t>
 	</template>
 
-	<!-- Display stock message in shop page
+	<!-- Display stock message in shop page-->
 	<template id="product_qty_message_in_products_item_page" inherit_id="website_sale.products_item" active="True" customize_show="True" name="Show Stock Message">
 		<xpath expr="//div[hasclass('oe_product_image')]" position="inside">
 			<div t-if="product.product_variant_ids">
@@ -52,25 +52,25 @@
 					<t t-set="stock_message_position" t-value="website.getStockMessagePosition()" />
 					<t t-if="stock_type == 'available'">
 						<t t-if="product.qty_available &gt; 0">
-							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #28a745;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> In Stock </span>
+							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #28a745;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> En stock </span>
 						</t>
 						<t t-else="">
-							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #dc3545;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> Out of Stock </span>
+							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #FCB731;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> Consulter la fiche produit </span>
 						</t>
 					</t>
 					<t t-if="stock_type == 'outgoing'">
 						<t t-set="qty_forecasted" t-value="product.qty_available - product.outgoing_qty + product.incoming_qty"/>
 						<t t-if="qty_forecasted &gt; 0">
-							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #28a745;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> In Stock </span>
+							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #28a745;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> En stock </span>
 						</t>
 						<t t-else="">
-							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #dc3545;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> Out of Stock </span>
+							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #FCB731;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> Consulter la fiche produit </span>
 						</t>
 					</t>
 				</t>
 			</div>
 		</xpath>
-	</template>-->
+	</template>
 
 
 	<template id="website_product_stock_av_products_item" inherit_id="website_sale.products_item" active="True" customize_show="True" name="Show Stock Quantity">
