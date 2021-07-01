@@ -98,26 +98,6 @@
 			<t t-if="product.product_variant_ids">
 				<p class="state"/>
 				<p class="livr"/>
-				<!--<t t-if="product.type == 'product'">
-					<t t-set="stock_type" t-value="website.getStockSetting()" />
-					<t t-if="stock_type == 'available'">
-						<t t-if="product.qty_available &gt; 0">
-							<label class="text-success w-100 mt8"> In Stock </label>
-						</t>
-						<t t-else="">
-							<label class="text-danger w-100 mt8"> Out of Stock </label>
-						</t>
-					</t>
-					<t t-if="stock_type == 'outgoing'">
-						<t t-set="qty_forecasted" t-value="product.qty_available - product.outgoing_qty + product.incoming_qty"/>
-						<t t-if="qty_forecasted &gt; 0">
-							<label class="text-success w-100 mt8"> In Stock </label>
-						</t>
-						<t t-else="">
-							<label class="text-danger w-100 mt8"> Out of Stock </label>
-						</t>
-					</t>
-				</t>-->
 			</t>
 		</xpath>
 	</template>

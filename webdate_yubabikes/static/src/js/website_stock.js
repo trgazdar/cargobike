@@ -32,17 +32,17 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 							}).then(function (response) {
 							if (available_qty >= added_quantity) {
 								document.getElementById('add_to_cart').style.visibility = 'visible';
-								$('p.state').append("<span class='add_dispo' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'><label>En Stock</label></span>");
+								$('p.state').append("<span class='add_dispo' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:#56c861;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'><label>En Stock</label></span>");
 								return
 							} else if (response) {
 								document.getElementById('add_to_cart').style.visibility = 'visible';
 								self.$("p.state").css("visibility", 'hidden');
-								$('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à partir du <label>"+response+"</label></span>");
+								$('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à partir du <label>"+response+"</label></span>");
 							}
 							else{
 								document.getElementById('add_to_cart').style.visibility = 'visible';
 								self.$("p.state").css("visibility", 'hidden');
-								$('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à définir</span>");
+								$('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à définir</span>");
 							}
 							});
 					}
@@ -68,17 +68,17 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 							}).then(function (response) {
 							if (available_qty >= added_quantity) {
 								document.getElementById('add_to_cart').style.visibility = 'visible';
-								$('p.state').append("<span class='add_dispo' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'><label>En Stock</label></span>");
+								$('p.state').append("<span class='add_dispo' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:#56c861;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'><label>En Stock</label></span>");
 								return
 							} else if (response) {
 								document.getElementById('add_to_cart').style.visibility = 'visible';
 								self.$("p.state").css("visibility", 'hidden');
-								$('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à partir du <label>"+response+"</label></span>");
+								$('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à partir du <label>"+response+"</label></span>");
 							}
 							else{
 								document.getElementById('add_to_cart').style.visibility = 'visible';
 								self.$("p.state").css("visibility", 'hidden');
-								$('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à définir</span>");
+								$('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à définir</span>");
 							}
 							});
 					}
