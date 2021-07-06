@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="assets_frontend" inherit_id="website.assets_frontend">
+		<xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/scss" href="/webdate_yubabikes/static/src/css/website_stock.css"/>
+        </xpath>
+		<xpath expr="." position="inside">
+			 <script src="/webdate_yubabikes/static/src/js/website_stock.js" type="text/javascript"></script>
+		</xpath>
+	</template>
+
+	<!-- Display stock message in shop page -->
+	<template id="website_product_stock_av_cart_lines" inherit_id="website_sale.cart_lines" name="Manage stock in cart lines">
+		<xpath expr="//div[hasclass('css_quantity')]" position="inside">
+			<t t-call="webdate_yubabikes.display_product_qty">
+				<t t-set="is_show_qty" t-value="False" />
+				<t t-set="product" t-value="line.product_id" />
+			</t>
+		</xpath>
+	</template>
+
+	<!-- Common template for stock-->
+	<template id="display_product_qty" name="Stock Qty">
+		<t t-set="stock_type" t-value="website.getStockSetting()" />
+		<t t-if="product.type == 'product'">
+			<t t-if="stock_type == 'available'">
+				<t t-if="product.product_variant_ids and product.qty_available">
+					<label style="display:none;" t-att-class="'w-100 mb0 mt8' if is_show_qty == True else 'd-none'">
+						<t t-esc="product.qty_available" style="display:none;"/> <t t-esc="product.sudo().uom_id.name"/>
+					</label>
+					<input type="hidden" class="available_qty" t-att-value="product.qty_available" />
+				</t>
+			</t>
+			<t t-if="stock_type == 'outgoing'">
+				<t t-set="qty_forecasted" t-value="product.qty_available - product.outgoing_qty + product.incoming_qty"/>
+				<t t-if="product.product_variant_ids and qty_forecasted &gt; 0">
+					<label style="display:none;" t-att-class="'w-100 mb0 mt8' if is_show_qty == True else 'd-none'">
+						<t t-esc="qty_forecasted" style="display:none;"/> <t t-esc="product.sudo().uom_id.name" style="display:none;"/>
+					</label>
+					<input type="hidden" class="available_qty" t-att-value="qty_forecasted" />
+				</t>
+			</t>    
+		</t>
+	</template>
+
+	<!-- Display stock message in shop page-->
+	<template id="product_qty_message_in_products_item_page" inherit_id="website_sale.products_item" active="True" customize_show="True" name="Show Stock Message">
+		<xpath expr="//div[hasclass('oe_product_image')]" position="inside">
+			<div t-if="product.product_variant_ids">
+				<t t-if="product.type == 'product'">
+					<t t-set="stock_type" t-value="website.getStockSetting()" />
+					<t t-set="stock_message_position" t-value="website.getStockMessagePosition()" />
+					<t t-if="stock_type == 'available'">
+						<t t-if="product.qty_available &gt; 0">
+							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #00A09D;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> En stock </span>
+						</t>
+						<t t-else="">
+							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #FCB731;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> Consulter la fiche produit </span>
+						</t>
+					</t>
+					<t t-if="stock_type == 'outgoing'">
+						<t t-set="qty_forecasted" t-value="product.qty_available - product.outgoing_qty + product.incoming_qty"/>
+						<t t-if="qty_forecasted &gt; 0">
+							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #00A09D;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> En stock </span>
+						</t>
+						<t t-else="">
+							<span t-att-class="stock_message_position if stock_message_position else 'topright'" style="position: absolute;background: #FCB731;padding: 5px 10px;font-size: 12px;color: #fff;font-weight: 600;"> Consulter la fiche produit </span>
+						</t>
+					</t>
+				</t>
+			</div>
+		</xpath>
+	</template>
+
+
+	<template id="website_product_stock_av_products_item" inherit_id="website_sale.products_item" active="True" customize_show="True" name="Show Stock Quantity">
+		<xpath expr="//div[hasclass('product_price')]" position="after">
+			<t t-call="webdate_yubabikes.display_product_qty">
+				<t t-set="is_show_qty" t-value="True" />
+			</t>
+		</xpath>
+		<xpath expr="//div[@itemscope='itemscope']" position="attributes">
+			<attribute name="t-att-data-publish">'off' if product.type == 'product' and not product.qty_available &gt; 0 else 'on'</attribute>
+		</xpath>
+	</template>
+
+
+	<template id="product_stock_qty" inherit_id="website_sale.product" active="True" customize_show="True" name="Show Stock Quantity">
+		<xpath expr="//a[@id='add_to_cart']" position="before">
+			<t t-call="webdate_yubabikes.display_product_qty">
+				<t t-set="is_show_qty" t-value="True" />
+			</t>
+		</xpath>
+	</template>
+	<!-- Show stock qty in Product Page  -->
+	<template id="product_stock_message" inherit_id="website_sale.product" active="True" customize_show="True" name="Show Stock Message">
+		<xpath expr="//a[@id='add_to_cart']" position="before">
+			<t t-if="product.product_variant_ids">
+				<p class="state"/>
+				<p class="livr"/>
+			</t>
+		</xpath>
+	</template>
+</odoo>
