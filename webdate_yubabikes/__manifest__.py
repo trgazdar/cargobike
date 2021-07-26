@@ -15,6 +15,7 @@
     'data': [
         'views/res_config_settings.xml',
         'templates/templates.xml',
+        'security/ir.model.access.csv',
     ],
 
     'images': [
