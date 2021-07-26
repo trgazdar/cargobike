@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_warehouse_portal,stock.warehouse,stock.model_stock_warehouse,base.group_portal,1,0,0,0
+access_stock_location_portal,stock.location,stock.model_stock_location,base.group_portal,1,0,0,0
+access_stock_move_portal,stock.move,stock.model_stock_move,base.group_portal,1,0,0,0
+access_stock_quant_portal,stock.quant,stock.model_stock_quant,base.group_portal,1,0,0,0
+access_uom_uom_portal,uom.uom,uom.model_uom_uom,base.group_portal,1,0,0,0
