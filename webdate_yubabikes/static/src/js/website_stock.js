@@ -59,7 +59,6 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 
                                     if (response) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
-                                        self.$("p.state").css("visibility", 'hidden');
                                         $('p.state').append("<span class='add_dispo'><label>En Stock</label></span>");
                                     }
                                     else {
@@ -125,7 +124,6 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 
                                     if (response) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
-                                        self.$("p.state").css("visibility", 'hidden');
                                         $('p.state').append("<span class='add_dispo'><label>En Stock</label></span>");
                                     }
                                     else {
