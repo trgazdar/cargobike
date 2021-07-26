@@ -31,11 +31,21 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                             }]
                         }).then(function (response2) {
                             if (response2 < 0) {
+                                return self._rpc({
+                                    model: 'website',
+                                    method: 'stockblmydate',
+                                    args: [{
+                                        product: mproduct,
+                                        add_qty: added_quantity
+                                    }]
+                                }).then(function (response3) {
 
-								document.getElementById('add_to_cart').style.visibility = 'visible';
-								self.$("p.state").css("visibility", 'hidden');
-								$('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2 + "</label></span>");
-							}
+
+                                        document.getElementById('add_to_cart').style.visibility = 'visible';
+                                        self.$("p.state").css("visibility", 'hidden');
+                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response3 + "</label></span>");
+                                    });
+                                }
 
                             else {
                                 return self._rpc({
@@ -60,7 +70,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 
                                 });
                             }
-                            });
+                        });
 
                     }
 					return myret
