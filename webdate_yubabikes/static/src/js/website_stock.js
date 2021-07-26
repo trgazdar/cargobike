@@ -34,7 +34,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 
 								document.getElementById('add_to_cart').style.visibility = 'visible';
 								self.$("p.state").css("visibility", 'hidden');
-								$('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à partir du <label>" + response2 + "</label></span>");
+								$('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2 + "</label></span>");
 							}
 
                             else {
@@ -50,12 +50,12 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                     if (response) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
-                                        $('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à partir du <label>" + response + "</label></span>");
+                                        $('p.state').append("<span class='add_dispo'><label>En Stock</label></span>");
                                     }
                                     else {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
-                                        $('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à définir</span>");
+                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
                                     }
 
                                 });
@@ -99,7 +99,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
-                                        $('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à partir du <label>" + response3 + "</label></span>");
+                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response3 + "</label></span>");
                                     });
                                 }
 
@@ -116,12 +116,12 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                     if (response) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
-                                        $('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à partir du <label>" + response + "</label></span>");
+                                        $('p.state').append("<span class='add_dispo'><label>En Stock</label></span>");
                                     }
                                     else {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
-                                        $('p.livr').append("<span class='add_qty_warning' style='display:block;position:relative;top:20px;bottom:10px;right:0px;color:white;background-color:#FCB731;padding: 0.5rem 1rem;font-size: 1.09rem;line-height: 1.5;border-radius: 0.3rem;z-index:2001;'>Livraison à définir</span>");
+                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
                                     }
 
                                 });
