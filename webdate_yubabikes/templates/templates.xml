@@ -70,7 +70,7 @@
 				<p class="state"/>
 				<p class="livr" style="margin-bottom:0px;"/>
 				<span class="spinner-border text-warning" id="loadingDiv" role="status"/>
-				<span class="text-warning" id="loadingDiv2">...chargement du délai de livraison</span>
+				<span class="text-warning" id="loadingDiv2">...chargement de la disponibilité</span>
 			</t>
 		</xpath>
 	</template>
