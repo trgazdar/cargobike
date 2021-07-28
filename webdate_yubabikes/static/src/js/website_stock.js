@@ -35,7 +35,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                             if (response2[0].myqt < 0) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
-                                        self.$("#loadingDiv").fadeOut(1000).css("display", 'none');
+                                        self.$("#loadingDiv").css("display", 'none');
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
                             else {
@@ -87,7 +87,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                             if (response2[0].myqt < 0) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
-                                        self.$("#loadingDiv").fadeOut(1000).css("display", 'none');
+                                        self.$("#loadingDiv").css("display", 'none');
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
                             else {

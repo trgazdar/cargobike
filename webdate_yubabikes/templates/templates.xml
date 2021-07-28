@@ -70,7 +70,7 @@
 				<p class="state"/>
 				<p class="livr"/>
 				<div class="spinner-border text-warning" id="loadingDiv" role="status">
-				  <span class="sr-only">...chargement du délai de livraison</span>
+				  <span class="sr-only add_qty_warning">...chargement du délai de livraison</span>
 				</div>
 			</t>
 		</xpath>
