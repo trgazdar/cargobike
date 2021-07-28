@@ -68,10 +68,9 @@
 		<xpath expr="//a[@id='add_to_cart']" position="before">
 			<t t-if="product.product_variant_ids">
 				<p class="state"/>
-				<p class="livr"/>
-				<div class="spinner-border text-warning" id="loadingDiv" role="status">
-				  <span class="sr-only add_qty_warning">...chargement du délai de livraison</span>
-				</div>
+				<p class="livr" style="margin-bottom:0px;"/>
+				<span class="spinner-border text-warning" id="loadingDiv" role="status"/>
+				<span class="text-warning" id="loadingDiv2">...chargement du délai de livraison</span>
 			</t>
 		</xpath>
 	</template>
