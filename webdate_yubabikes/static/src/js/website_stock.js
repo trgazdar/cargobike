@@ -21,6 +21,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 					mproduct = parseInt($parent.find('input.js_product_change:checked').val())
 					self.$("span.add_qty_warning").css("display", 'none');
 					self.$("span.add_dispo").css("display", 'none');
+					self.$("#loadingDiv").css("display", 'none');
 					if(execute) {
                         return self._rpc({
                             model: 'website',
@@ -34,6 +35,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                             if (response2[0].myqt < 0) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
+                                        self.$("#loadingDiv").fadeOut(1000).css("display", 'none');
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
                             else {
@@ -71,6 +73,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 					mproduct = VariantMixin._getProductId.apply(this, arguments);
 					self.$("span.add_qty_warning").css("display", 'none');
 					self.$("span.add_dispo").css("display", 'none');
+					self.$("#loadingDiv").css("display", 'none');
 					if(execute) {
                         return self._rpc({
                             model: 'website',
@@ -84,6 +87,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                             if (response2[0].myqt < 0) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
+                                        self.$("#loadingDiv").fadeOut(1000).css("display", 'none');
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
                             else {

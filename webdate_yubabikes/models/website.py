@@ -236,5 +236,5 @@ class website(models.Model):
 			for myqt, mdate in self.env.cr.fetchall():
 				# add an dict to use it as a json object later in javascript
 				tasks_specific.append(
-					{'myqt': myqt, 'mdate': mdate})
+					{'myqt': myqt,'mdate': mdate.strftime("%d-%m-%Y")})
 				return tasks_specific
