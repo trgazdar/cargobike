@@ -30,43 +30,35 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                 add_qty: added_quantity
                             }]
                         }).then(function (response2) {
-                            if (response2[0])
-                                if (response2[0].myqt < 0) {
+                            if (response2 && response2[0].myqt < 0) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
                                         self.$("#loadingDiv").css("display", 'none');
                                         self.$("#loadingDiv2").css("display", 'none');
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
-                                else {
-                                    self.$("#loadingDiv").css("display", 'none');
-                                    self.$("#loadingDiv2").css("display", 'none');
-                                    return self._rpc({
-                                        model: 'website',
-                                        method: 'createbldate',
-                                        args: [{
-                                            product: mproduct,
-                                            add_qty: added_quantity
-                                        }]
-                                    }).then(function (response) {
-
-                                        if (response) {
-                                            document.getElementById('add_to_cart').style.visibility = 'visible';
-                                            $('p.state').append("<span class='add_dispo'><label>En Stock</label></span>");
-                                        }
-                                        else {
-                                            document.getElementById('add_to_cart').style.visibility = 'visible';
-                                            self.$("p.state").css("visibility", 'hidden');
-                                            $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
-                                        }
-                                    });
-                                }
                             else {
                                 self.$("#loadingDiv").css("display", 'none');
-                                        self.$("#loadingDiv2").css("display", 'none');
-                                document.getElementById('add_to_cart').style.visibility = 'visible';
-                                self.$("p.state").css("visibility", 'hidden');
-                                $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
+                                self.$("#loadingDiv2").css("display", 'none');
+                                return self._rpc({
+                                    model: 'website',
+                                    method: 'createbldate',
+                                    args: [{
+                                        product: mproduct,
+                                        add_qty: added_quantity
+                                    }]
+                                }).then(function (response) {
+
+                                    if (response) {
+                                        document.getElementById('add_to_cart').style.visibility = 'visible';
+                                        $('p.state').append("<span class='add_dispo'><label>En Stock</label></span>");
+                                    }
+                                    else {
+                                        document.getElementById('add_to_cart').style.visibility = 'visible';
+                                        self.$("p.state").css("visibility", 'hidden');
+                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
+                                    }
+                                });
                             }
                         });
 
@@ -91,43 +83,35 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                 add_qty: added_quantity
                             }]
                         }).then(function (response2) {
-                            if (response2[0])
-                                if (response2[0].myqt < 0) {
+                            if (response2 && response2[0].myqt < 0) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
                                         self.$("#loadingDiv").css("display", 'none');
                                         self.$("#loadingDiv2").css("display", 'none');
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
-                                else {
-                                    self.$("#loadingDiv").css("display", 'none');
-                                    self.$("#loadingDiv2").css("display", 'none');
-                                    return self._rpc({
-                                        model: 'website',
-                                        method: 'createbldate',
-                                        args: [{
-                                            product: mproduct,
-                                            add_qty: added_quantity
-                                        }]
-                                    }).then(function (response) {
-
-                                        if (response) {
-                                            document.getElementById('add_to_cart').style.visibility = 'visible';
-                                            $('p.state').append("<span class='add_dispo'><label>En Stock</label></span>");
-                                        }
-                                        else {
-                                            document.getElementById('add_to_cart').style.visibility = 'visible';
-                                            self.$("p.state").css("visibility", 'hidden');
-                                            $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
-                                        }
-                                    });
-                                }
                             else {
                                 self.$("#loadingDiv").css("display", 'none');
-                                        self.$("#loadingDiv2").css("display", 'none');
-                                document.getElementById('add_to_cart').style.visibility = 'visible';
-                                self.$("p.state").css("visibility", 'hidden');
-                                $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
+                                self.$("#loadingDiv2").css("display", 'none');
+                                return self._rpc({
+                                    model: 'website',
+                                    method: 'createbldate',
+                                    args: [{
+                                        product: mproduct,
+                                        add_qty: added_quantity
+                                    }]
+                                }).then(function (response) {
+
+                                    if (response) {
+                                        document.getElementById('add_to_cart').style.visibility = 'visible';
+                                        $('p.state').append("<span class='add_dispo'><label>En Stock</label></span>");
+                                    }
+                                    else {
+                                        document.getElementById('add_to_cart').style.visibility = 'visible';
+                                        self.$("p.state").css("visibility", 'hidden');
+                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
+                                    }
+                                });
                             }
                         });
 
