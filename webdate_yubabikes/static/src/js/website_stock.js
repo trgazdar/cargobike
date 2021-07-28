@@ -39,6 +39,8 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
                             else {
+                                self.$("#loadingDiv").css("display", 'none');
+                                self.$("#loadingDiv2").css("display", 'none');
                                 return self._rpc({
                                     model: 'website',
                                     method: 'createbldate',
@@ -91,6 +93,8 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
                             else {
+                                self.$("#loadingDiv").css("display", 'none');
+                                self.$("#loadingDiv2").css("display", 'none');
                                 return self._rpc({
                                     model: 'website',
                                     method: 'createbldate',
