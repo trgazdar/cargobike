@@ -30,23 +30,12 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                 add_qty: added_quantity
                             }]
                         }).then(function (response2) {
-                            if (response2 < 0) {
-                                return self._rpc({
-                                    model: 'website',
-                                    method: 'stockblmydate',
-                                    args: [{
-                                        product: mproduct,
-                                        add_qty: added_quantity
-                                    }]
-                                }).then(function (response3) {
-
-
+                                console.log(response2[0].mdate);
+                            if (response2[0].myqt < 0) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
-                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response3 + "</label></span>");
-                                    });
+                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
-
                             else {
                                 return self._rpc({
                                     model: 'website',
@@ -66,17 +55,13 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                         self.$("p.state").css("visibility", 'hidden');
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
                                     }
-
                                 });
                             }
                         });
 
                     }
 					return myret
-
-
                     }
-
 
 				else {
 					var myret2 = VariantMixin._getProductId.apply(this, arguments);
@@ -95,23 +80,12 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                 add_qty: added_quantity
                             }]
                         }).then(function (response2) {
-                            if (response2 < 0) {
-                                return self._rpc({
-                                    model: 'website',
-                                    method: 'stockblmydate',
-                                    args: [{
-                                        product: mproduct,
-                                        add_qty: added_quantity
-                                    }]
-                                }).then(function (response3) {
-
-
+                                console.log(response2[0].mdate);
+                            if (response2[0].myqt < 0) {
                                         document.getElementById('add_to_cart').style.visibility = 'visible';
                                         self.$("p.state").css("visibility", 'hidden');
-                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response3 + "</label></span>");
-                                    });
+                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
-
                             else {
                                 return self._rpc({
                                     model: 'website',
@@ -131,22 +105,14 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                         self.$("p.state").css("visibility", 'hidden');
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
                                     }
-
                                 });
                             }
                         });
 
-
-
-
-
                     }
 					return myret2
-
 				}
-
 			}
-
     });
 });
 
