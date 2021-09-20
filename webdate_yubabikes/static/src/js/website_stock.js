@@ -3,11 +3,13 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 
 	var sAnimations = require('website.content.snippets.animation');
 	var VariantMixin = require('sale.VariantMixin');
+    var ajaxIsWorking = false;
 
 	sAnimations.registry.WebsiteSale.include({
 
 
 		_getProductId: function ($parent) {
+
 				var available_qty = false;
 				var added_quantity = false;
 				var execute = true;
@@ -21,7 +23,8 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 					mproduct = parseInt($parent.find('input.js_product_change:checked').val())
 					self.$("span.add_qty_warning").css("display", 'none');
 					self.$("span.add_dispo").css("display", 'none');
-					if(execute) {
+					if(execute && !ajaxIsWorking) {
+					    ajaxIsWorking = true;
                         return self._rpc({
                             model: 'website',
                             method: 'stockbldate',
@@ -51,6 +54,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                 $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
                             }
 
+                            ajaxIsWorking = false;
 
                         });
 
@@ -66,7 +70,8 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 					mproduct = VariantMixin._getProductId.apply(this, arguments);
 					self.$("span.add_qty_warning").css("display", 'none');
 					self.$("span.add_dispo").css("display", 'none');
-					if(execute) {
+					if(execute && !ajaxIsWorking) {
+					    ajaxIsWorking = true;
                         return self._rpc({
                             model: 'website',
                             method: 'stockbldate',
@@ -96,7 +101,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                 $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
                             }
 
-
+                            ajaxIsWorking = false;
                         });
 
                     }
