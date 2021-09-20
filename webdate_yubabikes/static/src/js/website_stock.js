@@ -24,7 +24,11 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 					self.$("span.add_qty_warning").css("display", 'none');
 					self.$("span.add_dispo").css("display", 'none');
 					if(execute && !ajaxIsWorking) {
+
 					    ajaxIsWorking = true;
+					    self.$("#loadingDiv").css("display", 'inline');
+                        self.$("#loadingDiv2").css("display", 'inline');
+
                         return self._rpc({
                             model: 'website',
                             method: 'stockbldate',
@@ -54,6 +58,8 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                 $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
                             }
 
+                            self.$("#loadingDiv").css("display", 'none');
+                            self.$("#loadingDiv2").css("display", 'none');
                             ajaxIsWorking = false;
 
                         });
@@ -72,6 +78,9 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 					self.$("span.add_dispo").css("display", 'none');
 					if(execute && !ajaxIsWorking) {
 					    ajaxIsWorking = true;
+					    self.$("#loadingDiv").css("display", 'inline');
+                        self.$("#loadingDiv2").css("display", 'inline');
+
                         return self._rpc({
                             model: 'website',
                             method: 'stockbldate',
@@ -101,6 +110,8 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                 $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
                             }
 
+                            self.$("#loadingDiv").css("display", 'none');
+                            self.$("#loadingDiv2").css("display", 'none');
                             ajaxIsWorking = false;
                         });
 
