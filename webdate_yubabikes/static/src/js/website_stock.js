@@ -26,8 +26,8 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 					if(execute && !ajaxIsWorking) {
 
 					    ajaxIsWorking = true;
-					    self.$("#loadingDiv").css("display", 'inline');
-                        self.$("#loadingDiv2").css("display", 'inline');
+					    self.$("#loadingDiv").css("display", 'inline-block');
+                        self.$("#loadingDiv2").css("display", 'inline-block');
 
                         return self._rpc({
                             model: 'website',
@@ -78,8 +78,8 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 					self.$("span.add_dispo").css("display", 'none');
 					if(execute && !ajaxIsWorking) {
 					    ajaxIsWorking = true;
-					    self.$("#loadingDiv").css("display", 'inline');
-                        self.$("#loadingDiv2").css("display", 'inline');
+					    self.$("#loadingDiv").css("display", 'inline-block');
+                        self.$("#loadingDiv2").css("display", 'inline-block');
 
                         return self._rpc({
                             model: 'website',
