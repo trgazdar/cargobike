@@ -119,7 +119,7 @@ class website(models.Model):
 									date,
 									sum(product_qty) as product_qty
 								FROM forecast_qty where product_id = %(product)s and state = 'forecast'
-								GROUP BY product_id, state, date, company_id, warehouse_id order by date asc)t  where CASE WHEN SIGN(product_qty) > 0 THEN 0 else 1 END > 0 GROUP BY date, myqt order by mdate desc limit 1"""
+								GROUP BY product_id, state, date, company_id, warehouse_id order by date asc)t  where CASE WHEN SIGN(product_qty) > 0 THEN 0 else 1 END > 0 and date >= current_date GROUP BY date, myqt order by mdate desc limit 1"""
 			params = {
 				'product': product}
 			self.env.cr.execute(query, params)
