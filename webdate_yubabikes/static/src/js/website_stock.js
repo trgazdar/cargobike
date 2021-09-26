@@ -37,28 +37,12 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                             }]
                         }).then(function (response2) {
                             if (response2 && response2[0].myqt < 0 ) {
-                                return self._rpc({
-                                    model: 'website',
-                                    method: 'stockbldate2',
-                                    args: [{
-                                        product: mproduct,
-                                        add_qty: added_quantity
-                                    }]
-                                }).then(function (response) {
-                                if (!response){
-                                    self.$("#loadingDiv").css("display", 'none');
-                                    self.$("#loadingDiv2").css("display", 'none');
-                                    document.getElementById('add_to_cart').style.visibility = 'visible';
-                                    self.$("p.state").css("visibility", 'hidden');
-                                    $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
+                                        document.getElementById('add_to_cart').style.visibility = 'visible';
+                                        self.$("p.state").css("visibility", 'hidden');
+                                        self.$("#loadingDiv").css("display", 'none');
+                                        self.$("#loadingDiv2").css("display", 'none');
+                                        $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
-                                else {
-                                    document.getElementById('add_to_cart').style.visibility = 'visible';
-                                    self.$("p.state").css("visibility", 'hidden');
-                                    self.$("#loadingDiv").css("display", 'none');
-                                    self.$("#loadingDiv2").css("display", 'none');
-                                    $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
-                                    }})}
                             else if(available_qty >= added_quantity && (response2 && response2[0].myqt === 0) || !response2){
                                 self.$("#loadingDiv").css("display", 'none');
                                 self.$("#loadingDiv2").css("display", 'none');
@@ -92,7 +76,6 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
 					self.$("span.add_qty_warning").css("display", 'none');
 					self.$("span.add_dispo").css("display", 'none');
 					if(execute && !ajaxIsWorking) {
-
 					    ajaxIsWorking = true;
 					    self.$("#loadingDiv").css("display", 'inline-block');
                         self.$("#loadingDiv2").css("display", 'inline-block');
@@ -106,28 +89,12 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                             }]
                         }).then(function (response2) {
                             if (response2 && response2[0].myqt < 0 ) {
-                                return self._rpc({
-                                    model: 'website',
-                                    method: 'stockbldate2',
-                                    args: [{
-                                        product: mproduct,
-                                        add_qty: added_quantity
-                                    }]
-                                }).then(function (response) {
-                                if (!response){
-                                    self.$("#loadingDiv").css("display", 'none');
-                                    self.$("#loadingDiv2").css("display", 'none');
-                                    document.getElementById('add_to_cart').style.visibility = 'visible';
-                                    self.$("p.state").css("visibility", 'hidden');
-                                    $('p.livr').append("<span class='add_qty_warning'>Livraison à définir</span>");
+                                document.getElementById('add_to_cart').style.visibility = 'visible';
+                                self.$("p.state").css("visibility", 'hidden');
+                                self.$("#loadingDiv").css("display", 'none');
+                                self.$("#loadingDiv2").css("display", 'none');
+                                $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
-                                else {
-                                    document.getElementById('add_to_cart').style.visibility = 'visible';
-                                    self.$("p.state").css("visibility", 'hidden');
-                                    self.$("#loadingDiv").css("display", 'none');
-                                    self.$("#loadingDiv2").css("display", 'none');
-                                    $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
-                                    }})}
                             else if(available_qty >= added_quantity && (response2 && response2[0].myqt === 0) || !response2){
                                 self.$("#loadingDiv").css("display", 'none');
                                 self.$("#loadingDiv2").css("display", 'none');
