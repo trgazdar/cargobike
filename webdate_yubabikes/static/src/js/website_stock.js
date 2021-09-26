@@ -43,7 +43,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                         self.$("#loadingDiv2").css("display", 'none');
                                         $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
-                            else if(available_qty >= added_quantity && (response2 && response2[0].myqt === 0) || !response2){
+                            else if(available_qty >= added_quantity && ((response2 && response2[0].myqt === 0) || !response2)){
                                 self.$("#loadingDiv").css("display", 'none');
                                 self.$("#loadingDiv2").css("display", 'none');
                                 document.getElementById('add_to_cart').style.visibility = 'visible';
@@ -95,7 +95,7 @@ odoo.define('webdate_yubabikes.display_stock_qty', function(require) {
                                 self.$("#loadingDiv2").css("display", 'none');
                                 $('p.livr').append("<span class='add_qty_warning'>Livraison à partir du <label>" + response2[0].mdate + "</label></span>");
                                 }
-                            else if(available_qty >= added_quantity && (response2 && response2[0].myqt === 0) || !response2){
+                            else if(available_qty >= added_quantity && ((response2 && response2[0].myqt === 0) || !response2)){
                                 self.$("#loadingDiv").css("display", 'none');
                                 self.$("#loadingDiv2").css("display", 'none');
                                 document.getElementById('add_to_cart').style.visibility = 'visible';
