@@ -15,8 +15,8 @@ class BankBalanceComputation(models.TransientModel):
     _description = 'Transient model for computing future bank balance'
 
     company_id = fields.Many2one(
-        'res.company', string='Company', required=True,
-        default=lambda self: self.env.company_id)
+        'res.company', string='Company', required=True,)
+   #     default=lambda self: self.env.company_id)
     default_id = fields.Many2one(
         'bank.balance.configuration', string='Default')
     date_start = fields.Date(
