@@ -25,8 +25,8 @@ class TreasuryPlanningTemplate(models.Model):
     company_id = fields.Many2one(
         comodel_name='res.company',
         string='Company',
-        required='True',
-        default=lambda self: self.env.company_id,)
+        required='True',)
+    #    default=lambda self: self.env.company_id,)
 
 
 class TreasuryForecastLineTemplate(models.Model):
