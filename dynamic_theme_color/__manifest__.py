@@ -1,0 +1,21 @@
+{
+    'name': "Dynamic theme Color",
+    'version': "13.0",
+    'author': " Odoo Tips ",
+    'category': "Tools",
+    'support': "https://www.facebook.com/OdooTips/",
+    'summary': 'Change the color of your theme in real time',
+    'license': 'LGPL-3',
+    'currency': 'EUR',
+    'price': 58.00,
+    'depends': ['base',],
+    'data': [
+        'views/res_company_view.xml',
+        'views/theme_templates.xml',
+        'data/theme_layout.xml',
+    ],
+    'demo': [],
+    'images': ['images/main_screenshot.png'],
+    'installable': True,
+    'application': True,
+}

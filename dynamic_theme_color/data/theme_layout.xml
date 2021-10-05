@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="asset_styles_company_theme_color" model="ir.attachment">
+            <field name="datas" model="res.company" eval="obj()._get_asset_theme_style_b64()"/>
+            <field name="mimetype">text/scss</field>
+            <field name="name">res.company.scss</field>
+            <field name="type">binary</field>
+            <field name="url">/dynamic_theme_color/static/src/scss/primary_variables_extend.scss</field>
+        </record>
+
+        <template id="web._assets_primary_variables">
+        <link rel="stylesheet" type="text/scss" href="/dynamic_theme_color/static/src/scss/primary_variables_extend.scss"/>
+    </template>
+    </data>
+</odoo>
