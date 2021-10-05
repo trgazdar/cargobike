@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_quick_filter_form" model="ir.ui.view">
+        <field name="name">view.quick.filter.form</field>
+        <field name="model">quick.filter</field>
+        <field name="arch" type="xml">
+            <form string="Quick Filter">
+                <sheet>
+                    <div class="oe_left">
+                        <group>
+                            <field name="name"/>
+                            <field name="parent_id"/>
+                        </group>
+                        <notebook>
+                            <page string="Filter  Values">
+                                <group>
+                                    <field context="{'default_parent_id': active_id}" name="category_ids" widget="one2many_list">
+                                        <tree editable="bottom" string="Filters">
+                                            <field name="name"/>
+                                            <field domain="[('id','=',parent.id)]" name="parent_id" options="{'no_create_edit': True}"/>
+                                            <field name="is_super_parent_filter"/>
+                                            <field name="super_parent_id_name"/>
+                                            <field domain="[('parent_id', '=', super_parent_id_name)]" name="super_parent_ids" options="{'no_create_edit': True}" widget="many2many_tags"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Related Products">
+                                <field name="product_id">
+                                    <tree>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_quick_filter_tree" model="ir.ui.view">
+        <field name="name">view.quick.filter.tree</field>
+        <field name="model">quick.filter</field>
+        <field name="arch" type="xml">
+            <tree string="Quick Filter">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_quick_filter_values_form" model="ir.ui.view">
+        <field name="name">view.quick.filter.values.form</field>
+        <field name="model">quick.filter.values</field>
+        <field name="arch" type="xml">
+            <form string="Quick Filter values">
+                <group>
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="is_super_parent_filter"/>
+                    <field attrs="{'invisible': [('is_super_parent_filter','=',False)]}" name="super_parent_id_name"/>
+                    <field attrs="{'invisible': [('is_super_parent_filter','=',False)]}" domain="[('parent_id', '=', super_parent_id_name)]" name="super_parent_ids" options="{'no_create_edit': True}" widget="many2many_tags"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_quick_filter_values_tree" model="ir.ui.view">
+        <field name="name">view.quick.filter.values.tree</field>
+        <field name="model">quick.filter.values</field>
+        <field name="arch" type="xml">
+            <tree string="Quick Filter">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="is_super_parent_filter"/>
+                <field name="super_parent_id_name"/>
+                <field name="super_parent_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_collection_configure_form" model="ir.ui.view">
+        <field name="name">filter.collection.configure.form</field>
+        <field name="model">filter.collection.configure</field>
+        <field name="arch" type="xml">
+            <form string="Filter Group Configuration">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                        <field name="parent_based_filter"/>
+                    </group>
+                    <group string="Choose snippet tab">
+                        <field name="group_collection_ids" no_label="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_quick_filter" model="ir.actions.act_window">
+        <field name="name">Quick Filter</field>
+        <field name="res_model">quick.filter</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_quick_filter_values" model="ir.actions.act_window">
+        <field name="name">Quick Filter Values</field>
+        <field name="res_model">quick.filter.values</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+    <record id="action_quick_filter_group_values" model="ir.actions.act_window">
+        <field name="name">Filter Group</field>
+        <field name="res_model">filter.collection.configure</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+    <menuitem id="menu_product_quick_settings" name="Product Quick Filter" parent="website.menu_website_global_configuration"/>
+    <menuitem action="action_quick_filter" id="quick_filter_root" name="Quick Filter" parent="menu_product_quick_settings"/>
+    <menuitem action="action_quick_filter_values" id="quick_filter_values_root" name="Quick Filter Values" parent="menu_product_quick_settings"/>
+    <menuitem action="action_quick_filter_group_values" id="menu_action_multitab_configure" name="Filter Group" parent="menu_product_quick_settings"/>
+</odoo>

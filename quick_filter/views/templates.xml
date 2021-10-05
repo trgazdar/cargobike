@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_editor_product_slider" inherit_id="website.assets_editor" name="Editor assets">
+        <xpath expr="." position="inside">
+            <script src="/quick_filter/static/src/js/website.editor.js" type="text/javascript"/>
+        </xpath>
+    </template>
+    <template id="assent_front_product" inherit_id="website.assets_frontend">
+        <xpath expr="." position="inside">
+            <script src="/quick_filter/static/src/js/website.front.js" type="text/javascript"/>
+            <link href="/quick_filter/static/src/scss/quick.scss" rel="stylesheet" type="text/less"/>
+        </xpath>
+    </template>
+    <!--
+    ================================ 
+    Vertical Quick Filter
+    ================================
+    -->
+    <template id="advance_quick_filter_vertical" name="Vertical Group Filter">
+        <section class="oe_snippet_body as-quickfilter-vertical tqt_website_quickfilter_vertical" data-qf_type="1">
+            <div class="container">
+                <section class="asq-v-section" style="background-image:url(/quick_filter/static/src/img/quick-bg.jpg)">
+                    <div class="row row-b4">
+                        <div class="col-md-4">
+                            <div class="as-quickfilter-vertical-form">
+                                <!-- Dynamic code here  -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="asq-desc">
+                                <h1>Quick Search Title</h1>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </template>
+    <!--
+    ================================ 
+    Horizontal Quick Filter
+    ================================
+    -->
+    <template id="advance_quick_filter_horizontal" name="Horizontal Group Filter">
+        <section class="oe_snippet_body as-quickfilter-horizontal tqt_website_quickfilter_horizontal" data-qf_type="2">
+            <div class="container">
+                <div class="asq-h-section">
+                    <div class="as-quickfilter-horizontal-form">
+                        <!-- Dynamic code here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+
+
+    <!--
+    ================================ 
+    Slider Quick Filter
+    ================================
+    -->
+    <template id="advance_quick_filter_slider" name="Slider Group Filter">
+        <section class="oe_snippet_body as-quickfilter-slider tqt_website_quickfilter_slider" data-qf_type="3">
+            <div class="container">
+                <div class="as-quickfilter-slider-flex">
+                    <div id="filter_myCarousel" class="s_carousel s_carousel_default carousel slide" data-interval="10000" data-name="Carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-name="Slide">
+                                <img src="/quick_filter/static/src/img/slider-1.jpg" />
+                            </div>
+                            <div class="carousel-item" data-name="Slide">
+                                <img src="/quick_filter/static/src/img/slider-2.jpg" />
+                            </div>
+                        </div>
+                        <div class="carousel-control-prev" data-target="#filter_myCarousel" data-slide="prev" role="img" aria-label="Previous" title="Previous">
+                            <span class="carousel-control-prev-icon"></span>
+                            <span class="sr-only o_default_snippet_text">Previous</span>
+                        </div>
+                        <div class="carousel-control-next" data-target="#filter_myCarousel" data-slide="next" role="img" aria-label="Next" title="Next">
+                            <span class="carousel-control-next-icon"></span>
+                            <span class="sr-only o_default_snippet_text">Next</span>
+                        </div>
+                    </div>
+                    <div class="asq-h-section">
+                        <div class="as-quickfilter-slider-form">
+                            <!-- Dynamic code here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+
+
+    <template id="place_into_website_snippet" inherit_id="website.snippets" name="Place Snippet into bar">
+        <xpath expr="//div[@id='snippet_feature']/div[hasclass('o_panel_body')]" position="inside">
+            <t t-snippet="quick_filter.advance_quick_filter_slider" t-thumbnail="/quick_filter/static/src/icon/slider.png"/>
+            <t t-snippet="quick_filter.advance_quick_filter_vertical" t-thumbnail="/quick_filter/static/src/icon/vertical.png"/>
+            <t t-snippet="quick_filter.advance_quick_filter_horizontal" t-thumbnail="/quick_filter/static/src/icon/horizontal.png"/>
+        </xpath>
+    </template>
+    <template id="snippet_options" inherit_id="website.snippet_options">
+        <xpath expr="." position="inside">
+            <div data-js="advance_quick_filter_slider" data-selector=".tqt_website_quickfilter_slider">
+                <we-button data-website_filter_configure_collection="" data-no-preview="true">Modify</we-button>
+            </div>
+            <div data-js="advance_quick_filter_vertical" data-selector=".tqt_website_quickfilter_vertical">
+                <we-button data-website_filter_configure_collection="" data-no-preview="true">Modify</we-button>
+            </div>
+            <div data-js="advance_quick_filter_horizontal" data-selector=".tqt_website_quickfilter_horizontal">
+                <we-button data-website_filter_configure_collection="" data-no-preview="true">Modify</we-button>
+            </div>
+        </xpath>
+    </template>
+    <!--
+    ================================ 
+    Quick Filter
+    ================================
+    -->
+    <template id="filter_collection_configure" name="Collection coursol">
+        <form action="/shop" class="js_filters" method="get">
+            <input name="search" t-att-value="search" type="hidden"/>
+            <div class="as-quick-form" contentEditable="false" t-if="obj">
+                <div class="asq-title">
+                    <h2 t-field="obj.name"/>
+                </div>
+                <ul class="as_quick_filter asq-form-inner ">
+                    <t t-if="obj and obj.group_collection_ids">
+                        <t t-set="count" t-value="0"/>
+                        <t t-set="select_count" t-value="0"/>
+                        <t t-as="variant_id" t-foreach="obj.group_collection_ids">
+                            <t t-set="select_count" t-value="select_count+1"/>
+                            <input name="parent_applied" type="hidden"/>
+                            <li class="asq-group" t-att-data-attribute_id="variant_id.id" t-att-data-attribute_name="variant_id.name" t-att-data-parent_id="variant_id.parent_id.id" t-att-value="variant_id.id">
+                                <strong t-field="variant_id.name"/>
+                                <select class="form-control select_select2" id="filter_select" name="filter" t-att-data-attribute_id="variant_id.id" t-att-data-attribute_name="variant_id.name" t-att-data-count="count" t-att-data-parent_id="variant_id.parent_id.id" t-att-data-selected="'false'" t-att-data-seq="select_count" t-att-value="'%s' % (variant_id.id)">
+                                    <option t-esc="variant_id.name" value=""/>
+                                    <t t-as="value_id" t-foreach="variant_id.category_ids">
+                                        <option t-att-data-option_id="value_id.id" t-att-data-super_parent_id="value_id.super_parent_ids.ids" t-att-value="'%s-%s' % (variant_id.id,value_id.id)" t-esc="value_id.name"/>
+                                    </t>
+                                </select>
+                                <t t-set="count" t-value="count+1"/>
+                            </li>
+                        </t>
+                    </t>
+                </ul>
+                <div class="asq-group-action">
+                    <button class="as-btn apply_quick_filter">Apply</button>
+                    <span class="as-btn d-none" id="reset_quick_filter">Reset</span>
+                </div>
+            </div>
+        </form>
+    </template>
+</odoo>

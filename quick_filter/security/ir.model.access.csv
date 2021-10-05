@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_quick_filter,quick.filter,model_quick_filter,,1,0,0,0
+access_quick_filter_sales_manager,quick.filter,model_quick_filter,sales_team.group_sale_manager,1,1,1,1
+access_quick_filter_values,quick.filter.values,model_quick_filter_values,,1,0,0,0
+access_quick_filter_values_sales_manager,quick.filter.values,model_quick_filter_values,sales_team.group_sale_manager,1,1,1,1
+access_filter_collection_configure,filter.collection.configure,model_filter_collection_configure,,1,1,1,1
+access_product_quick_filter_line,product.quick.filter.line,model_product_quick_filter_line,,1,1,1,1
