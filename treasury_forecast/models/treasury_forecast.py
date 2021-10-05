@@ -17,8 +17,9 @@ class TreasuryForecast(models.Model):
     active = fields.Boolean('Active', default=True)
     statement_id = fields.Many2one(string='Statement', comodel_name='account.bank.statement')
     state = fields.Selection([('open', 'Open'), ('closed', 'Closed')], default='open')
-    company_id = fields.Many2one(comodel_name='res.company', string='Company', required='True',
-                                 default=lambda self: self.env.company_id,)
+    company_id = fields.Many2one(comodel_name='res.company', string='Company', required='True',)
+    #                             default=lambda self: self.env.company_id,)
+    #Added an extra closing to remove the default
     date_start = fields.Date(string='Start Date', required=True)
     date_end = fields.Date(string='End Date', required=True)
     initial_balance = fields.Float(string='Initial balance', compute='compute_initial_balance',
