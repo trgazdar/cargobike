@@ -16,6 +16,10 @@ class StockPicking(models.Model):
     is_merged = fields.Boolean(string="Is merged ?", default=False)
     #sale_ids = fields.One2many('merge.pickingline', 'sale_id')
 
+class StockMoveLine(models.Model):
+    _inherit = "stock.move.line"
+    importednum = fields.Boolean(string="Imported num", default=False)
+
 
 class MergePicking(models.TransientModel):
     _name = 'merge.picking'
@@ -56,6 +60,7 @@ class MergePicking(models.TransientModel):
         carrier_list=[]
         state_list=[]
         picking_type_list=[]
+        merge_list = []
         for partner_li in stock_info:
             partner_list.append(partner_li.partner_id.id)
         for carrier_li in stock_info:
@@ -84,14 +89,23 @@ class MergePicking(models.TransientModel):
                     move_line_val.append((0,0,{
                         'product_id':product_line.product_id.id,
                         'product_uom_qty':product_line.product_uom_qty,
-                        'state':product_line.state,
+                        'state':'confirmed',#product_line.state,
                         'product_uom':product_line.product_id.uom_id.id,
                         'name':product_line.product_id.name,
                         'date_expected':product_line.date_expected
                         }))
-                info.action_cancel()
+                #info.action_cancel()
+                merge_list.append(info.id) 
+
                 #info.merge_in = str(picking.name) 
-                #info.is_merged = True
+                info.is_merged = True
+                self.env.cr.execute('select last_value from ir_sequence_091')
+                id_returned = self.env.cr.fetchone()
+                last_value = int(id_returned[0]) + 1
+                self.env.cr.execute('select sequence_code from stock_picking_type where id=' + str(picking_type_list[0]))
+                code = self.env.cr.fetchone()
+                info.merge_in = "ECTRA/" + str(code[0]) + "/" + str(last_value)
+                
             vals={
             'partner_id':stock_info[0].partner_id.id,
             'origin':origin,
@@ -102,9 +116,18 @@ class MergePicking(models.TransientModel):
             'priority':stock_info[0].priority,
             'location_id':stock_info[0].location_id.id,
             'location_dest_id':stock_info[0].location_dest_id.id,
-            'carrier_id':stock_info[0].carrier_id.id
+            'carrier_id':stock_info[0].carrier_id.id,
+            'sale_id':stock_info[0].sale_id.id,
+            'state': 'draft'
             }
+            #TODO VERIFIE QUE TOUS LES QUANTS SONT BIEN ANNULES SUR LES BP PRECEDENTS VOIR SI POSSIBLE DE LES RECCUP
             picking = picking_obj.create(vals)
+            for old_picking in merge_list: #
+                self.env.cr.execute('select MAX(id) from stock_picking')
+                id_returned = self.env.cr.fetchone()
+                last_value = int(id_returned[0])
+                self.env.cr.execute('DELETE from stock_move_line where picking_id ='+ str(old_picking) +';')
+                #self.env.cr.execute('update stock_move_line set picking_id =' + str(last_value) + ' where picking_id ='+ str(old_picking) +';')
             #info.note = str(info.note)  + str(picking.name)
             
 

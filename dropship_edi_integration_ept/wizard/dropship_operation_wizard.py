@@ -12,14 +12,14 @@ class DropshipOperationWizard(models.TransientModel):
     picking_ids = fields.Many2many('stock.picking', string="Purchase Orders")
     operations = fields.Selection([('import', 'Import Operations'), ('export', 'Export Operations')],
                                   string='Operations')
-    import_operations = fields.Selection([('import_products', 'Import Products'),
-                                          ('import_stock', 'Import Stock'),
+    import_operations = fields.Selection([('import_stock', 'Import Stock'),
                                           ('import_shipment_orders', 'Import Shipment Orders')],
                                          string='Import Operations',
                                          help="Import Product: Perform the product import operation from CSV file to dropship product."
                                               "Import Stock: Perform the stock import operation from CSV file to odoo actual product."
                                               "Import Shipment Orders: Import the shipment orders with tracking information to odoo.")
-    export_operations = fields.Selection([('export_shipment_orders', 'Export Shipment Orders')],
+    export_operations = fields.Selection([('export_shipment_orders', 'Export Shipment Orders'),
+                                          ('export_entry_stock', 'Export Entry Stock')],
                                          string='Export Operations',
                                          help="Export Orders: This option will export the purchase orders to FTP server.")
 
@@ -30,6 +30,10 @@ class DropshipOperationWizard(models.TransientModel):
             stock_picking_obj.export_shipment_orders_to_ftp(self.picking_ids, self.partner_ids)
         elif self.import_operations == 'import_shipment_orders':
             stock_picking_obj.import_shipment_orders_from_ftp(self.partner_ids)
+        elif self.import_operations == 'import_stock':
+            product_obj.import_stock_from_ftp(self.partner_ids)
+        elif self.export_operations == 'export_entry_stock':
+            stock_picking_obj.export_shipment_orders_to_ftp2(self.picking_ids, self.partner_ids)
         return {
             'name': _('Common Log Book'),
             'type': 'ir.actions.act_window',

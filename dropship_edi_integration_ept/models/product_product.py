@@ -464,6 +464,7 @@ class ProductProduct(models.Model):
         product_supplierinfo_obj = self.env['product.supplierinfo']
         vendor_stock_ept_obj = self.env['vendor.stock.ept']
         for partner_id in partner_ids:
+            validate_picking_ids = []
             try:
                 with partner_id.get_dropship_edi_interface(operation="stock_import") \
                         as dropship_edi_object:
@@ -494,116 +495,115 @@ class ProductProduct(models.Model):
                     'module': 'dropship_edi_integration_ept',
                     'message': "FTP connection has been established successfully.",
                     'filename': server_filename})
+
+
                 file_reader = csv.DictReader(open(filename, "rU"), delimiter=partner_id.csv_delimiter)
+
+                filecsv = open(filename, "r", encoding='iso-8859-1')
+                reader = csv.reader(filecsv, delimiter=partner_id.csv_delimiter)
                 fieldnames = file_reader.fieldnames
                 headers = ['Product_code', 'Quantity', 'Price']
                 missing = []
-                for field in headers:
-                    if field not in fieldnames:
-                        missing.append(field)
+                #for field in headers:
+                #    if field not in fieldnames:
+                #        missing.append(field)
                 if len(missing) > 0:
                     log_message = (_(" %s is the required field(s) to Import Stock.") %
                                    (str(missing)[1:-1]))
                     self._create_common_log_line(job, csvwriter, log_message)
                     continue
-                for line in file_reader:
-                    product_code = line.get('Product_code')
-                    product_qty = product_price = False
-                    update_price = {}
-                    update_stock = {}
-                    row_num = row_num + 1
+                #TRIPODE ON COMMENCE A LIRE LE CSV
+                current_bl = ''
+                product_qty = False
+                for line in reader:
                     success_message = ''
-                    missing_values = []
-                    if not product_code:
-                        missing_values.append('Product_code')
-                    if line.get('Quantity'):
-                        try:
-                            product_qty = float(line.get('Quantity'))
-                        except ValueError:
-                            missing_values.append('Quantity')
-                            product_qty = False
-                    else:
-                        missing_values.append('Quantity')
-                    if line.get('Price'):
-                        try:
-                            product_price = float(line.get('Price'))
-                        except ValueError:
-                            missing_values.append('Price')
-                            product_price = False
-                    else:
-                        missing_values.append('Price')
-                    qty_flag = price_flag = False
-                    if product_qty is not False and product_qty >= 0:
-                        update_stock.update({'vendor_stock': product_qty})
-                        success_message += (_('Quantity : %s ') % product_qty)
-                        qty_flag = True
-                    if product_price is not False and product_price >= 0:
-                        update_price.update({'price': product_price})
-                        success_message += (_('and ')) if qty_flag else ''
-                        success_message += (_('Price : %s ') % product_price)
-                        price_flag = True
-                    success_message += (_('updated successfully.'))
-                    if product_code and (qty_flag or price_flag):
-                        product_id = product_obj.search([
-                            ('default_code', '=', product_code)], limit=1)
-                        if not product_id:
-                            vendor_product_id = product_supplierinfo_obj.search(
-                                [('product_code', '=', product_code),
-                                 ('name', '=', partner_id.id)], limit=1)
-                            if vendor_product_id:
-                                if price_flag:
-                                    vendor_product_id.write(update_price)
-                                vendor_stock = vendor_stock_ept_obj.search([('vendor_product_id', '=', vendor_product_id.product_id.id),
-                                 ('vendor', '=', partner_id.id)], limit=1)
-                                if vendor_stock:
-                                    if qty_flag:
-                                        vendor_stock.write(update_stock)
-                                else:
-                                    log_message = (_("Supplier %s is not available for product to"
-                                                     " update stock in odoo.") % partner_id.name)
-                                    self._create_common_log_line(job, csvwriter, log_message,
-                                                                 product_code)
-                                if price_flag or (vendor_stock and qty_flag):
-                                    self._create_common_log_line(job, csvwriter, success_message,
-                                                                 product_code)
-                            else:
-                                log_message = (_("Supplier %s is not available for"
-                                                 " product in odoo.") % partner_id.name)
-                                self._create_common_log_line(job, csvwriter, log_message,
-                                                             product_code)
-                                continue
-                        else:
-                            vendor_product_id = product_supplierinfo_obj.search(
-                                [('product_id', '=', product_id.id),
-                                 ('name', '=', partner_id.id)])
-                            if vendor_product_id:
-                                if price_flag:
-                                    vendor_product_id.write(update_price)
-                            else:
-                                log_message = (_("Supplier %s is not available for product to"
-                                                 " update price in odoo.") % partner_id.name)
-                                self._create_common_log_line(job, csvwriter, log_message,
-                                                             product_code)
-                            vendor_stock = vendor_stock_ept_obj.search(
-                                [('vendor_product_id', '=', product_id.id),
-                                 ('vendor', '=', partner_id.id)], limit=1)
-                            if vendor_stock:
-                                if qty_flag:
-                                    vendor_stock.write(update_stock)
-                            else:
-                                log_message = (_("Supplier %s is not available for product to"
-                                                 " update stock in odoo.") % partner_id.name)
-                                self._create_common_log_line(job, csvwriter, log_message,
-                                                             product_code)
-                            if (vendor_product_id and price_flag) or (vendor_stock and qty_flag):
-                                self._create_common_log_line(job, csvwriter, success_message,
-                                                             product_code)
-                    else:
-                        log_message = (_("Missing/Incorrect field(s) value for %s at"
-                                         " row number %s.") %
-                                       (missing_values, row_num))
-                        self._create_common_log_line(job, csvwriter, log_message)
+                    _logger.info("ligne en cours = "+ str(line))
+                    _logger.info("Nombre elements ligne "+ str(len(line)))
+                    if line[7] != '':#On traite l'entete BL
+                        current_bl = line[7] or ''#3
+                        _logger.info("Nouveau BL")
+                        log_message = ("Traitement du BL : " + str(current_bl))
+                        self.env.cr.execute("select picking_id from stock_move_line where reference='" + str(current_bl)+ "'")
+                        picking_id = self.env.cr.fetchone()
+                        
                         continue
+                    if line[7] == '' and line[3] != '': #On traite tous les articles sans serial
+
+                        _logger.info("MAJ article Sans Lot BL= " + str(current_bl))
+                        product_qty = line[5] or ''#3
+                        product_code = line[4] or ''#3
+                        #on met à jour le BL avec les stocks
+                        
+                        self.env.cr.execute("select id from product_product where default_code='" + str(product_code) + "'")
+                        product_id = self.env.cr.fetchone()
+                        self.env.cr.execute("select product_tmpl_id from product_product where default_code='" + str(product_code) + "'")
+                        product_template_id = self.env.cr.fetchone()
+                        self.env.cr.execute("select tracking from product_template where id=" + str(product_template_id[0]))
+                        serial_test = self.env.cr.fetchone()
+                        stock_move_id = self.env['stock.move'].search(
+                            [('product_id', '=', product_id[0]),('reference', '=', current_bl)], limit=1)
+                        validate_picking_ids.append(stock_move_id.picking_id)
+                        if  product_id and serial_test[0] != 'serial':
+                            _logger.info("PRODUCT_ID EN COURS" + str(product_id[0]) + "REF : " + str(product_code))
+                            self.env.cr.execute("update stock_move_line set qty_done = " + product_qty 
+                                + " where product_id = " + str(product_id[0]) + " and reference = '" + str(current_bl) +"'" )   
+                            log_message = ("Entrée en stock Reference : " + str(product_code) + " Quantity : " + str(product_qty))
+                        else:
+                            #on boucle car produit avec serial
+                            _logger.info("Article avec NUM SERIE " + str(product_code))
+                            continue
+                    if line[3] == '': #on traite les articles avec serial
+                        #current_bl = numero BL en cours
+                        product_code = line[0] or ''
+                        serial_number = line[1] or ''
+                        self.env.cr.execute("select id from product_template where default_code='" + str(product_code) + "' and active=True")
+                        product_id = self.env.cr.fetchone()
+                        if not product_id:
+                            self.env.cr.execute("select id from product_product where default_code='" + str(product_code) + "_old' and active=True")
+                            product_id = self.env.cr.fetchone()
+                            _logger.info("ANCIEN NUMERO ->>>>" + str(product_id))
+                        self.env.cr.execute("select id from stock_move_line where product_id=" + str(product_id[0]) 
+                            + " and reference = '" + str(current_bl) + "' and qty_done = 0")
+                        stock_move_line_id = self.env.cr.fetchone()
+                        _logger.info("ID PRODUIT " + str(product_id[0]))
+                        _logger.info("BL EN COURS " + str(current_bl))
+                        #_logger.info("Ajout NUM SERIE " + str(serial_number) +" move_line = " + str(stock_move_line_id[0]))
+                        # On cherche si le lot existe déjà dans la base
+                        self.env.cr.execute("select id from stock_production_lot where name='"
+                            + str(serial_number) + "' and product_id = " + str(product_id[0]) + "")
+                        lot_id = self.env.cr.fetchone()
+                        
+                        if lot_id and stock_move_line_id:
+                            self.env.cr.execute("update stock_move_line set (lot_id, qty_done) = (" 
+                                + str(lot_id[0]) + ", 1) where id="+ str(stock_move_line_id[0]) +" and qty_done=0 and product_id= " + str(product_id[0]) + " and reference = '" + str(current_bl) + "'")  
+                            _logger.info("LE Numero de série Existe on l'affecte")
+                            _logger.info("SERIAL ANALYSE "+ str(serial_number)  +"ID DU LOT" + str(lot_id[0]))
+                        else:
+                            _logger.info("LE Numero de n' Existe pas On crée")
+                            #on crée le SERIAL s'il n'existe pas
+                            self.env.cr.execute("insert into stock_production_lot (name, product_id, company_id) VALUES ('" 
+                                + str(serial_number)+ "', " + str(product_id[0]) + ", 1) RETURNING id")
+                            last_lot_id = self.env.cr.fetchone()
+                            _logger.info("DERNIER ID LOT CREE = " +str(last_lot_id[0]))
+                            #_logger.info("DERNIER ID LOT CREE = " +str(stock_move_line_id[0]))
+                            _logger.info("DERNIER ID LOT CREE = " +str(product_id[0]))
+                            if stock_move_line_id:#AJOUTER DANS LES LOGS LES LIGNES NON IMPORTEE
+
+                                
+                                self.env.cr.execute("update stock_move_line set (lot_id, qty_done) = (" 
+                                    + str(last_lot_id[0]) + ", 1) where id="+ str(stock_move_line_id[0]) 
+                                    +" and qty_done=0 and product_id= " + str(product_id[0]) + " and reference = '" + str(current_bl) + "'")  
+                            
+
+                    row_num = row_num + 1
+                for validate_picking_id in list(set(validate_picking_ids)):
+                    #validate_picking_id.action_done()
+                    log_message = (_("Dropship order validated successfully."))
+                    
+                    
+
+
+
                 file = open(filename)
                 file.seek(0)
                 file_data = file.read().encode()
