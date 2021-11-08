@@ -10,6 +10,10 @@ div.table-responsive {
     background-color: #eee;
 }
 
+.o_list_view .o_list_table i{
+    z-index: 6;
+}
+
 .o_column_sortable {
     position: sticky !important;
 }
