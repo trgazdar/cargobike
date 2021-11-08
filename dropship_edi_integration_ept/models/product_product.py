@@ -556,7 +556,7 @@ class ProductProduct(models.Model):
                         #current_bl = numero BL en cours
                         product_code = line[0] or ''
                         serial_number = line[1] or ''
-                        self.env.cr.execute("select id from product_template where default_code='" + str(product_code) + "' and active=True")
+                        self.env.cr.execute("select id from product_product where default_code='" + str(product_code) + "' and active=True")
                         product_id = self.env.cr.fetchone()
                         if not product_id:
                             self.env.cr.execute("select id from product_product where default_code='" + str(product_code) + "_old' and active=True")
