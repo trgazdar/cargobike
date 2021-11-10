@@ -1,6 +1,7 @@
 from odoo.exceptions import UserError
 from odoo import models, fields, api
-
+import logging
+_logger = logging.getLogger(__name__)
 
 
 #class purchase_order(models.Model):
@@ -95,9 +96,11 @@ class MergePicking(models.TransientModel):
                         'date_expected':product_line.date_expected
                         }))
                     self.env.cr.execute('select lot_id from stock_move_line where location_id=47 and id = ' + str(product_line.id))
+                    _logger.info("id product = " +str(product_line.id))
                     id_returned = self.env.cr.fetchone()
                     if id_returned:
                         last_value = int(id_returned[0])
+                        _logger.info("lot id  = " + str(last_value))
                         self.env.cr.execute('update stock_quant set reserved_quantity = 0 where location_id=47 and lot_id = ' + str(last_value))
                 #info.action_cancel()
                 merge_list.append(info.id) 
