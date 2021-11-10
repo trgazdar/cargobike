@@ -95,7 +95,7 @@ class MergePicking(models.TransientModel):
                         'name':product_line.product_id.name,
                         'date_expected':product_line.date_expected
                         }))
-                    self.env.cr.execute('select lot_id from stock_move_line where location_id=47 and reference = "' + str(info.name) + '"')
+                    self.env.cr.execute("select lot_id from stock_move_line where location_id=47 and reference = '" + str(info.name) + "'")
                     _logger.info("id product = " +str(product_line.move))
                     id_returned = self.env.cr.fetchall()
                     _logger.info("id product = " +str(id_returned))
