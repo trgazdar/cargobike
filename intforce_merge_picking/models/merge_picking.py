@@ -94,7 +94,7 @@ class MergePicking(models.TransientModel):
                         'name':product_line.product_id.name,
                         'date_expected':product_line.date_expected
                         }))
-                    self.env.cr.execute('select lot_id from stock_move_line where id = ' + product_line.id)
+                    self.env.cr.execute('select lot_id from stock_move_line where id = ' + str(product_line.id))
                     id_returned = self.env.cr.fetchone()
                     last_value = int(id_returned[0])
                     self.env.cr.execute('update stock_quant set reserved_quantity = 0 where location_id=47 and lot_id = ' + str(last_value))
