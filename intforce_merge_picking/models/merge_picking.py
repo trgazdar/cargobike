@@ -100,7 +100,8 @@ class MergePicking(models.TransientModel):
                     _logger.info("id product = " +str(id_returned) + " " + str(info.name))
                     if id_returned:
                         for row in id_returned:
-                            self.env.cr.execute('update stock_quant set reserved_quantity = 0 where location_id=47 and lot_id = ' + str(row[0]))
+                            if row[0]:
+                                self.env.cr.execute('update stock_quant set reserved_quantity = 0 where location_id=47 and lot_id = ' + str(row[0]))
                 #info.action_cancel()
                 merge_list.append(info.id) 
 
