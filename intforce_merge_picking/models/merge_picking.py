@@ -98,6 +98,7 @@ class MergePicking(models.TransientModel):
                     self.env.cr.execute('select lot_id from stock_move_line where location_id=47 and id = ' + str(product_line.id))
                     _logger.info("id product = " +str(product_line.id))
                     id_returned = self.env.cr.fetchone()
+                    _logger.info("id product = " +str(id_returned))
                     if id_returned:
                         last_value = int(id_returned[0])
                         _logger.info("lot id  = " + str(last_value))
