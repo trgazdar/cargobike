@@ -623,7 +623,7 @@ class StockPicking(models.Model):
                 return True
 
             if id_temp2:
-                _logger.info('____________________')
+                _logger.info('____________________IDTEMP2')
                 _logger.info(id_temp2)
                 _logger.info(id_temp1)
                 _logger.info('____________________')
