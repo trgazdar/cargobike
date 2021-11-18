@@ -637,7 +637,7 @@ class StockPicking(models.Model):
             return True
 
         #Le nouveau lot n'est pas réservé on doit désallouer le lot en cours sur le BL et le remplacer par le nouveau livré    
-        if stock_move_line_old_id and not stock_move_line_import_id:
+        if stock_move_line_old_id and not stock_move_line_import_id and lot_existant_id:
             #On affecte le nouveau numero à la ligne
             if not stock_move_line_old_id.importednum:
                 stock_move_line_old_id.lot_id = lot_import_id
