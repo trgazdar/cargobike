@@ -494,6 +494,8 @@ class StockPicking(models.Model):
                             [('product_id', 'in', lot_retourne),('reference', '=', order_ref_prev)], limit=1)
                         if stock_move_id:
                             stock_move_id.picking_id.write({'is_exported': False})
+                            stock_move_id.picking_id.write({'note': str(filename)})
+                            
                             if stock_move_id.product_uom_qty < float(product_qty):
                                 log_message = (_("1 - Product ordered quantity %s and shipped"
                                                  " quantity %s") %
