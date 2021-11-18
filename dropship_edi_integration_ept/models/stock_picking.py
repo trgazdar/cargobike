@@ -643,10 +643,11 @@ class StockPicking(models.Model):
                 stock_move_line_old_id.lot_id = lot_import_id
                 stock_move_line_old_id.importednum = True
             self.env.cr.execute("select id from stock_move_line where lot_id = " + str(lot_existant_id) + " and location_id= 47 and location_dest_id = 9")
-            lot_retourne = self.env.cr.fetchone()  
-            tempId = lot_retourne[0]
-            self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
-            return True
+            lot_retourne = self.env.cr.fetchone() 
+            if  lot_retourne:
+                tempId = lot_retourne[0]
+                self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
+                return True
 
 
         if not stock_move_line_old_id and stock_move_line_import_id:
