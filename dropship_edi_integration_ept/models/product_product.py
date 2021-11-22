@@ -529,7 +529,7 @@ class ProductProduct(models.Model):
                         picking_id = self.env.cr.fetchone()
                         
                         continue
-                    if len(line) == 7: #On traite tous les articles sans serial
+                    if len(line) == 8: #On traite tous les articles sans serial
                         log_message = ("ARTICLE : " + str(line[4]))
                         self._create_common_log_line(job, csvwriter, log_message)
                         _logger.info("MAJ article Sans Lot BL= " + str(current_bl))
