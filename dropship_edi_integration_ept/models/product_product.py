@@ -519,7 +519,7 @@ class ProductProduct(models.Model):
                     success_message = ''
                     _logger.info("ligne en cours = "+ str(line))
                     _logger.info("Nombre elements ligne "+ str(len(line)))
-                    if line[7] != '':#On traite l'entete BL
+                    if len(line) = 8:#On traite l'entete BL
                         current_bl = line[7] or ''#3
                         _logger.info("Nouveau BL")
                         log_message = ("Traitement du BL : " + str(current_bl))
