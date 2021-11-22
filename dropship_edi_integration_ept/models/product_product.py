@@ -559,7 +559,7 @@ class ProductProduct(models.Model):
                         #current_bl = numero BL en cours
                         product_code = line[0] or ''
                         serial_number = line[1] or ''
-                        log_message = ("ARTICLE : " + str(line[4]) + " - SERIAL : " + serial_number)
+                        log_message = ("ARTICLE : " + str(product_code) + " - SERIAL : " + str(serial_number))
                         self._create_common_log_line(job, csvwriter, log_message)
                         self.env.cr.execute("select id from product_product where default_code='" + str(product_code) + "' and active=True")
                         product_id = self.env.cr.fetchone()
