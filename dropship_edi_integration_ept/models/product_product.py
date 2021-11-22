@@ -521,6 +521,8 @@ class ProductProduct(models.Model):
                     _logger.info("Nombre elements ligne "+ str(len(line)))
                     if len(line) == 8:#On traite l'entete BL
                         current_bl = line[7] or ''#3
+                        log_message = ("BP IMPORTE " + current_bl)
+                        self._create_common_log_line(job, csvwriter, log_message)
                         _logger.info("Nouveau BL")
                         log_message = ("Traitement du BL : " + str(current_bl))
                         self.env.cr.execute("select picking_id from stock_move_line where reference='" + str(current_bl)+ "'")
@@ -528,7 +530,8 @@ class ProductProduct(models.Model):
                         
                         continue
                     if len(line) == 7: #On traite tous les articles sans serial
-
+                        log_message = ("ARTICLE : " + str(line[4]))
+                        self._create_common_log_line(job, csvwriter, log_message)
                         _logger.info("MAJ article Sans Lot BL= " + str(current_bl))
                         product_qty = line[5] or ''#3
                         product_code = line[4] or ''#3
@@ -556,6 +559,8 @@ class ProductProduct(models.Model):
                         #current_bl = numero BL en cours
                         product_code = line[0] or ''
                         serial_number = line[1] or ''
+                        log_message = ("ARTICLE : " + str(line[4]) + " - SERIAL : " + serial_number)
+                        self._create_common_log_line(job, csvwriter, log_message)
                         self.env.cr.execute("select id from product_product where default_code='" + str(product_code) + "' and active=True")
                         product_id = self.env.cr.fetchone()
                         if not product_id:
