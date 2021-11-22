@@ -528,8 +528,8 @@ class ProductProduct(models.Model):
                         self.env.cr.execute("select picking_id from stock_move_line where reference='" + str(current_bl)+ "'")
                         picking_id = self.env.cr.fetchone()
                         
-                        continue
-                    if len(line) == 8: #On traite tous les articles sans serial
+                        
+                    if len(line) == 8 and line[7] == '': #On traite tous les articles sans serial
                         log_message = ("ARTICLE : " + str(line[4]))
                         self._create_common_log_line(job, csvwriter, log_message)
                         _logger.info("MAJ article Sans Lot BL= " + str(current_bl))
