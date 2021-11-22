@@ -527,7 +527,7 @@ class ProductProduct(models.Model):
                         picking_id = self.env.cr.fetchone()
                         
                         continue
-                    if line[7] == '' and line[3] != '': #On traite tous les articles sans serial
+                    if len(line) == 7: #On traite tous les articles sans serial
 
                         _logger.info("MAJ article Sans Lot BL= " + str(current_bl))
                         product_qty = line[5] or ''#3
@@ -552,7 +552,7 @@ class ProductProduct(models.Model):
                             #on boucle car produit avec serial
                             _logger.info("Article avec NUM SERIE " + str(product_code))
                             continue
-                    if line[3] == '': #on traite les articles avec serial
+                    if len(line) == 3: #on traite les articles avec serial
                         #current_bl = numero BL en cours
                         product_code = line[0] or ''
                         serial_number = line[1] or ''
