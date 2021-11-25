@@ -660,6 +660,13 @@ class StockPicking(models.Model):
         if stock_move_line_old_id and not stock_move_line_import_id and lot_existant_id:
             #On affecte le nouveau numero à la ligne
 
+            self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
+            count = self.env.cr.fetchone()
+            if count[0] == 2:
+                _logger.info('+++++++ Mise à jour QUANT SERIAL IMPORT')
+                self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
+                self.env.cr.execute("update stock_quant set reserved_quantity=0 where lot_id=" + str(lot_import_id) + " and location_id=47")
+            
             self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
             count = self.env.cr.fetchone()
             if count[0] == 2:
