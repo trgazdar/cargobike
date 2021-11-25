@@ -634,6 +634,21 @@ class StockPicking(models.Model):
                 
                 tempId = lot_retourne[0]
                 #PB si tout est réservé
+                #On doit faire attention suite aux manip sur Serial de verifier les quants
+                self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
+                count = self.env.cr.fetchone()
+                if count[0] == 2:
+                    self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
+                    self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_import_id) + " and location_id=47")
+                
+                self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
+                count = self.env.cr.fetchone()
+                if count[0] == 2:
+                    self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
+                    self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
+
+                
+
                 self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where lot_id= " + str(lot_existant_id) + " and reference='" + str(reference) + "' and location_id= 47 and location_dest_id = 9")
                 self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_existant_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
             stock_move_line_old_id.importednum = True 
