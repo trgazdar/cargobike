@@ -470,6 +470,7 @@ class StockPicking(models.Model):
                                 self.swap_num_lot(csvwriter, job, stock_lot_id.id, ids_returned[0], order_ref_prev)
                                 self.env.cr.execute("update stock_move_line set qty_done = 1 where lot_id = " + str(stock_lot_id.id) + " and reference = '" + str(order_ref_prev) +"'" )
                                 log_message = 'REF : ' + str(product_ref_prev) + ' - SN : ' + str(stock_lot_id.name)
+                                _logger.info('SWAP REF : ' + str(product_ref_prev) + ' - SN : ' + str(stock_lot_id.name))
                                 self._create_common_log_line(job, csvwriter, log_message)
 
                     else:    
@@ -638,14 +639,14 @@ class StockPicking(models.Model):
                 self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
                 count = self.env.cr.fetchone()
                 if count[0] == 2:
-                    _logger.info('+++++++ Mise à jour QUANT SERIAL IMPORT')
+                    _logger.info('+++++++ 1Mise à jour QUANT SERIAL IMPORT')
                     self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
                     self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_import_id) + " and location_id=47")
                 
                 self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
                 count = self.env.cr.fetchone()
                 if count[0] == 2:
-                    _logger.info('+++++++ Mise à jour QUANT SERIAL EXISTANT')
+                    _logger.info('+++++++ 1Mise à jour QUANT SERIAL EXISTANT')
                     self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
                     self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
 
@@ -663,14 +664,14 @@ class StockPicking(models.Model):
             self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
             count = self.env.cr.fetchone()
             if count[0] == 2:
-                _logger.info('+++++++ Mise à jour QUANT SERIAL IMPORT')
+                _logger.info('+++++++ 2Mise à jour QUANT SERIAL IMPORT')
                 self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
-                self.env.cr.execute("update stock_quant set reserved_quantity=0 where lot_id=" + str(lot_import_id) + " and location_id=47")
+                self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_import_id) + " and location_id=47")
             
             self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
             count = self.env.cr.fetchone()
             if count[0] == 2:
-                _logger.info('+++++++ Mise à jour QUANT SERIAL EXISTANT')
+                _logger.info('+++++++ 2Mise à jour QUANT SERIAL EXISTANT')
                 self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
                 self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
 
