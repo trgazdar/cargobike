@@ -687,7 +687,7 @@ class StockPicking(models.Model):
 
 
         if not stock_move_line_old_id and stock_move_line_import_id:
-            
+            _logger.info('+++++++ LAST')
             #id_temp1 = stock_move_line_old_id.lot_id
             id_temp2 = stock_move_line_import_id.lot_id
             log_message = 'On a le nouveau et pas l\'ancien -> id_temp1 : ' + str(stock_move_line_old_id.lot_id ) + ' id_temp2 : ' + str(id_temp2)
