@@ -659,6 +659,14 @@ class StockPicking(models.Model):
         #Le nouveau lot n'est pas réservé on doit désallouer le lot en cours sur le BL et le remplacer par le nouveau livré    
         if stock_move_line_old_id and not stock_move_line_import_id and lot_existant_id:
             #On affecte le nouveau numero à la ligne
+
+            self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
+            count = self.env.cr.fetchone()
+            if count[0] == 2:
+                _logger.info('+++++++ Mise à jour QUANT SERIAL EXISTANT')
+                self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
+                self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
+
             if not stock_move_line_old_id.importednum:
                 stock_move_line_old_id.lot_id = lot_import_id
                 stock_move_line_old_id.importednum = True
@@ -671,6 +679,7 @@ class StockPicking(models.Model):
 
 
         if not stock_move_line_old_id and stock_move_line_import_id:
+            
             #id_temp1 = stock_move_line_old_id.lot_id
             id_temp2 = stock_move_line_import_id.lot_id
             log_message = 'On a le nouveau et pas l\'ancien -> id_temp1 : ' + str(stock_move_line_old_id.lot_id ) + ' id_temp2 : ' + str(id_temp2)
