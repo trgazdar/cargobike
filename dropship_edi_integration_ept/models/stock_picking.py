@@ -335,22 +335,23 @@ class StockPicking(models.Model):
 
     
     def import_shipment_orders_from_ftp_control(self, partner_ids):
-        try:
-            with partner_id.get_dropship_edi_interface(operation="shipment_import") \
-                    as dropship_edi_object:
-                filenames, server_filenames = \
-                    dropship_edi_object.pull_from_ftp2(partner_id.prefix_import_shipment)
-            for filename, server_filename in zip(filenames, server_filenames):
-                self.import_shipment_orders_from_ftp(partner_ids,filename, server_filename)
-        except:
-            self.env['common.log.book.ept'].create({
-                'application': 'shipment',
-                'type': 'import',
-                'partner_id': 'ECTRA',
-                'module': 'dropship_edi_integration_ept',
-                'message': "No File to import or Supplier  has problem with FTP connection,"
-                            " Please check server credentials and file path." 
-            })
+        for partner_id in partner_ids:
+            try:
+                with partner_id.get_dropship_edi_interface(operation="shipment_import") \
+                        as dropship_edi_object:
+                    filenames, server_filenames = \
+                        dropship_edi_object.pull_from_ftp2(partner_id.prefix_import_shipment)
+                for filename, server_filename in zip(filenames, server_filenames):
+                    self.import_shipment_orders_from_ftp(partner_ids,filename, server_filename)
+            except:
+                self.env['common.log.book.ept'].create({
+                    'application': 'shipment',
+                    'type': 'import',
+                    'partner_id': ''partner_id.id'',
+                    'module': 'dropship_edi_integration_ept',
+                    'message': "No File to import or Supplier %s has problem with FTP connection,"
+                                " Please check server credentials and file path." % (partner_id.name)
+                })
             #continue
                 
     
@@ -361,273 +362,273 @@ class StockPicking(models.Model):
         :param partner_ids: suppliers
         :return: True
         """
-        for partner_id in partner_ids:
-            validate_picking_ids = []
-            
-            """ try:
-                with partner_id.get_dropship_edi_interface(operation="shipment_import") \
-                        as dropship_edi_object:
-                    filenames, server_filenames = \
-                        dropship_edi_object.pull_from_ftp2(partner_id.prefix_import_shipment)
-            except:
-                self.env['common.log.book.ept'].create({
-                    'application': 'shipment',
-                    'type': 'import',
-                    'partner_id': partner_id.id,
-                    'module': 'dropship_edi_integration_ept',
-                    'message': "No File to import or Supplier %s has problem with FTP connection,"
-                               " Please check server credentials and file path." % (partner_id.name)
-                }) """
-
-                #continue
-
-            #for filename, server_filename in zip(filenames, server_filenames):
-            #try:
-            buffer = StringIO()
-            #field_name = ['LineQty', 'totalline', 'Product_code', 'Order_ref', 'Tracking_no', 'date']
-            field_name = ['Order_ref', 'Product_code', 'Log_details', 'Tracking_no']
-            csvwriter = DictWriter(buffer, field_name,
-                                delimiter=partner_id.csv_delimiter or ';')
-            csvwriter.writer.writerow(field_name)
-            job = self.env['common.log.book.ept'].create({
+        
+        validate_picking_ids = []
+        
+        """ try:
+            with partner_id.get_dropship_edi_interface(operation="shipment_import") \
+                    as dropship_edi_object:
+                filenames, server_filenames = \
+                    dropship_edi_object.pull_from_ftp2(partner_id.prefix_import_shipment)
+        except:
+            self.env['common.log.book.ept'].create({
                 'application': 'shipment',
                 'type': 'import',
                 'partner_id': partner_id.id,
                 'module': 'dropship_edi_integration_ept',
-                'message': "FTP connection has been established successfully.",
-                'filename': server_filename
-            })
+                'message': "No File to import or Supplier %s has problem with FTP connection,"
+                            " Please check server credentials and file path." % (partner_id.name)
+            }) """
+
+            #continue
+
+        #for filename, server_filename in zip(filenames, server_filenames):
+        #try:
+        buffer = StringIO()
+        #field_name = ['LineQty', 'totalline', 'Product_code', 'Order_ref', 'Tracking_no', 'date']
+        field_name = ['Order_ref', 'Product_code', 'Log_details', 'Tracking_no']
+        csvwriter = DictWriter(buffer, field_name,
+                            delimiter=partner_id.csv_delimiter or ';')
+        csvwriter.writer.writerow(field_name)
+        job = self.env['common.log.book.ept'].create({
+            'application': 'shipment',
+            'type': 'import',
+            'partner_id': partner_id.id,
+            'module': 'dropship_edi_integration_ept',
+            'message': "FTP connection has been established successfully.",
+            'filename': server_filename
+        })
+        
+        reader = csv.DictReader(open(filename, "rU", encoding='iso-8859-1'),
+                                delimiter=partner_id.csv_delimiter)
+        fieldnames = reader.fieldnames
+        headers = ['LineQty', 'totalline', 'Product_code', 'Order_ref', 'Tracking_no', 'date']
+        missing = []
+        #for field in headers:
+        #    if field not in fieldnames:
+        #        missing.append(field)
+        if len(missing) > 0:
+            log_message = (_("%s is the required field(s) to Import Shipment details.") %
+                        (str(missing)[1:-1]))
+            self._create_common_log_line(job, csvwriter, log_message)
+            continue
+        log_message = ''
+        #skip_purchase_order_ids = \
+            #self.check_mismatch_details_for_import_shipment(csvwriter, job, reader)
+        #reader = csv.DictReader(open(filename, "rU"),
+                                #delimiter=partner_id.csv_delimiter, fieldnames=None)
+        filecsv = open(filename, "r", encoding='iso-8859-1')
+        reader = csv.reader(filecsv, delimiter=partner_id.csv_delimiter)
+        stock_pickng_id = 0
+        order_ref_prev = ''
+        product_ref_prev = ''
+        lot_traites = []
+        i = 1
+        _logger.info('>>>>>>>>>>>>>>>>Fichier CSV : ' + str(server_filename))
+        for line in reader:
+            _logger.info('>>>>>>>>>>>>>>>>Ligne CSV : ' + str(i))
+            if len(line) > 3:
+                order_ref = line[3] or ''#3
+                order_no = line[3] or ''#3
+            else:
+                order_ref = ''
+                order_no = ''
+            if len(line) > 2:
+                product_code = line[2] or ''
+            else:
+                product_code = ''
+            if len(line) > 0:
+                num_lot = line[1] or ''
+            else:
+                num_lot = ''
             
-            reader = csv.DictReader(open(filename, "rU", encoding='iso-8859-1'),
-                                    delimiter=partner_id.csv_delimiter)
-            fieldnames = reader.fieldnames
-            headers = ['LineQty', 'totalline', 'Product_code', 'Order_ref', 'Tracking_no', 'date']
-            missing = []
-            #for field in headers:
-            #    if field not in fieldnames:
-            #        missing.append(field)
-            if len(missing) > 0:
-                log_message = (_("%s is the required field(s) to Import Shipment details.") %
-                            (str(missing)[1:-1]))
+            product_qty = line[0] or ''
+            
+            i = i + 1
+            
+            
+            
+            #Gestion de la première ligne ECTRA
+            if str(product_qty) == 'E':
+                #del lot_existants[:]
+                stock_pickng_id = self.search([('name', '=', order_ref),
+                                        ('state', 'not in', ['done', 'cancel'])],
+                                        limit=1)
+                
+                order_ref_prev = order_ref
+                
+                #if not stock_pickng_id:
+                #   continue
+
+                log_message = 'Traitement du BP N° ' + str(order_ref)
                 self._create_common_log_line(job, csvwriter, log_message)
-                continue
-            log_message = ''
-            #skip_purchase_order_ids = \
-                #self.check_mismatch_details_for_import_shipment(csvwriter, job, reader)
-            #reader = csv.DictReader(open(filename, "rU"),
-                                    #delimiter=partner_id.csv_delimiter, fieldnames=None)
-            filecsv = open(filename, "r", encoding='iso-8859-1')
-            reader = csv.reader(filecsv, delimiter=partner_id.csv_delimiter)
-            stock_pickng_id = 0
-            order_ref_prev = ''
-            product_ref_prev = ''
-            lot_traites = []
-            i = 1
-            _logger.info('>>>>>>>>>>>>>>>>Fichier CSV : ' + str(server_filename))
-            for line in reader:
-                _logger.info('>>>>>>>>>>>>>>>>Ligne CSV : ' + str(i))
-                if len(line) > 3:
-                    order_ref = line[3] or ''#3
-                    order_no = line[3] or ''#3
-                else:
-                    order_ref = ''
-                    order_no = ''
-                if len(line) > 2:
-                    product_code = line[2] or ''
-                else:
-                    product_code = ''
-                if len(line) > 0:
-                    num_lot = line[1] or ''
-                else:
-                    num_lot = ''
+            
+            #Gestion des numeros de lot livrés
+            if product_code == '':
+                product_code = product_ref_prev
+                product_qty = 1
+
+                #Numero du lot à importer
+                self._create_common_log_line(job, csvwriter, log_message)
+                stock_lot_id = self.env['stock.production.lot'].search([('name', '=', num_lot)],limit=1)
+
+                #quant associé au lot importé
+                stock_quant_id = self.env['stock.quant'].search([('lot_id', '=', stock_lot_id.id),
+                                        ('location_id', '=', 47)], limit=1)
+
+                if stock_lot_id:
+                    #on cherche tous les lot associé au BL en auto
+                    self.env.cr.execute("select lot_id from stock_move_line where product_id= " + str(stock_lot_id.product_id.id) + " and reference='" + str(order_ref_prev) + "'")# + "' and importednum IS NOT TRUE")
+                    ids_returned = self.env.cr.fetchone()
+                    if ids_returned:
+                        log_message = '' 
+                    else:
+                        log_message = 'le numero de lot n\'existe pas ou a déjà été affecté' 
+                        self._create_common_log_line(job, csvwriter, log_message)
+                        continue
                 
-                product_qty = line[0] or ''
-                
-                i = i + 1
-                
-                
-                
-                #Gestion de la première ligne ECTRA
-                if str(product_qty) == 'E':
-                    #del lot_existants[:]
-                    stock_pickng_id = self.search([('name', '=', order_ref),
-                                            ('state', 'not in', ['done', 'cancel'])],
-                                            limit=1)
+
+                    if (stock_lot_id.id in ids_returned) and (str(stock_lot_id.name) != str(num_lot)):
+                        self.env.cr.execute("update stock_move_line set qty_done = 1 where lot_id = " + str(stock_lot_id.id) + " and reference = '" + str(order_ref_prev) +"'" )
+                        log_message = 'REF : ' + str(product_ref_prev) + ' - SN : ' + str(stock_lot_id.name)
+                        self._create_common_log_line(job, csvwriter, log_message)
+                    else:
+                        #on appelle la fonction de SWAP des Num lot
+                        _logger.info('>>>>>>>>>>>>>>>> DANS LE SWAP')
+                        self.swap_num_lot(csvwriter, job, stock_lot_id.id, ids_returned[0], order_ref_prev)
+                        self.env.cr.execute("update stock_move_line set qty_done = 1 where lot_id = " + str(stock_lot_id.id) + " and reference = '" + str(order_ref_prev) +"'" )
+                        log_message = 'REF : ' + str(product_ref_prev) + ' - SN : ' + str(stock_lot_id.name)
+                        _logger.info('SWAP REF : ' + str(product_ref_prev) + ' - SN : ' + str(stock_lot_id.name))
+                        self._create_common_log_line(job, csvwriter, log_message)
+
+            else:    
+                product_ref_prev = line[2] or ''
+                #log_message = 'Reference Précédente : ' + str(product_ref_prev) + ' - line : ' + str(line[2])
+                #self._create_common_log_line(job, csvwriter, log_message)  
+                if line[2] != 'CBD' and  product_ref_prev != 'CBD':
+                    log_message = 'Reference Produit traitée : ' + str(product_ref_prev) + ' - Quantité livrée : ' + str(product_qty)
+                    self._create_common_log_line(job, csvwriter, log_message)  
+                product_ref_prev = line[2] or ''
+
+
+            tracking_no = filename
+            product_vendor_code_id = self.env['product.product'].search(
+                [('default_code', '=', product_code)])
+            
+            self.env.cr.execute("select id from product_product where default_code = '" + str(product_code) + "'" )
+            lot_retourne = self.env.cr.fetchall()
+            
+            if lot_retourne:
+                stock_move_id = self.env['stock.move'].search(
+                    [('product_id', 'in', lot_retourne),('reference', '=', order_ref_prev)], limit=1)
+                if stock_move_id:
+                    stock_move_id.picking_id.write({'is_exported': False})
+                    stock_move_id.picking_id.write({'note': str(filename)})
                     
-                    order_ref_prev = order_ref
-                    
-                    #if not stock_pickng_id:
-                    #   continue
-
-                    log_message = 'Traitement du BP N° ' + str(order_ref)
-                    self._create_common_log_line(job, csvwriter, log_message)
-                
-                #Gestion des numeros de lot livrés
-                if product_code == '':
-                    product_code = product_ref_prev
-                    product_qty = 1
-
-                    #Numero du lot à importer
-                    self._create_common_log_line(job, csvwriter, log_message)
-                    stock_lot_id = self.env['stock.production.lot'].search([('name', '=', num_lot)],limit=1)
-
-                    #quant associé au lot importé
-                    stock_quant_id = self.env['stock.quant'].search([('lot_id', '=', stock_lot_id.id),
-                                            ('location_id', '=', 47)], limit=1)
-
-                    if stock_lot_id:
-                        #on cherche tous les lot associé au BL en auto
-                        self.env.cr.execute("select lot_id from stock_move_line where product_id= " + str(stock_lot_id.product_id.id) + " and reference='" + str(order_ref_prev) + "'")# + "' and importednum IS NOT TRUE")
-                        ids_returned = self.env.cr.fetchone()
-                        if ids_returned:
-                            log_message = '' 
-                        else:
-                            log_message = 'le numero de lot n\'existe pas ou a déjà été affecté' 
-                            self._create_common_log_line(job, csvwriter, log_message)
-                            continue
-                    
-
-                        if (stock_lot_id.id in ids_returned) and (str(stock_lot_id.name) != str(num_lot)):
-                            self.env.cr.execute("update stock_move_line set qty_done = 1 where lot_id = " + str(stock_lot_id.id) + " and reference = '" + str(order_ref_prev) +"'" )
-                            log_message = 'REF : ' + str(product_ref_prev) + ' - SN : ' + str(stock_lot_id.name)
-                            self._create_common_log_line(job, csvwriter, log_message)
-                        else:
-                            #on appelle la fonction de SWAP des Num lot
-                            _logger.info('>>>>>>>>>>>>>>>> DANS LE SWAP')
-                            self.swap_num_lot(csvwriter, job, stock_lot_id.id, ids_returned[0], order_ref_prev)
-                            self.env.cr.execute("update stock_move_line set qty_done = 1 where lot_id = " + str(stock_lot_id.id) + " and reference = '" + str(order_ref_prev) +"'" )
-                            log_message = 'REF : ' + str(product_ref_prev) + ' - SN : ' + str(stock_lot_id.name)
-                            _logger.info('SWAP REF : ' + str(product_ref_prev) + ' - SN : ' + str(stock_lot_id.name))
-                            self._create_common_log_line(job, csvwriter, log_message)
-
-                else:    
-                    product_ref_prev = line[2] or ''
-                    #log_message = 'Reference Précédente : ' + str(product_ref_prev) + ' - line : ' + str(line[2])
-                    #self._create_common_log_line(job, csvwriter, log_message)  
-                    if line[2] != 'CBD' and  product_ref_prev != 'CBD':
-                        log_message = 'Reference Produit traitée : ' + str(product_ref_prev) + ' - Quantité livrée : ' + str(product_qty)
-                        self._create_common_log_line(job, csvwriter, log_message)  
-                    product_ref_prev = line[2] or ''
-
-
-                tracking_no = filename
-                product_vendor_code_id = self.env['product.product'].search(
-                    [('default_code', '=', product_code)])
-                
-                self.env.cr.execute("select id from product_product where default_code = '" + str(product_code) + "'" )
-                lot_retourne = self.env.cr.fetchall()
-                
-                if lot_retourne:
+                    if stock_move_id.product_uom_qty < float(product_qty):
+                        log_message = (_("1 - Product ordered quantity %s and shipped"
+                                        " quantity %s") %
+                                    (stock_move_id.product_uom_qty, product_qty))
+                        #self._create_common_log_line(job, csvwriter, log_message, order_no,
+                        #                            '', product_code,
+                        #                           lot_retourne.id)
+                    stock_move_id.move_line_ids.write({'qty_done': float(product_qty)})
+                    validate_picking_ids.append(stock_move_id.picking_id)
+                    # if tracking_no:
+                    #     if stock_move_id.picking_id.carrier_tracking_ref:
+                    #         stock_move_id.picking_id.write(
+                    #             {'carrier_tracking_ref': str(
+                    #                 '%s,%s' %
+                    #                 (stock_move_id.picking_id.carrier_tracking_ref,
+                    #                  tracking_no))})
+                    #     else:
+                    #         stock_move_id.picking_id.write(
+                    #             {'carrier_tracking_ref': tracking_no})
+            else:
+                product_id = self.env['product.product'].search([
+                    ('default_code', '=', product_code)], limit=1)
+                if product_id:
                     stock_move_id = self.env['stock.move'].search(
-                        [('product_id', 'in', lot_retourne),('reference', '=', order_ref_prev)], limit=1)
+                        [('product_id', '=', product_id.id),
+                        ('origin', '=', stock_pickng_id.origin)], limit=1)
                     if stock_move_id:
-                        stock_move_id.picking_id.write({'is_exported': False})
-                        stock_move_id.picking_id.write({'note': str(filename)})
-                        
                         if stock_move_id.product_uom_qty < float(product_qty):
-                            log_message = (_("1 - Product ordered quantity %s and shipped"
-                                            " quantity %s") %
+                            log_message = (_("2 - Product ordered quantity %s and"
+                                            " shipped quantity %s") %
                                         (stock_move_id.product_uom_qty, product_qty))
-                            #self._create_common_log_line(job, csvwriter, log_message, order_no,
-                            #                            '', product_code,
-                            #                           lot_retourne.id)
-                        stock_move_id.move_line_ids.write({'qty_done': float(product_qty)})
+                            self._create_common_log_line(job, csvwriter, log_message,
+                                                        order_no, '',
+                                                        product_code, product_id.id)
+                        stock_move_id.move_line_ids.write({'qty_done': product_qty})
+                        
                         validate_picking_ids.append(stock_move_id.picking_id)
-                        # if tracking_no:
-                        #     if stock_move_id.picking_id.carrier_tracking_ref:
-                        #         stock_move_id.picking_id.write(
-                        #             {'carrier_tracking_ref': str(
-                        #                 '%s,%s' %
-                        #                 (stock_move_id.picking_id.carrier_tracking_ref,
-                        #                  tracking_no))})
-                        #     else:
-                        #         stock_move_id.picking_id.write(
-                        #             {'carrier_tracking_ref': tracking_no})
-                else:
-                    product_id = self.env['product.product'].search([
-                        ('default_code', '=', product_code)], limit=1)
-                    if product_id:
-                        stock_move_id = self.env['stock.move'].search(
-                            [('product_id', '=', product_id.id),
-                            ('origin', '=', stock_pickng_id.origin)], limit=1)
-                        if stock_move_id:
-                            if stock_move_id.product_uom_qty < float(product_qty):
-                                log_message = (_("2 - Product ordered quantity %s and"
-                                                " shipped quantity %s") %
-                                            (stock_move_id.product_uom_qty, product_qty))
-                                self._create_common_log_line(job, csvwriter, log_message,
-                                                            order_no, '',
-                                                            product_code, product_id.id)
-                            stock_move_id.move_line_ids.write({'qty_done': product_qty})
-                            
-                            validate_picking_ids.append(stock_move_id.picking_id)
-                            
-                            if tracking_no:
-                                if stock_move_id.picking_id.carrier_tracking_ref:
-                                    stock_move_id.picking_id.write(
-                                        {'carrier_tracking_ref':
-                                            str('%s,%s' %
-                                                (stock_move_id.picking_id.carrier_tracking_ref,
-                                                tracking_no))})
-                                else:
-                                    stock_move_id.picking_id.write(
-                                        {'carrier_tracking_ref': tracking_no})
-            if product_code != '':
-                for validate_picking_id in list(set(validate_picking_ids)):
-                    #tracking_no = validate_picking_id.carrier_tracking_ref
-                    validate_picking_id.action_done()
-                    validate_picking_id.write({'is_exported': True})
-                    log_message = (_("Dropship order validated successfully."))
-                    self._create_common_log_line(job, csvwriter, log_message,
-                                                validate_picking_id.origin, tracking_no)
-                    
+                        
+                        if tracking_no:
+                            if stock_move_id.picking_id.carrier_tracking_ref:
+                                stock_move_id.picking_id.write(
+                                    {'carrier_tracking_ref':
+                                        str('%s,%s' %
+                                            (stock_move_id.picking_id.carrier_tracking_ref,
+                                            tracking_no))})
+                            else:
+                                stock_move_id.picking_id.write(
+                                    {'carrier_tracking_ref': tracking_no})
+        if product_code != '':
+            for validate_picking_id in list(set(validate_picking_ids)):
+                #tracking_no = validate_picking_id.carrier_tracking_ref
+                validate_picking_id.action_done()
+                validate_picking_id.write({'is_exported': True})
+                log_message = (_("Dropship order validated successfully."))
+                self._create_common_log_line(job, csvwriter, log_message,
+                                            validate_picking_id.origin, tracking_no)
                 
-                file = open(filename)
-                file.seek(0)
-                file_data = file.read().encode()
-                if file_data:
-                    vals = {
-                        'name': server_filename,
-                        'datas': base64.encodestring(file_data),
-                        'type': 'binary',
-                        'res_model': 'common.log.book.ept',
-                    }
-                    attachment = self.env['ir.attachment'].create(vals)
-                    job.message_post(body=_("<b>Imported Shipment's File</b>"),
-                                    attachment_ids=attachment.ids)
-
-                try:
-                    with partner_id.get_dropship_edi_interface(
-                            operation="shipment_import") as dropship_tpw_interface:
-                        dropship_tpw_interface.archive_file([server_filename])
-                except:
-                    job.write({
-                        'message': "Supplier %s has problem with connection or file Path."
-                                " File can not move to Archive." % partner_id.name})
-
-                
-
-            log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
-            buffer.seek(0)
-            log_file_data = buffer.read().encode()
-            if log_file_data:
+            
+            file = open(filename)
+            file.seek(0)
+            file_data = file.read().encode()
+            if file_data:
                 vals = {
-                    'name': log_filename,
-                    'datas': base64.encodestring(log_file_data),
+                    'name': server_filename,
+                    'datas': base64.encodestring(file_data),
                     'type': 'binary',
                     'res_model': 'common.log.book.ept',
                 }
-                _logger.info('>>>>>>>>>>>>>>>>DANS LES LOGS : ' )
                 attachment = self.env['ir.attachment'].create(vals)
-                job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
-                                    attachment_ids=attachment.ids)
-            buffer.close() 
-            if partner_ids:
-                _logger.info('>>>>>>>>>>>>>>>>BOUCLE2 : ' + str(partner_ids))
-                return True
-                #
-                
-                #return True
+                job.message_post(body=_("<b>Imported Shipment's File</b>"),
+                                attachment_ids=attachment.ids)
+
+            try:
+                with partner_id.get_dropship_edi_interface(
+                        operation="shipment_import") as dropship_tpw_interface:
+                    dropship_tpw_interface.archive_file([server_filename])
+            except:
+                job.write({
+                    'message': "Supplier %s has problem with connection or file Path."
+                            " File can not move to Archive." % partner_id.name})
+
+            
+
+        log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
+        buffer.seek(0)
+        log_file_data = buffer.read().encode()
+        if log_file_data:
+            vals = {
+                'name': log_filename,
+                'datas': base64.encodestring(log_file_data),
+                'type': 'binary',
+                'res_model': 'common.log.book.ept',
+            }
+            _logger.info('>>>>>>>>>>>>>>>>DANS LES LOGS : ' )
+            attachment = self.env['ir.attachment'].create(vals)
+            job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
+                                attachment_ids=attachment.ids)
+        buffer.close() 
+        if partner_ids:
+            _logger.info('>>>>>>>>>>>>>>>>BOUCLE2 : ' + str(partner_ids))
+            return True
+            #
+            
+            #return True
         return True
 
     def swap_num_lot(self,csvwriter, job, lot_import_id, lot_existant_id, reference):
