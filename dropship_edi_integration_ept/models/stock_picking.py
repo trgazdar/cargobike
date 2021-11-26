@@ -342,12 +342,13 @@ class StockPicking(models.Model):
         """
         for partner_id in partner_ids:
             validate_picking_ids = []
-            _logger.info('>>>>>>>>>>>>>>>>BOUCLE1 : ' + str(partner_ids))
+            
             try:
                 with partner_id.get_dropship_edi_interface(operation="shipment_import") \
                         as dropship_edi_object:
                     filenames, server_filenames = \
                         dropship_edi_object.pull_from_ftp2(partner_id.prefix_import_shipment)
+                    _logger.info('>>>>>>>>>>>>>>>>BOUCLE0 : ' + str(filenames))
             except:
                 self.env['common.log.book.ept'].create({
                     'application': 'shipment',
@@ -357,6 +358,7 @@ class StockPicking(models.Model):
                     'message': "Supplier %s has problem with FTP connection,"
                                " Please check server credentials and file path." % (partner_id.name)
                 })
+                _logger.info('>>>>>>>>>>>>>>>>BOUCLE1 : ' + str(filenames))
                 continue
 
             for filename, server_filename in zip(filenames, server_filenames):
