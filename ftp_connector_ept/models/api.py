@@ -119,6 +119,28 @@ class TPWFTPInterface(object):
         print("file to export : ", files_to_export)
         return (files_to_export, matched_files)
 
+    def pull_from_ftp2(self, pattern, latest=False):
+        self.client.cwd(self.from_tpw_dir)
+        matched_files = []
+        for f in self.client.nlst():
+            if f.strip().startswith(pattern):
+                matched_files.append(f)
+
+        matched_files.sort()
+        files_to_export = []
+        print("Files : ", matched_files)
+
+        for file_to_import in matched_files:
+            file = NamedTemporaryFile(delete=False)
+
+            self.client.retrbinary('RETR %s' % file_to_import, file.write)
+            file.close()
+
+            files_to_export.append(file.name)
+
+            print("file to export : ", files_to_export)
+            return (files_to_export, matched_files)
+
     def delete_from_ftp(self, filenames):
         """
         Delete the files for the filenames provided from the FTP location
