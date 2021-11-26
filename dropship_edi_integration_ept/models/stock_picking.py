@@ -584,22 +584,7 @@ class StockPicking(models.Model):
                             'message': "Supplier %s has problem with connection or file Path."
                                     " File can not move to Archive." % partner_id.name})
 
-                    """log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
-                    buffer.seek(0)
-                    log_file_data = buffer.read().encode()
-                    if log_file_data:
-                        vals = {
-                            'name': log_filename,
-                            'datas': base64.encodestring(log_file_data),
-                            'type': 'binary',
-                            'res_model': 'common.log.book.ept',
-                        }
-                        attachment = self.env['ir.attachment'].create(vals)
-                        job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
-                                        attachment_ids=attachment.ids)
-                    buffer.close()
-                    validate_picking_ids = []
-                """ 
+                    
 
                 log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
                 buffer.seek(0)
@@ -618,15 +603,9 @@ class StockPicking(models.Model):
                 buffer.close() 
                 if partner_ids:
                     _logger.info('>>>>>>>>>>>>>>>>BOUCLE2 : ' + str(partner_ids))
-
+                    return True
                     self.import_shipment_orders_from_ftp(partner_ids)
-                    return {
-                        'name': _('Common Log Book'),
-                        'type': 'ir.actions.act_window',
-                        'res_model': 'common.log.book.ept',
-                        'view_mode': 'tree,form',
-                        'target': 'current',
-                    }
+                    
                     #return True
         return True
 
