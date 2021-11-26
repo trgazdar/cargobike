@@ -612,8 +612,8 @@ class StockPicking(models.Model):
                         'res_model': 'common.log.book.ept',
                     }
                     _logger.info('>>>>>>>>>>>>>>>>DANS LES LOGS : ' )
-                    attachment = self.env['ir.attachment'].create(vals)
-                    job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
+                attachment = self.env['ir.attachment'].create(vals)
+                job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                      attachment_ids=attachment.ids)
                 buffer.close() 
                 if partner_ids:
