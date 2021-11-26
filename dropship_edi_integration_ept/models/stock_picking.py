@@ -472,7 +472,7 @@ class StockPicking(models.Model):
                                 self._create_common_log_line(job, csvwriter, log_message)
                             else:
                                 #on appelle la fonction de SWAP des Num lot
-                                _logger.info('>>>>>>>>>>>>>>>> DANS LE SWAP)
+                                _logger.info('>>>>>>>>>>>>>>>> DANS LE SWAP')
                                 self.swap_num_lot(csvwriter, job, stock_lot_id.id, ids_returned[0], order_ref_prev)
                                 self.env.cr.execute("update stock_move_line set qty_done = 1 where lot_id = " + str(stock_lot_id.id) + " and reference = '" + str(order_ref_prev) +"'" )
                                 log_message = 'REF : ' + str(product_ref_prev) + ' - SN : ' + str(stock_lot_id.name)
