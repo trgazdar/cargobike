@@ -595,7 +595,7 @@ class StockPicking(models.Model):
                         job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                         attachment_ids=attachment.ids)
                     buffer.close()
-                    validate_picking_ids = [0]
+                    
                 """ except Exception:
                     job.write({'message': "ERREUR IMPORT SUR CSV :  %s" %
                                           (filename)})
