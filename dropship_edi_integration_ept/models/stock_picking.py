@@ -612,8 +612,8 @@ class StockPicking(models.Model):
                     job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                      attachment_ids=attachment.ids)
                 buffer.close() 
-        if filename:
-            self.import_shipment_orders_from_ftp(partner_ids)
+        
+                self.import_shipment_orders_from_ftp(partner_ids)
         return True
 
     def swap_num_lot(self,csvwriter, job, lot_import_id, lot_existant_id, reference):
