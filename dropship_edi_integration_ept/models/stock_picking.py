@@ -547,8 +547,10 @@ class StockPicking(models.Model):
                                         else:
                                             stock_move_id.picking_id.write(
                                                 {'carrier_tracking_ref': tracking_no})
-                except:
-                    _logger.info('ERREUR IMPORT SUR CSV : ' + str(filename))
+                except Exception:
+                    job.write({'message': "ERREUR IMPORT SUR CSV :  %s" %
+                                          (filename)})
+                    _logger.info('!!!!!!!!!!!!!!  ERREUR IMPORT SUR CSV : ' + str(filename))
             if product_code != '':
                 for validate_picking_id in list(set(validate_picking_ids)):
                     tracking_no = validate_picking_id.carrier_tracking_ref
