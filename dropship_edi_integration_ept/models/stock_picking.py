@@ -351,6 +351,7 @@ class StockPicking(models.Model):
                     'message': "No File to import "
                 })
             for filename, server_filename in zip(filenames, server_filenames):
+
                     self.import_shipment_orders_from_ftp(partner_id,filename, server_filename)
             return True
                 
@@ -624,7 +625,7 @@ class StockPicking(models.Model):
                                 attachment_ids=attachment.ids)
             buffer.close() 
 
-        return True
+        
 
     def swap_num_lot(self,csvwriter, job, lot_import_id, lot_existant_id, reference):
         #On cherche si le lot importé est affecté sur un BL
