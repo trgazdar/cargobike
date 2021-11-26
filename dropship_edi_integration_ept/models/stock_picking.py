@@ -346,7 +346,7 @@ class StockPicking(models.Model):
             self.env['common.log.book.ept'].create({
                 'application': 'shipment',
                 'type': 'import',
-                'partner_id': partner_id.id,
+                'partner_id': 'ECTRA',
                 'module': 'dropship_edi_integration_ept',
                 'message': "No File to import or Supplier %s has problem with FTP connection,"
                             " Please check server credentials and file path." % (partner_id.name)
