@@ -351,8 +351,8 @@ class StockPicking(models.Model):
                     'message': "No File to import "
                 })
             for filename, server_filename in zip(filenames, server_filenames):
-
-                    self.import_shipment_orders_from_ftp(partner_id,filename, server_filename)
+                _logger.info('>>>>>>>>>>>>>>>>FICHIERS A TRAIER : ' + str(server_filenames))
+                self.import_shipment_orders_from_ftp(partner_id,filename, server_filename)
             return True
                 
     
