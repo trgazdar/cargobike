@@ -613,6 +613,7 @@ class StockPicking(models.Model):
                                      attachment_ids=attachment.ids)
                 buffer.close() 
                 if partner_ids:
+                    _logger.info('>>>>>>>>>>>>>>>>BOUCLE : ' + str(partner_ids))
                     self.import_shipment_orders_from_ftp(partner_ids)
         return True
 
