@@ -624,124 +624,127 @@ class StockPicking(models.Model):
 
     def swap_num_lot(self,csvwriter, job, lot_import_id, lot_existant_id, reference):
         #On cherche si le lot importé est affecté sur un BL
-        log_message = 'id import num lot :  ' + str(lot_import_id) + ' id lot existant : ' + str(lot_existant_id) + ' REF : ' + str(reference)
-        _logger.info('id import num lot :  ' + str(lot_import_id) + ' id lot existant : ' + str(lot_existant_id) + ' REF : ' + str(reference))
+        try:
+            log_message = 'id import num lot :  ' + str(lot_import_id) + ' id lot existant : ' + str(lot_existant_id) + ' REF : ' + str(reference)
+            _logger.info('id import num lot :  ' + str(lot_import_id) + ' id lot existant : ' + str(lot_existant_id) + ' REF : ' + str(reference))
 
-        if lot_import_id:
-            self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
-            count = self.env.cr.fetchone()
-            if count[0] > 0:
-                _logger.info('+++++++ 1Mise à jour QUANT SERIAL IMPORT')
-                self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
-                self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_import_id) + " and location_id=47")
-        
-        if lot_existant_id:        
-            self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
-            count = self.env.cr.fetchone()
-            if count[0] > 0:
-                _logger.info('+++++++ 1Mise à jour QUANT SERIAL EXISTANT')
-                self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
-                self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
+            if lot_import_id:
+                self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
+                count = self.env.cr.fetchone()
+                if count[0] > 0:
+                    _logger.info('+++++++ 1Mise à jour QUANT SERIAL IMPORT')
+                    self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
+                    self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_import_id) + " and location_id=47")
+            
+            if lot_existant_id:        
+                self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
+                count = self.env.cr.fetchone()
+                if count[0] > 0:
+                    _logger.info('+++++++ 1Mise à jour QUANT SERIAL EXISTANT')
+                    self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
+                    self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
 
 
-        self._create_common_log_line(job, csvwriter, log_message)
-        stock_move_line_import_id = self.env['stock.move.line'].search(
-                            [('lot_id', '=', lot_import_id),
-                             ('location_id', '=', 47),], limit=1)
+            self._create_common_log_line(job, csvwriter, log_message)
+            stock_move_line_import_id = self.env['stock.move.line'].search(
+                                [('lot_id', '=', lot_import_id),
+                                ('location_id', '=', 47),], limit=1)
 
-        #On cherche quel lot est affecté sur le BL
-        stock_move_line_old_id = self.env['stock.move.line'].search(
-                            [('lot_id', '=', lot_existant_id),
-                             ('location_id', '=', 47),], limit=1)
-        log_message = 'stock_move_line_import_id : ' + str(stock_move_line_import_id) + ' stock_move_line_old_id : ' + str(stock_move_line_old_id) + ' REF : ' + str(reference)
-        _logger.info('stock_move_line_import_id : ' + str(stock_move_line_import_id) + ' stock_move_line_old_id : ' + str(stock_move_line_old_id) + ' REF : ' + str(reference))
-        self._create_common_log_line(job, csvwriter, log_message)
-
-        if stock_move_line_old_id and stock_move_line_import_id:
-            id_temp1 = stock_move_line_old_id
-            id_temp2 = stock_move_line_import_id
-            log_message = 'On a les 2 -> id_temp1 : ' + str(id_temp1) + ' id_temp2 : ' + str(id_temp2)
-            _logger.info('On a les 2 -> id_temp1 : ' + str(id_temp1) + ' id_temp2 : ' + str(id_temp2))
+            #On cherche quel lot est affecté sur le BL
+            stock_move_line_old_id = self.env['stock.move.line'].search(
+                                [('lot_id', '=', lot_existant_id),
+                                ('location_id', '=', 47),], limit=1)
+            log_message = 'stock_move_line_import_id : ' + str(stock_move_line_import_id) + ' stock_move_line_old_id : ' + str(stock_move_line_old_id) + ' REF : ' + str(reference)
+            _logger.info('stock_move_line_import_id : ' + str(stock_move_line_import_id) + ' stock_move_line_old_id : ' + str(stock_move_line_old_id) + ' REF : ' + str(reference))
             self._create_common_log_line(job, csvwriter, log_message)
 
-            #Le Numéro de lot est déjà affecté
-            if stock_move_line_import_id.reference ==  reference:
-                log_message = 'Le lot du BL est déjà affecté au BL' + str(id_temp1) + ' - ' + str(id_temp2)
-                _logger.info('Le lot du BL est déjà affecté au BL' + str(id_temp1) + ' - ' + str(id_temp2))
+            if stock_move_line_old_id and stock_move_line_import_id:
+                id_temp1 = stock_move_line_old_id
+                id_temp2 = stock_move_line_import_id
+                log_message = 'On a les 2 -> id_temp1 : ' + str(id_temp1) + ' id_temp2 : ' + str(id_temp2)
+                _logger.info('On a les 2 -> id_temp1 : ' + str(id_temp1) + ' id_temp2 : ' + str(id_temp2))
                 self._create_common_log_line(job, csvwriter, log_message)
+
+                #Le Numéro de lot est déjà affecté
+                if stock_move_line_import_id.reference ==  reference:
+                    log_message = 'Le lot du BL est déjà affecté au BL' + str(id_temp1) + ' - ' + str(id_temp2)
+                    _logger.info('Le lot du BL est déjà affecté au BL' + str(id_temp1) + ' - ' + str(id_temp2))
+                    self._create_common_log_line(job, csvwriter, log_message)
+                    return True
+
+                if id_temp2:
+                    _logger.info('____________________IDTEMP2')
+                    _logger.info(id_temp2)
+                    _logger.info(id_temp1)
+                    _logger.info('____________________')
+                    self.env.cr.execute("select id from stock_move_line where lot_id = " + str(lot_import_id) + " and location_id= 47 and location_dest_id = 9")
+                    lot_retourne = self.env.cr.fetchone()
+                    
+                    tempId = lot_retourne[0]
+                    #PB si tout est réservé
+                    #On doit faire attention suite aux manip sur Serial de verifier les quants
+                    self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
+                    count = self.env.cr.fetchone()
+                    if count[0] == 2:
+                        _logger.info('+++++++ 1Mise à jour QUANT SERIAL IMPORT')
+                        self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
+                        self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_import_id) + " and location_id=47")
+                    
+                    self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
+                    count = self.env.cr.fetchone()
+                    if count[0] == 2:
+                        _logger.info('+++++++ 1Mise à jour QUANT SERIAL EXISTANT')
+                        self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
+                        self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
+
+                    
+
+                    self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where lot_id= " + str(lot_existant_id) + " and reference='" + str(reference) + "' and location_id= 47 and location_dest_id = 9")
+                    self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_existant_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
+                stock_move_line_old_id.importednum = True 
                 return True
 
-            if id_temp2:
-                _logger.info('____________________IDTEMP2')
-                _logger.info(id_temp2)
-                _logger.info(id_temp1)
-                _logger.info('____________________')
-                self.env.cr.execute("select id from stock_move_line where lot_id = " + str(lot_import_id) + " and location_id= 47 and location_dest_id = 9")
-                lot_retourne = self.env.cr.fetchone()
-                
-                tempId = lot_retourne[0]
-                #PB si tout est réservé
-                #On doit faire attention suite aux manip sur Serial de verifier les quants
+            #Le nouveau lot n'est pas réservé on doit désallouer le lot en cours sur le BL et le remplacer par le nouveau livré    
+            if stock_move_line_old_id and not stock_move_line_import_id and lot_existant_id:
+                #On affecte le nouveau numero à la ligne
+
                 self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
                 count = self.env.cr.fetchone()
                 if count[0] == 2:
-                    _logger.info('+++++++ 1Mise à jour QUANT SERIAL IMPORT')
+                    _logger.info('+++++++ 2Mise à jour QUANT SERIAL IMPORT')
                     self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
                     self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_import_id) + " and location_id=47")
                 
                 self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
                 count = self.env.cr.fetchone()
                 if count[0] == 2:
-                    _logger.info('+++++++ 1Mise à jour QUANT SERIAL EXISTANT')
+                    _logger.info('+++++++ 2Mise à jour QUANT SERIAL EXISTANT')
                     self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
                     self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
 
-                
+                if not stock_move_line_old_id.importednum:
+                    stock_move_line_old_id.lot_id = lot_import_id
+                    stock_move_line_old_id.importednum = True
+                self.env.cr.execute("select id from stock_move_line where lot_id = " + str(lot_existant_id) + " and location_id= 47 and location_dest_id = 9")
+                lot_retourne = self.env.cr.fetchone() 
+                if  lot_retourne:
+                    tempId = lot_retourne[0]
+                    self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
+                    return True
 
-                self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where lot_id= " + str(lot_existant_id) + " and reference='" + str(reference) + "' and location_id= 47 and location_dest_id = 9")
-                self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_existant_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
-            stock_move_line_old_id.importednum = True 
-            return True
 
-        #Le nouveau lot n'est pas réservé on doit désallouer le lot en cours sur le BL et le remplacer par le nouveau livré    
-        if stock_move_line_old_id and not stock_move_line_import_id and lot_existant_id:
-            #On affecte le nouveau numero à la ligne
-
-            self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
-            count = self.env.cr.fetchone()
-            if count[0] == 2:
-                _logger.info('+++++++ 2Mise à jour QUANT SERIAL IMPORT')
-                self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
-                self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_import_id) + " and location_id=47")
-            
-            self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
-            count = self.env.cr.fetchone()
-            if count[0] == 2:
-                _logger.info('+++++++ 2Mise à jour QUANT SERIAL EXISTANT')
-                self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
-                self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
-
-            if not stock_move_line_old_id.importednum:
-                stock_move_line_old_id.lot_id = lot_import_id
-                stock_move_line_old_id.importednum = True
-            self.env.cr.execute("select id from stock_move_line where lot_id = " + str(lot_existant_id) + " and location_id= 47 and location_dest_id = 9")
-            lot_retourne = self.env.cr.fetchone() 
-            if  lot_retourne:
-                tempId = lot_retourne[0]
-                self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
+            if not stock_move_line_old_id and stock_move_line_import_id:
+                _logger.info('+++++++ LAST')
+                #id_temp1 = stock_move_line_old_id.lot_id
+                id_temp2 = stock_move_line_import_id.lot_id
+                log_message = 'On a le nouveau et pas l\'ancien -> id_temp1 : ' + str(stock_move_line_old_id.lot_id ) + ' id_temp2 : ' + str(id_temp2)
+                self._create_common_log_line(job, csvwriter, log_message)
+                stock_move_line_old_id.lot_id  = id_temp2
+                #stock_move_line_import_id.lot_id  = id_temp1
                 return True
-
-
-        if not stock_move_line_old_id and stock_move_line_import_id:
-            _logger.info('+++++++ LAST')
-            #id_temp1 = stock_move_line_old_id.lot_id
-            id_temp2 = stock_move_line_import_id.lot_id
-            log_message = 'On a le nouveau et pas l\'ancien -> id_temp1 : ' + str(stock_move_line_old_id.lot_id ) + ' id_temp2 : ' + str(id_temp2)
-            self._create_common_log_line(job, csvwriter, log_message)
-            stock_move_line_old_id.lot_id  = id_temp2
-            #stock_move_line_import_id.lot_id  = id_temp1
-            return True
-        return False
+            return False
+        except:
+            return False
 
 
     def check_mismatch_details_for_import_shipment(self, csvwriter, job, data):
