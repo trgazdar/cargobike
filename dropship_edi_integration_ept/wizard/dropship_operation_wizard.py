@@ -29,7 +29,7 @@ class DropshipOperationWizard(models.TransientModel):
         if self.export_operations == 'export_shipment_orders':
             stock_picking_obj.export_shipment_orders_to_ftp(self.picking_ids, self.partner_ids)
         elif self.import_operations == 'import_shipment_orders':
-            stock_picking_obj.import_shipment_orders_from_ftp(self.partner_ids)
+            stock_picking_obj.import_shipment_orders_from_ftp_control(self.partner_ids)
         elif self.import_operations == 'import_stock':
             product_obj.import_stock_from_ftp(self.partner_ids)
         elif self.export_operations == 'export_entry_stock':
