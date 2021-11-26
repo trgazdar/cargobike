@@ -351,7 +351,7 @@ class StockPicking(models.Model):
                 'message': "No File to import or Supplier %s has problem with FTP connection,"
                             " Please check server credentials and file path." % (partner_id.name)
             })
-            continue
+            #continue
                 
     
     def import_shipment_orders_from_ftp(self, partner_ids, filename, server_filename):
