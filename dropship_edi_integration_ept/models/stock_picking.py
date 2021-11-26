@@ -341,10 +341,7 @@ class StockPicking(models.Model):
                         as dropship_edi_object:
                     filenames, server_filenames = \
                         dropship_edi_object.pull_from_ftp2(partner_id.prefix_import_shipment)
-                for filename, server_filename in zip(filenames, server_filenames):
-                    _logger.info('>>>>>>>>>>>>>>>>FILESNAMES: ' + str(server_filenames))
-                    self.import_shipment_orders_from_ftp(partner_id,filename, server_filename)
-                    
+                
             except:
                 self.env['common.log.book.ept'].create({
                     'application': 'shipment',
@@ -353,7 +350,9 @@ class StockPicking(models.Model):
                     'module': 'dropship_edi_integration_ept',
                     'message': "No File to import "
                 })
-            #continue
+            for filename, server_filename in zip(filenames, server_filenames):
+                    self.import_shipment_orders_from_ftp(partner_id,filename, server_filename)
+            return True
                 
     
     def import_shipment_orders_from_ftp(self, partner_id, filename, server_filename):
@@ -623,7 +622,7 @@ class StockPicking(models.Model):
             attachment = self.env['ir.attachment'].create(vals)
             job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                 attachment_ids=attachment.ids)
-        buffer.close() 
+            buffer.close() 
 
         return True
 
