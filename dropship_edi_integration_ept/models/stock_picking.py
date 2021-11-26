@@ -623,7 +623,7 @@ class StockPicking(models.Model):
             attachment = self.env['ir.attachment'].create(vals)
             job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                 attachment_ids=attachment.ids)
-            buffer.close() 
+            #buffer.close() 
 
         
 
