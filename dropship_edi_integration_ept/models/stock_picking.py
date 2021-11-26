@@ -342,7 +342,7 @@ class StockPicking(models.Model):
                     filenames, server_filenames = \
                         dropship_edi_object.pull_from_ftp2(partner_id.prefix_import_shipment)
                 for filename, server_filename in zip(filenames, server_filenames):
-                    self.import_shipment_orders_from_ftp(partner_ids,filename, server_filename)
+                    self.import_shipment_orders_from_ftp(partner_id,filename, server_filename)
             except:
                 self.env['common.log.book.ept'].create({
                     'application': 'shipment',
@@ -355,7 +355,7 @@ class StockPicking(models.Model):
             #continue
                 
     
-    def import_shipment_orders_from_ftp(self, partner_ids, filename, server_filename):
+    def import_shipment_orders_from_ftp(self, partner_id, filename, server_filename):
         """
         It will import shipment orders from FTP.If order fulfil the required condition then
          order will be validated.
@@ -623,12 +623,7 @@ class StockPicking(models.Model):
             job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                 attachment_ids=attachment.ids)
         buffer.close() 
-        if partner_ids:
-            _logger.info('>>>>>>>>>>>>>>>>BOUCLE2 : ' + str(partner_ids))
-            return True
-            #
-            
-            #return True
+
         return True
 
     def swap_num_lot(self,csvwriter, job, lot_import_id, lot_existant_id, reference):
