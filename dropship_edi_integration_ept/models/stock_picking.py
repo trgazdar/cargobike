@@ -348,7 +348,10 @@ class StockPicking(models.Model):
                         as dropship_edi_object:
                     filenames, server_filenames = \
                         dropship_edi_object.pull_from_ftp2(partner_id.prefix_import_shipment)
-                    _logger.info('>>>>>>>>>>>>>>>>BOUCLE0 : ' + str(filenames))
+                    if server_filenames:
+                        _logger.info('>>>>>>>>>>>>>>>>BOUCLE0 : ' + str(server_filenames))
+                    else:
+                        _logger.info('>>>>>>>>>>>>>PAS DE FICHIER ' )
             except:
                 self.env['common.log.book.ept'].create({
                     'application': 'shipment',
