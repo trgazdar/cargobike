@@ -599,6 +599,24 @@ class StockPicking(models.Model):
         #On cherche si le lot importé est affecté sur un BL
         log_message = 'id import num lot :  ' + str(lot_import_id) + ' id lot existant : ' + str(lot_existant_id) + ' REF : ' + str(reference)
         _logger.info('id import num lot :  ' + str(lot_import_id) + ' id lot existant : ' + str(lot_existant_id) + ' REF : ' + str(reference))
+
+        if lot_import_id:
+            self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_import_id) + " ")
+            count = self.env.cr.fetchone()
+            if count[0] > 0:
+                _logger.info('+++++++ 1Mise à jour QUANT SERIAL IMPORT')
+                self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_import_id) + " and location_id=9")
+                self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_import_id) + " and location_id=47")
+        
+        if lot_existant_id:        
+            self.env.cr.execute("select count(id) from stock_quant where lot_id = " + str(lot_existant_id) + " ")
+            count = self.env.cr.fetchone()
+            if count[0] > 0:
+                _logger.info('+++++++ 1Mise à jour QUANT SERIAL EXISTANT')
+                self.env.cr.execute("update stock_quant set location_id=47 where lot_id=" + str(lot_existant_id) + " and location_id=9")
+                self.env.cr.execute("update stock_quant set reserved_quantity=1 where lot_id=" + str(lot_existant_id) + " and location_id=47")
+
+
         self._create_common_log_line(job, csvwriter, log_message)
         stock_move_line_import_id = self.env['stock.move.line'].search(
                             [('lot_id', '=', lot_import_id),
