@@ -556,8 +556,46 @@ class StockPicking(models.Model):
                             log_message = (_("Dropship order validated successfully."))
                             self._create_common_log_line(job, csvwriter, log_message,
                                                         validate_picking_id.origin, tracking_no)
-                            validate_picking_ids = []
+                            
                         
+                        file = open(filename)
+                        file.seek(0)
+                        file_data = file.read().encode()
+                        if file_data:
+                            vals = {
+                                'name': server_filename,
+                                'datas': base64.encodestring(file_data),
+                                'type': 'binary',
+                                'res_model': 'common.log.book.ept',
+                            }
+                            attachment = self.env['ir.attachment'].create(vals)
+                            job.message_post(body=_("<b>Imported Shipment's File</b>"),
+                                            attachment_ids=attachment.ids)
+
+                        try:
+                            with partner_id.get_dropship_edi_interface(
+                                    operation="shipment_import") as dropship_tpw_interface:
+                                dropship_tpw_interface.archive_file([server_filename])
+                        except:
+                            job.write({
+                                'message': "Supplier %s has problem with connection or file Path."
+                                        " File can not move to Archive." % partner_id.name})
+
+                        log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
+                        buffer.seek(0)
+                        log_file_data = buffer.read().encode()
+                        if log_file_data:
+                            vals = {
+                                'name': log_filename,
+                                'datas': base64.encodestring(log_file_data),
+                                'type': 'binary',
+                                'res_model': 'common.log.book.ept',
+                            }
+                            attachment = self.env['ir.attachment'].create(vals)
+                            job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
+                                            attachment_ids=attachment.ids)
+                        buffer.close()
+                        validate_picking_ids = [0]
                 except Exception:
                     job.write({'message': "ERREUR IMPORT SUR CSV :  %s" %
                                           (filename)})
@@ -569,7 +607,7 @@ class StockPicking(models.Model):
                     validate_picking_id.write({'is_exported': True})
                     log_message = (_("Dropship order validated successfully."))
                     self._create_common_log_line(job, csvwriter, log_message,
-                                                 validate_picking_id.origin, tracking_no) """
+                                                 validate_picking_id.origin, tracking_no)
                     
                 
                 file = open(filename)
@@ -608,7 +646,7 @@ class StockPicking(models.Model):
                     attachment = self.env['ir.attachment'].create(vals)
                     job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                      attachment_ids=attachment.ids)
-                buffer.close()
+                buffer.close() """
         return True
 
     def swap_num_lot(self,csvwriter, job, lot_import_id, lot_existant_id, reference):
