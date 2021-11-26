@@ -400,6 +400,7 @@ class StockPicking(models.Model):
                     product_ref_prev = ''
                     lot_traites = []
                     i = 1
+                    _logger.info('>>>>>>>>>>>>>>>>Fichier CSV : ' + str(filename))
                     for line in reader:
                         _logger.info('>>>>>>>>>>>>>>>>Ligne CSV : ' + str(i))
                         if len(line) > 3:
