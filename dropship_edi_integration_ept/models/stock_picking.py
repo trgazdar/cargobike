@@ -361,7 +361,7 @@ class StockPicking(models.Model):
                     'message': "Supplier %s has problem with FTP connection,"
                                " Please check server credentials and file path." % (partner_id.name)
                 })
-                _logger.info('>>>>>>>>>>>>>>>>BOUCLE1 : ' + str(filenames))
+                _logger.info('>>>>>>>>>>>>>>>>BOUCLE1 ')
                 continue
 
             for filename, server_filename in zip(filenames, server_filenames):
