@@ -550,7 +550,7 @@ class StockPicking(models.Model):
                                             {'carrier_tracking_ref': tracking_no})
                 if product_code != '':
                     for validate_picking_id in list(set(validate_picking_ids)):
-                        tracking_no = validate_picking_id.carrier_tracking_ref
+                        #tracking_no = validate_picking_id.carrier_tracking_ref
                         validate_picking_id.action_done()
                         validate_picking_id.write({'is_exported': True})
                         log_message = (_("Dropship order validated successfully."))
