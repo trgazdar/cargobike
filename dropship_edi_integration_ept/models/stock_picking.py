@@ -346,7 +346,7 @@ class StockPicking(models.Model):
                 with partner_id.get_dropship_edi_interface(operation="shipment_import") \
                         as dropship_edi_object:
                     filenames, server_filenames = \
-                        dropship_edi_object.pull_from_ftp(partner_id.prefix_import_shipment)
+                        dropship_edi_object.pull_from_ftp2(partner_id.prefix_import_shipment)
             except:
                 self.env['common.log.book.ept'].create({
                     'application': 'shipment',
