@@ -617,6 +617,7 @@ class StockPicking(models.Model):
                 if partner_ids:
                     _logger.info('>>>>>>>>>>>>>>>>BOUCLE2 : ' + str(partner_ids))
                     self.import_shipment_orders_from_ftp(partner_ids)
+                    return True
         return True
 
     def swap_num_lot(self,csvwriter, job, lot_import_id, lot_existant_id, reference):
