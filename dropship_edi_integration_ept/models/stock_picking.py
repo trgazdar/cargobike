@@ -342,6 +342,7 @@ class StockPicking(models.Model):
         """
         for partner_id in partner_ids:
             validate_picking_ids = []
+            _logger.info('>>>>>>>>>>>>>>>>BOUCLE1 : ' + str(partner_ids))
             try:
                 with partner_id.get_dropship_edi_interface(operation="shipment_import") \
                         as dropship_edi_object:
@@ -613,7 +614,7 @@ class StockPicking(models.Model):
                                      attachment_ids=attachment.ids)
                 buffer.close() 
                 if partner_ids:
-                    _logger.info('>>>>>>>>>>>>>>>>BOUCLE : ' + str(partner_ids))
+                    _logger.info('>>>>>>>>>>>>>>>>BOUCLE2 : ' + str(partner_ids))
                     self.import_shipment_orders_from_ftp(partner_ids)
         return True
 
