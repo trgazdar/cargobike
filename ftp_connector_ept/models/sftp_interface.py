@@ -74,6 +74,26 @@ class sftp_interface(object):
             files_to_export.update({file_to_import: file.name})
         return files_to_export
 
+
+    def pull_from_ftp2(self, pattern):
+        """
+        Pulls all the available files from the FTP location and imports them
+        :param pattern: Filename Pattern to match, e.g., `Cdeclient`
+        :return: Filenames of files to export
+        """
+
+        self.sftp_client.chdir(self.download_dir)
+
+        # Match the pattern in each filename in the directory and filter
+        matched_files = [f for f in self.sftp_client.listdir() if pattern in f]
+        files_to_export = {}
+        for file_to_import in matched_files:
+            file = NamedTemporaryFile(delete=False)
+            file.close()
+            self.sftp_client.get(file_to_import, file.name)
+            files_to_export.update({file_to_import: file.name})
+            return files_to_export
+            
     def delete_from_tmp(self, filenames):
         """
         author:bhavesh jadav 15/4/2019
