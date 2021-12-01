@@ -13,6 +13,6 @@ class ProductProductWebsiteVisibility(models.Model):
     _inherit = 'product.product'
 
     
-    website_visibility = fields.Boolean(default=True)
+    website_visibility = fields.Boolean(default=True, company_dependent=True)
     
 
