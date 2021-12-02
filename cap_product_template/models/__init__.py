@@ -1,0 +1,1 @@
+from . import cap_product_template
