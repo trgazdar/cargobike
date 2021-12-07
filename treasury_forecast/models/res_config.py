@@ -9,7 +9,7 @@ class ResConfigSettings(models.TransientModel):
 
     company_id = fields.Many2one(
         'res.company', string='Company', required=True,
-        default=lambda self: self.env.company_id)
+        default=lambda self: self.env.company)
 
     fc_account_ids = fields.Many2many(
         comodel_name='account.account',
