@@ -457,9 +457,10 @@ class StockPicking(models.Model):
                             ids_returned = self.env.cr.fetchone()
                             #self.env.cr.execute("update stock_move_line set qty_done = 1 where lot_id = " + str(stock_lot_id.id) + " and reference = '" + str(order_ref_prev) +"'" )
                             self.env.cr.execute("select * from stock_move_line where qty_done = 0 and product_id = " + str(stock_lot_id.product_id.id + " and reference = '" + str(order_ref_prev)+"'" )
-                            ids_returned_temp = self.env.cr.fetchone()
+
+                            move_lines_id = self.env.cr.fetchone()
                             #update stock_move_line set (qty_done , lot_id )
-                            log_message = 'REF : ' + str(product_ref_prev) + ' - SN : ' + str(ids_returned[0])
+                            log_message = 'REF : ' + str(product_ref_prev) + ' - SN : ' + str(move_lines_id[0])
                             self._create_common_log_line(job, csvwriter, log_message)
 
                             if (stock_lot_id.id in ids_returned) and (str(stock_lot_id.name) != str(num_lot)):
