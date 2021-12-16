@@ -787,3 +787,4 @@ class StockPicking(models.Model):
         if partner_ids:
             self.import_shipment_orders_from_ftp(partner_ids)
         return True
+
