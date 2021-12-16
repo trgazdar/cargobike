@@ -448,9 +448,10 @@ class StockPicking(models.Model):
                         #quant associé au lot importé
                         stock_quant_id = self.env['stock.quant'].search([('lot_id', '=', stock_lot_id.id),
                                                    ('location_id', '=', 47)], limit=1)
-                        log_message = 'le lot existe !!!!!' 
-                        self._create_common_log_line(job, csvwriter, log_message)
+                        
                         if stock_lot_id:
+                            log_message = 'le lot existe !!!!! ' + str(num_lot)
+                            self._create_common_log_line(job, csvwriter, log_message)
                             #on cherche tous les lot associé au BL en auto
                             self.env.cr.execute("select lot_id from stock_move_line where product_id= " + str(stock_lot_id.product_id.id) + " and reference='" + str(order_ref_prev) + "'")# + "' and importednum IS NOT TRUE")
                             ids_returned = self.env.cr.fetchone()
