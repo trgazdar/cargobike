@@ -494,8 +494,6 @@ class StockPicking(models.Model):
                             [('product_id', 'in', lot_retourne),('reference', '=', order_ref_prev)], limit=1)
                         if stock_move_id:
                             stock_move_id.picking_id.write({'is_exported': False})
-                            stock_move_id.picking_id.write({'note': str(filename)})
-                            
                             if stock_move_id.product_uom_qty < float(product_qty):
                                 log_message = (_("1 - Product ordered quantity %s and shipped"
                                                  " quantity %s") %
@@ -633,24 +631,22 @@ class StockPicking(models.Model):
                 lot_retourne = self.env.cr.fetchone()
                 
                 tempId = lot_retourne[0]
-                #PB si tout est réservé
                 self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where lot_id= " + str(lot_existant_id) + " and reference='" + str(reference) + "' and location_id= 47 and location_dest_id = 9")
                 self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_existant_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
             stock_move_line_old_id.importednum = True 
             return True
 
         #Le nouveau lot n'est pas réservé on doit désallouer le lot en cours sur le BL et le remplacer par le nouveau livré    
-        if stock_move_line_old_id and not stock_move_line_import_id and lot_existant_id:
+        if stock_move_line_old_id and not stock_move_line_import_id:
             #On affecte le nouveau numero à la ligne
             if not stock_move_line_old_id.importednum:
                 stock_move_line_old_id.lot_id = lot_import_id
                 stock_move_line_old_id.importednum = True
             self.env.cr.execute("select id from stock_move_line where lot_id = " + str(lot_existant_id) + " and location_id= 47 and location_dest_id = 9")
-            lot_retourne = self.env.cr.fetchone() 
-            if  lot_retourne:
-                tempId = lot_retourne[0]
-                self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
-                return True
+            lot_retourne = self.env.cr.fetchone()  
+            tempId = lot_retourne[0]
+            self.env.cr.execute("update stock_move_line set lot_id = " + str(lot_import_id) + " where id= " + str(tempId) + "  and location_id= 47 and location_dest_id = 9")
+            return True
 
 
         if not stock_move_line_old_id and stock_move_line_import_id:
