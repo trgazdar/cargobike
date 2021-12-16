@@ -458,7 +458,7 @@ class StockPicking(models.Model):
                             #self.env.cr.execute("update stock_move_line set qty_done = 1 where lot_id = " + str(stock_lot_id.id) + " and reference = '" + str(order_ref_prev) +"'" )
                             self.env.cr.execute("select picking_id from stock_move where reference = '" + str(order_ref_prev)+"'" )
                             picking_en_cours = self.env.cr.fetchone()
-                            self.env.cr.execute("insert into stock_move_line (picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values(" + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned'," + str(order_ref_prev) + ",1 ")
+                            self.env.cr.execute("insert into stock_move_line (picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values(" + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned'," + str(order_ref_prev) + ",1 )")
                             #move_lines_id = self.env.cr.fetchone()
                             #update stock_move_line set (qty_done , lot_id )
                             #log_message = 'REF : ' + str(product_ref_prev) + ' - SN : ' + str(move_lines_id)
