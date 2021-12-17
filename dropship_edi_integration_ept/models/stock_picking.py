@@ -399,6 +399,12 @@ class StockPicking(models.Model):
                 product_ref_prev = ''
                 lot_traites = []
                 i = 1
+                #select name from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL);
+                self.env.cr.execute("select name from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL)"")
+                stock_picking_ids = self.env.cr.fetchall()
+                for picking_ready in stock_picking_ids:
+                    _logger.info(str(picking_ready))
+
                 for line in reader:
                     if len(line) > 3:
                         order_ref = line[3] or ''#3
