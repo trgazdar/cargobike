@@ -440,8 +440,8 @@ class StockPicking(models.Model):
                                                    ('state', 'not in', ['done', 'cancel'])],
                                                   limit=1)
                         stock_picking_ids.remove(stock_pickng_id.id)
-                         _logger.info(str(stock_pickng_id.name))
-                         _logger.info(str(stock_picking_ids))
+                        _logger.info(str(stock_pickng_id.name))
+                        _logger.info(str(stock_picking_ids))
                         order_ref_prev = order_ref
                         
                         #if not stock_pickng_id:
