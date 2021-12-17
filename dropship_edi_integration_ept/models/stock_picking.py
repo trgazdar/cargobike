@@ -407,9 +407,9 @@ class StockPicking(models.Model):
                                                    ('state', 'in', ['assigned', 'partialy_assigned']),
                                                    ('is_merged', 'in', [False, None])])
                 _logger.info(str(stock_picking_ids))
-                for picking_ready in stock_picking_ids:
+                """ for picking_ready in stock_picking_ids:
                     _logger.info(str(picking_ready.name))
-                    picking_ready.do_unreserve()
+                    picking_ready.do_unreserve() """
 
                 for line in reader:
                     if len(line) > 3:
