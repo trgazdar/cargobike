@@ -408,7 +408,7 @@ class StockPicking(models.Model):
                                                    ('is_merged', 'in', [False, None])])
                 #_logger.info(str(stock_picking_ids))
                 for picking_ready in stock_picking_ids:
-                    _logger.info(str(picking_ready))
+                    _logger.info(str(picking_ready.name))
 
                 for line in reader:
                     if len(line) > 3:
