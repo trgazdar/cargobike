@@ -406,7 +406,7 @@ class StockPicking(models.Model):
                 stock_picking_ids = self.search([('location_id', '=', 47),
                                                    ('state', 'in', ['assigned', 'partialy_assigned']),
                                                    ('is_merged', 'in', [False, None])])
-                #_logger.info(str(stock_picking_ids))
+                _logger.info(str(stock_picking_ids))
                 for picking_ready in stock_picking_ids:
                     _logger.info(str(picking_ready.name))
                     picking_ready.do_unreserve()
@@ -439,7 +439,9 @@ class StockPicking(models.Model):
                         stock_pickng_id = self.search([('name', '=', order_ref),
                                                    ('state', 'not in', ['done', 'cancel'])],
                                                   limit=1)
-                        
+                        stock_picking_ids.remove(stock_pickng_id.id)
+                         _logger.info(str(stock_pickng_id.name))
+                         _logger.info(str(stock_picking_ids))
                         order_ref_prev = order_ref
                         
                         #if not stock_pickng_id:
