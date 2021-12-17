@@ -405,9 +405,8 @@ class StockPicking(models.Model):
 
                 stock_picking_ids = self.search([('location_id', '=', 47),
                                                    ('state', 'in', ['assigned', 'partialy_assigned']),
-                                                   ('is_merged', 'in', [False, None])],
-                                                  limit=1)
-                _logger.info(str(stock_picking_ids))
+                                                   ('is_merged', 'in', [False, None])])
+                #_logger.info(str(stock_picking_ids))
                 for picking_ready in stock_picking_ids:
                     _logger.info(str(picking_ready))
 
