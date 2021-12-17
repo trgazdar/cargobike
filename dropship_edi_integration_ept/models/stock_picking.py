@@ -407,6 +407,7 @@ class StockPicking(models.Model):
                                                    ('state', 'in', ['assigned', 'partialy_assigned']),
                                                    ('is_merged', 'in', [False, None])],
                                                   limit=1)
+                _logger.info(str(stock_picking_ids))
                 for picking_ready in stock_picking_ids:
                     _logger.info(str(picking_ready))
 
