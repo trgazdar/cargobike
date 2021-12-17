@@ -400,10 +400,15 @@ class StockPicking(models.Model):
                 lot_traites = []
                 i = 1
                 #select name from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL);
-                self.env.cr.execute("select * from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL)")
-                stock_picking_ids = self.env.cr.fetchall()
+                #self.env.cr.execute("select * from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL)")
+                #stock_picking_ids = self.env.cr.fetchall()
+
+                stock_picking_ids = self.search([('location_id', '=', 47),
+                                                   ('state', 'in', ['assigned', 'partialy_assigned'])],
+                                                   ('is_merged', 'in', [False, NULL])],
+                                                  limit=1)
                 for picking_ready in stock_picking_ids:
-                    _logger.info(str(picking_ready.id.name))
+                    _logger.info(str(picking_ready))
 
                 for line in reader:
                     if len(line) > 3:
