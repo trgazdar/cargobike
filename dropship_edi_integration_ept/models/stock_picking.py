@@ -404,7 +404,7 @@ class StockPicking(models.Model):
                 #stock_picking_ids = self.env.cr.fetchall()
 
                 stock_picking_ids = self.search([('location_id', '=', 47),
-                                                   ('state', 'in', ['assigned', 'partialy_assigned'])],
+                                                   ('state', 'in', ['assigned', 'partialy_assigned']),
                                                    ('is_merged', 'in', [False, NULL])],
                                                   limit=1)
                 for picking_ready in stock_picking_ids:
