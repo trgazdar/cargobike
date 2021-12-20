@@ -342,6 +342,7 @@ class StockPicking(models.Model):
         """
         for partner_id in partner_ids:
             validate_picking_ids = []
+            lot_traites = []
             try:
                 with partner_id.get_dropship_edi_interface(operation="shipment_import") \
                         as dropship_edi_object:
@@ -397,7 +398,7 @@ class StockPicking(models.Model):
                 stock_pickng_id = 0
                 order_ref_prev = ''
                 product_ref_prev = ''
-                lot_traites = []
+                
                 i = 1
                 #select name from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL);
                 #self.env.cr.execute("select * from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL)")
