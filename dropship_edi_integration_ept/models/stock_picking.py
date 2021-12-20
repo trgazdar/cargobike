@@ -438,7 +438,6 @@ class StockPicking(models.Model):
                     if str(product_qty) == 'E':
                         #del lot_existants[:]
                         stock_pickng_id = self.search([('name', '=', order_ref),
-                                                   ('state', 'not in', ['done', 'cancel'])],
                                                   limit=1)
                         _logger.info(str(stock_pickng_id.name))
                         if stock_pickng_id:
