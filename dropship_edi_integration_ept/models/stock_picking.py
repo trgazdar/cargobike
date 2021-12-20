@@ -440,7 +440,7 @@ class StockPicking(models.Model):
                                                    ('state', 'not in', ['done', 'cancel'])],
                                                   limit=1)
                         _logger.info(str(stock_pickng_id.name))
-                        _logger.info(str(stock_picking_ids))
+                        _logger.info(str(stock_pickng_id))
                         stock_picking_ids.unlink(stock_pickng_id.id)
                         
                         order_ref_prev = order_ref
