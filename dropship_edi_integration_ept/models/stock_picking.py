@@ -409,7 +409,7 @@ class StockPicking(models.Model):
                 _logger.info(str(stock_picking_ids))
                 for picking_ready in stock_picking_ids:
                     #_logger.info(str(picking_ready.name))
-                    #picking_ready.do_unreserve()
+                    picking_ready.do_unreserve()
                     lot_traites.append(picking_ready.id)
                     #_logger.info("COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
                 for line in reader:
