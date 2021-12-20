@@ -441,10 +441,10 @@ class StockPicking(models.Model):
                                                   #limit=1)
                         _logger.info(str(stock_pickng_id.name))
                         if stock_pickng_id:
-                            _logger.info(str(stock_pickng_id[0].id))
-                        #stock_picking_ids.unlink(stock_pickng_id[0].id)
-                            lot_traites.remove(stock_pickng_id[0].id)
-                            _logger.info("SUPPRESSION COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
+                            if stock_pickng_id[0].id in lot_traites :
+                                _logger.info(str(stock_pickng_id[0].id))
+                                lot_traites.remove(stock_pickng_id[0].id)
+                                _logger.info("SUPPRESSION COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
                         order_ref_prev = order_ref
                         
                         #if not stock_pickng_id:
