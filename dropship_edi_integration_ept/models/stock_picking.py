@@ -411,7 +411,7 @@ class StockPicking(models.Model):
                     #_logger.info(str(picking_ready.name))
                     #picking_ready.do_unreserve()
                     lot_traites.append(picking_ready.id)
-                _logger.info("COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
+                    _logger.info("COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
                 for line in reader:
                     if len(line) > 3:
                         order_ref = line[3] or ''#3
@@ -443,7 +443,8 @@ class StockPicking(models.Model):
                         #_logger.info(str(stock_pickng_id.name))
                         #_logger.info(str(stock_pickng_id[0].id))
                         #stock_picking_ids.unlink(stock_pickng_id[0].id)
-                        
+                        lot_traites.remove(stock_pickng_id[0].id)
+                        _logger.info("SUPPRESSION COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
                         order_ref_prev = order_ref
                         
                         #if not stock_pickng_id:
