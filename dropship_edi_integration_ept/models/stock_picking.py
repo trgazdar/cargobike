@@ -570,17 +570,11 @@ class StockPicking(models.Model):
                                         stock_move_id.picking_id.write(
                                             {'carrier_tracking_ref': tracking_no})
             
-            # On re reserve les pickings en attente
-            for pck_assign in lot_traites:
-                _logger.info("111111   :" + str(pck_assign))
-                
-                pck_asset = self.search([('id', '=', pck_assign)])
-                _logger.info("22222   :" + str(pck_asset.name))
-                pck_asset.action_assign()
-                #action_assigned
+
             
             
             if product_code != '':
+
                 for validate_picking_id in list(set(validate_picking_ids)):
                     tracking_no = validate_picking_id.carrier_tracking_ref
                     validate_picking_id.action_done()
@@ -627,6 +621,14 @@ class StockPicking(models.Model):
                     job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                      attachment_ids=attachment.ids)
                 buffer.close()
+                        # On re reserve les pickings en attente
+            for pck_assign in lot_traites:
+                _logger.info("111111   :" + str(pck_assign))
+                
+                pck_asset = self.search([('id', '=', pck_assign)])
+                _logger.info("22222   :" + str(pck_asset.name))
+                pck_asset.action_assign()
+                #action_assigned
         return True
 
     def swap_num_lot(self,csvwriter, job, lot_import_id, lot_existant_id, reference):
