@@ -441,7 +441,7 @@ class StockPicking(models.Model):
                                                    ('state', 'not in', ['done', 'cancel'])],
                                                   limit=1)
                         #_logger.info(str(stock_pickng_id.name))
-                        #_logger.info(str(stock_pickng_id[0].id))
+                        _logger.info(str(stock_pickng_id[0].id))
                         #stock_picking_ids.unlink(stock_pickng_id[0].id)
                         lot_traites.remove(stock_pickng_id[0].id)
                         _logger.info("SUPPRESSION COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
