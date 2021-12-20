@@ -573,8 +573,9 @@ class StockPicking(models.Model):
             # On re reserve les pickings en attente
             for pck_assign in lot_traites:
                 _logger.info("111111   :" + str(pck_assign))
-                _logger.info("222222   :" + str(pck_assign[0]))
-                #pck_asset = self.search([('id', '=', pck_assign[0]))
+                
+                pck_asset = self.search([('id', '=', pck_assign)])
+                _logger.info("22222   :" + str(pck_asset.name))
                 #action_assigned
             
             
