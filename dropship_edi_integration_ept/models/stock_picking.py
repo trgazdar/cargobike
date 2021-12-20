@@ -437,8 +437,8 @@ class StockPicking(models.Model):
                     #Gestion de la première ligne ECTRA
                     if str(product_qty) == 'E':
                         #del lot_existants[:]
-                        stock_pickng_id = self.search([('name', '=', order_ref)],
-                                                  limit=1)
+                        stock_pickng_id = self.search([('name', '=', order_ref)])
+                                                  #limit=1)
                         _logger.info(str(stock_pickng_id.name))
                         if stock_pickng_id:
                             _logger.info(str(stock_pickng_id[0].id))
