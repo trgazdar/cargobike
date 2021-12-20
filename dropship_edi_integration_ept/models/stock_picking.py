@@ -407,10 +407,11 @@ class StockPicking(models.Model):
                                                    ('state', 'in', ['assigned', 'partialy_assigned']),
                                                    ('is_merged', 'in', [False, None])])
                 _logger.info(str(stock_picking_ids))
-                """ for picking_ready in stock_picking_ids:
+                for picking_ready in stock_picking_ids:
                     _logger.info(str(picking_ready.name))
-                    picking_ready.do_unreserve() """
-
+                    #picking_ready.do_unreserve()
+                    lot_traites.append(picking_ready.id)
+                _logger.info(str(lot_traites))
                 for line in reader:
                     if len(line) > 3:
                         order_ref = line[3] or ''#3
@@ -441,7 +442,7 @@ class StockPicking(models.Model):
                                                   limit=1)
                         _logger.info(str(stock_pickng_id.name))
                         _logger.info(str(stock_pickng_id[0].id))
-                        stock_picking_ids.unlink(stock_pickng_id[0].id)
+                        #stock_picking_ids.unlink(stock_pickng_id[0].id)
                         
                         order_ref_prev = order_ref
                         
