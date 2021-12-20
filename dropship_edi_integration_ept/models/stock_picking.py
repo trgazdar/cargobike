@@ -283,7 +283,20 @@ class StockPicking(models.Model):
                     buffer.close()
         return True
     
+    def unreserve_picking(self):
+        lot_traites = []
+        stock_picking_ids = self.search([('location_id', '=', 47),
+                                                   ('state', 'in', ['assigned', 'partialy_assigned']),
+                                                   ('is_merged', 'in', [False, None])])
+        _logger.info(str(stock_picking_ids))
+        for picking_ready in stock_picking_ids:
+            _logger.info(str(picking_ready.name))
+            picking_ready.do_unreserve()
+            lot_traites.append(picking_ready.id)
+        return lot_traites
+
     def check_mismatch_details_for_dropship_orders(self, partner_id, picking_id, job):
+
         """
         It will verify the dropship order details. If any necessary details are missing then it will
          skip that order while export.
@@ -404,15 +417,19 @@ class StockPicking(models.Model):
                 #self.env.cr.execute("select * from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL)")
                 #stock_picking_ids = self.env.cr.fetchall()
 
-                stock_picking_ids = self.search([('location_id', '=', 47),
+                lot_traites = self.unreserve_picking()
+
+                """ stock_picking_ids = self.search([('location_id', '=', 47),
                                                    ('state', 'in', ['assigned', 'partialy_assigned']),
                                                    ('is_merged', 'in', [False, None])])
                 _logger.info(str(stock_picking_ids))
+
+
                 for picking_ready in stock_picking_ids:
                     _logger.info(str(picking_ready.name))
                     picking_ready.do_unreserve()
                     lot_traites.append(picking_ready.id)
-                    #_logger.info("COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
+                    #_logger.info("COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites)) """
                 for line in reader:
                     if len(line) > 3:
                         order_ref = line[3] or ''#3
