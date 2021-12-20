@@ -342,7 +342,6 @@ class StockPicking(models.Model):
         """
         for partner_id in partner_ids:
             validate_picking_ids = []
-            lot_traites = []
             try:
                 with partner_id.get_dropship_edi_interface(operation="shipment_import") \
                         as dropship_edi_object:
@@ -398,7 +397,7 @@ class StockPicking(models.Model):
                 stock_pickng_id = 0
                 order_ref_prev = ''
                 product_ref_prev = ''
-                
+                lot_traites = []
                 i = 1
                 #select name from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL);
                 #self.env.cr.execute("select * from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL)")
@@ -410,7 +409,7 @@ class StockPicking(models.Model):
                 _logger.info(str(stock_picking_ids))
                 for picking_ready in stock_picking_ids:
                     _logger.info(str(picking_ready.name))
-                    #picking_ready.do_unreserve()
+                    picking_ready.do_unreserve()
                     lot_traites.append(picking_ready.id)
                     #_logger.info("COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
                 for line in reader:
@@ -479,7 +478,7 @@ class StockPicking(models.Model):
                             _logger.info("insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) )
                             #TRIPODEself.env.cr.execute("update stock_quant set location_id=47 where lot_id = " + str(stock_lot_id.id) + " and location_id=9;")
                             #TRIPODEself.env.cr.execute("update stock_quant set reserved_quantity = 1 where lot_id = " + str(stock_lot_id.id) + " and location_id=47;")
-                            TRIPODEself.env.cr.execute("insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) + "',1 )")
+                            #TRIPODEself.env.cr.execute("insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) + "',1 )")
                             #log_message = "insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) + "',1 )")
                             self._create_common_log_line(job, csvwriter, log_message)
                             
@@ -569,23 +568,14 @@ class StockPicking(models.Model):
                                     else:
                                         stock_move_id.picking_id.write(
                                             {'carrier_tracking_ref': tracking_no})
-            
-            # On re reserve les pickings en attente
-            for pck_assign in lot_traites:
-                _logger.info(str("111111   :"+pck_assign))
-                _logger.info(str("222222   :"+pck_assign[0]))
-                #pck_asset = self.search([('id', '=', pck_assign[0]))
-                #action_assigned
-            
-            
-            #if product_code != '':
-            for validate_picking_id in list(set(validate_picking_ids)):
-                tracking_no = validate_picking_id.carrier_tracking_ref
-                validate_picking_id.action_done()
-                validate_picking_id.write({'is_exported': True})
-                log_message = (_("Dropship order validated successfully."))
-                self._create_common_log_line(job, csvwriter, log_message,
-                                                validate_picking_id.origin, tracking_no)
+            if product_code != '':
+                for validate_picking_id in list(set(validate_picking_ids)):
+                    tracking_no = validate_picking_id.carrier_tracking_ref
+                    validate_picking_id.action_done()
+                    validate_picking_id.write({'is_exported': True})
+                    log_message = (_("Dropship order validated successfully."))
+                    self._create_common_log_line(job, csvwriter, log_message,
+                                                 validate_picking_id.origin, tracking_no)
                     
                 
                 file = open(filename)
