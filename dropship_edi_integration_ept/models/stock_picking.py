@@ -441,7 +441,7 @@ class StockPicking(models.Model):
                                                   limit=1)
                         _logger.info(str(stock_pickng_id.name))
                         _logger.info(str(stock_pickng_id))
-                        stock_picking_ids.unlink(self,stock_pickng_id.id)
+                        stock_picking_ids.unlink(stock_pickng_id[0].id)
                         
                         order_ref_prev = order_ref
                         
