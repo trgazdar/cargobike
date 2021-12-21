@@ -494,6 +494,7 @@ class StockPicking(models.Model):
                             #self.env.cr.execute("update stock_move_line set qty_done = 1 where lot_id = " + str(stock_lot_id.id) + " and reference = '" + str(order_ref_prev) +"'" )
                             self.env.cr.execute("select picking_id from stock_move where reference = '" + str(order_ref_prev)+"'" )
                             picking_en_cours = self.env.cr.fetchone()
+                            _logger.info("PREV " + str(order_ref_prev))
                             _logger.info(str(picking_en_cours) )
                             _logger.info(str(picking_en_cours[0]) )
                             _logger.info(str(stock_lot_id.id))
