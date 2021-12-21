@@ -360,6 +360,7 @@ class StockPicking(models.Model):
             validate_picking_ids = []
             lot_traites = []
             lot_traites = self.unreserve_picking()
+            product_code = ''
             try:
                 with partner_id.get_dropship_edi_interface(operation="shipment_import") \
                         as dropship_edi_object:
@@ -424,19 +425,7 @@ class StockPicking(models.Model):
 
                 
 
-                """ stock_picking_ids = self.search([('location_id', '=', 47),
-                                                   ('state', 'in', ['assigned', 'partialy_assigned']),
-                                                   ('is_merged', 'in', [False, None])])
-                _logger.info(str(stock_picking_ids))
-
-
-                for picking_ready in stock_picking_ids:
-                    _logger.info(str(picking_ready.name))
-                    picking_ready.do_unreserve()
-                    lot_traites.append(picking_ready.id)
-                    #_logger.info("COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites)) """
                 for line in reader:
-                    product_code = ''
                     if len(line) > 3:
                         order_ref = line[3] or ''#3
                         order_no = line[3] or ''#3
