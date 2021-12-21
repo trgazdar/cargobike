@@ -291,8 +291,11 @@ class StockPicking(models.Model):
         _logger.info(str(stock_picking_ids))
         for picking_ready in stock_picking_ids:
             _logger.info(str(picking_ready.name))
-            picking_ready.do_unreserve()
-            lot_traites.append(picking_ready.id)
+            try: 
+                picking_ready.do_unreserve()
+                lot_traites.append(picking_ready.id)
+            except:
+                _logger.info("Impossible de déréserver le BP :" + str(picking_ready.id))
         return lot_traites
 
     def check_mismatch_details_for_dropship_orders(self, partner_id, picking_id, job):
