@@ -650,7 +650,7 @@ class StockPicking(models.Model):
                 
                 pck_asset = self.search([('id', '=', pck_assign)])
                 _logger.info("22222   :" + str(pck_asset.name))
-                #pck_asset.action_assign()
+                pck_asset.action_assign()
                 #action_assigned
         return True
 
