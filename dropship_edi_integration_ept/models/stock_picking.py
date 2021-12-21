@@ -415,7 +415,7 @@ class StockPicking(models.Model):
                 stock_pickng_id = 0
                 order_ref_prev = ''
                 product_ref_prev = ''
-                product_code = ''
+                
                 
                 i = 1
                 #select name from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL);
@@ -436,6 +436,7 @@ class StockPicking(models.Model):
                     lot_traites.append(picking_ready.id)
                     #_logger.info("COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites)) """
                 for line in reader:
+                    product_code = ''
                     if len(line) > 3:
                         order_ref = line[3] or ''#3
                         order_no = line[3] or ''#3
