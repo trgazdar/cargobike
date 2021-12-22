@@ -490,7 +490,7 @@ class StockPicking(models.Model):
         
                         tracking_no = filename
 
-            if product_code != '':
+            #if product_code != '':
 
                 for validate_picking_id in list(set(validate_picking_ids)):
                     tracking_no = validate_picking_id.carrier_tracking_ref
