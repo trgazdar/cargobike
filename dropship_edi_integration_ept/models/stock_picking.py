@@ -296,6 +296,7 @@ class StockPicking(models.Model):
                 lot_traites.append(picking_ready.id)
             except:
                 _logger.info("Impossible de déréserver le BP :" + str(picking_ready.id))
+                
         return lot_traites
 
     def check_mismatch_details_for_dropship_orders(self, partner_id, picking_id, job):
@@ -486,15 +487,14 @@ class StockPicking(models.Model):
                                 self.env.cr.execute("update stock_quant set reserved_quantity = 1 where lot_id = " + str(stock_lot_id.id) + " and location_id=47;")
                                 self.env.cr.execute("insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) + "',1 )")
                             else:
-                                log_message = 'Impossible de traiter le BP :' + str(order_ref_prev) + 'Celui-ci n\'est pas présent dans Odoo'
+                                log_message = 'Impossible de traiter le BP :' + str(order_ref_prev) + ' Celui-ci n\'est pas présent dans Odoo'
                                 self._create_common_log_line(job, csvwriter, log_message)
+                                continue
                             self._create_common_log_line(job, csvwriter, log_message)
                             
 
                     else:    
                         product_ref_prev = line[2] or ''
-                        #log_message = 'Reference Précédente : ' + str(product_ref_prev) + ' - line : ' + str(line[2])
-                        #self._create_common_log_line(job, csvwriter, log_message)  
                         if line[2] != 'CBD' and  product_ref_prev != 'CBD':
                             log_message = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(product_ref_prev) + ' - Quantité livrée : ' + str(product_qty)
                             self._create_common_log_line(job, csvwriter, log_message)  
@@ -502,8 +502,8 @@ class StockPicking(models.Model):
     
 
                     tracking_no = filename
-                    product_vendor_code_id = self.env['product.product'].search(
-                        [('default_code', '=', product_code)])
+                    #product_vendor_code_id = self.env['product.product'].search(
+                    #    [('default_code', '=', product_code)])
                     
                     self.env.cr.execute("select id from product_product where default_code = '" + str(product_code) + "'" )
                     lot_retourne = self.env.cr.fetchall()
@@ -517,21 +517,10 @@ class StockPicking(models.Model):
                                 log_message = (_("1 - Product ordered quantity %s and shipped"
                                                  " quantity %s") %
                                                (stock_move_id.product_uom_qty, product_qty))
-                                #self._create_common_log_line(job, csvwriter, log_message, order_no,
-                                 #                            '', product_code,
-                                  #                           lot_retourne.id)
+
                             stock_move_id.move_line_ids.write({'qty_done': float(product_qty)})
                             validate_picking_ids.append(stock_move_id.picking_id)
-                            # if tracking_no:
-                            #     if stock_move_id.picking_id.carrier_tracking_ref:
-                            #         stock_move_id.picking_id.write(
-                            #             {'carrier_tracking_ref': str(
-                            #                 '%s,%s' %
-                            #                 (stock_move_id.picking_id.carrier_tracking_ref,
-                            #                  tracking_no))})
-                            #     else:
-                            #         stock_move_id.picking_id.write(
-                            #             {'carrier_tracking_ref': tracking_no})
+
                     else:
                         product_id = self.env['product.product'].search([
                             ('default_code', '=', product_code)], limit=1)
