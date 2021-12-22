@@ -484,7 +484,7 @@ class StockPicking(models.Model):
                                 #on cherche tous les lot associé au BL en auto
                                 self.env.cr.execute("select picking_id from stock_move where reference = '" + str(order_ref_prev)+"'" )
                                 picking_en_cours = self.env.cr.fetchone()
-                                _logger.info("PREV " + str(order_ref_prev))
+    
                                 if picking_en_cours:
                                     _logger.info(str(server_filename) + " - insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) )
                                     self.env.cr.execute("update stock_quant set location_id=47 where lot_id = " + str(stock_lot_id.id) + " and location_id=9;")
@@ -495,13 +495,12 @@ class StockPicking(models.Model):
                                     self._create_common_log_line(job, csvwriter, log_message)
                                     stop = 1
                                     
-                                #self._create_common_log_line(job, csvwriter, log_message)
                         else:    
                             if order_ref_prev != line[2] and product_ref_prev != 'CBD' and str(line[2]) != '' and product_ref_prev != str(line[0]):
-                                _logger.info("LOG1 " + str(order_ref_prev))
+                                """ _logger.info("LOG1 " + str(order_ref_prev))
                                 _logger.info("LOG2 " + str(line[2]))
                                 _logger.info("LOG3 " + str(order_ref_prev))
-                                _logger.info("LOG4 " + str(line[0]))
+                                _logger.info("LOG4 " + str(line[0])) """
                                 log_message = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(line[2]) + ' - Quantité livrée : ' + str(product_qty)
                                 _logger.info("LOGTMP " + str(logtmp))
                                 _logger.info("LOGTMESSAGE " + str(log_message))
