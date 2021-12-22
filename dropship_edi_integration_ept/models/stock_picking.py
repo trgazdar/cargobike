@@ -496,7 +496,7 @@ class StockPicking(models.Model):
                                     
                                 self._create_common_log_line(job, csvwriter, log_message)
                         else:    
-                            if order_ref_prev != line[2]:
+                            if order_ref_prev != line[2] and order_ref_prev != 'CBD':
                                 log_message = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(product_ref_prev) + ' - Quantité livrée : ' + str(product_qty)
                                 self._create_common_log_line(job, csvwriter, log_message)  
                             product_ref_prev = line[2] or ''
