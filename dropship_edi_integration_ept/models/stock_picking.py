@@ -362,6 +362,7 @@ class StockPicking(models.Model):
             lot_traites = []
             lot_traites = self.unreserve_picking()
             product_code = ''
+            logtmp = ''
             try:
                 with partner_id.get_dropship_edi_interface(operation="shipment_import") \
                         as dropship_edi_object:
@@ -502,7 +503,9 @@ class StockPicking(models.Model):
                                 _logger.info("LOG3 " + str(order_ref_prev))
                                 _logger.info("LOG4 " + str(line[0]))
                                 log_message = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(line[2]) + ' - Quantité livrée : ' + str(product_qty)
-                                self._create_common_log_line(job, csvwriter, log_message)  
+                                if log_message != logtmp:
+                                    logtmp = log_message
+                                    self._create_common_log_line(job, csvwriter, log_message)  
                             product_ref_prev = line[2] or ''
                             
         
