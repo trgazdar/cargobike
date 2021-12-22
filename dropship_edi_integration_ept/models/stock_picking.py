@@ -451,21 +451,19 @@ class StockPicking(models.Model):
                     
                     #Gestion de la première ligne ECTRA
                     if str(product_qty) == 'E':
-                        #del lot_existants[:]
                         stock_pickng_id = self.search([('name', '=', order_ref)])
-                                                  #limit=1)
-                        _logger.info( "EST-TU LA ? "+str(stock_pickng_id.name))
                         if stock_pickng_id:
                             stop = 0
                         else:
                             stop = 1
+                            log_message = 'ERREUR LE BP N° ' + str(order_ref) + " N'EXISTE PAS DANS ODOO"
+                            self._create_common_log_line(job, csvwriter, log_message)
                         if stock_pickng_id:
                             if stock_pickng_id[0].id in lot_traites :
                                 _logger.info(str(stock_pickng_id[0].id))
                                 lot_traites.remove(stock_pickng_id[0].id)
                                 _logger.info("SUPPRESSION COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
                         order_ref_prev = order_ref
-
                         log_message = 'Traitement du BP N° ' + str(order_ref)
                         self._create_common_log_line(job, csvwriter, log_message)
                     
@@ -511,7 +509,7 @@ class StockPicking(models.Model):
                         #product_vendor_code_id = self.env['product.product'].search(
                         #    [('default_code', '=', product_code)])
                         
-                        self.env.cr.execute("select id from product_product where default_code = '" + str(product_code) + "'" )
+                        """ self.env.cr.execute("select id from product_product where default_code = '" + str(product_code) + "'" )
                         lot_retourne = self.env.cr.fetchall()
                         
                         if lot_retourne:
@@ -555,7 +553,7 @@ class StockPicking(models.Model):
                                                         tracking_no))})
                                         else:
                                             stock_move_id.picking_id.write(
-                                                {'carrier_tracking_ref': tracking_no})
+                                                {'carrier_tracking_ref': tracking_no}) """
             
 
             
