@@ -502,7 +502,6 @@ class StockPicking(models.Model):
                                 _logger.info("LOG2 " + str(line[2]))
                                 _logger.info("LOG3 " + str(order_ref_prev))
                                 _logger.info("LOG4 " + str(line[0]))
-                                _logger.info("LOGTMP " + str(logtmp))
                                 log_message = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(line[2]) + ' - Quantité livrée : ' + str(product_qty)
                                 _logger.info("LOGTMP " + str(logtmp))
                                 _logger.info("LOGTMESSAGE " + str(log_message))
