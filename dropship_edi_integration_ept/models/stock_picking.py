@@ -425,9 +425,9 @@ class StockPicking(models.Model):
                 #stock_picking_ids = self.env.cr.fetchall()
 
                 
-
+                stop = 0
                 for line in reader:
-                    stop = 0
+                    
                     if len(line) > 3:
                         order_ref = line[3] or ''#3
                         order_no = line[3] or ''#3
