@@ -462,7 +462,9 @@ class StockPicking(models.Model):
                                 lot_traites.remove(stock_pickng_id[0].id)
                                 _logger.info("SUPPRESSION COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
                         order_ref_prev = order_ref
-                        
+                        self.env.cr.execute("select picking_id from stock_move where reference = '" + str(order_ref_prev)+"'" )
+                        picking_en_cours = self.env.cr.fetchone()
+                        _logger.info("JE SUIS LA !!!!! " + str(order_ref_prev))
 
                         log_message = 'Traitement du BP N° ' + str(order_ref)
                         self._create_common_log_line(job, csvwriter, log_message)
