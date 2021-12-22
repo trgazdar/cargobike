@@ -472,9 +472,10 @@ class StockPicking(models.Model):
                         if product_code == '':
                             product_code = product_ref_prev
                             product_qty = 1
-
+                            log_message = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(product_ref_prev) + ' - Quantité livrée : ' + str(product_qty)
+                            self._create_common_log_line(job, csvwriter, log_message)  
                             #Numero du lot à importer
-                            self._create_common_log_line(job, csvwriter, log_message)
+                            
                             stock_lot_id = self.env['stock.production.lot'].search([('name', '=', num_lot)],limit=1)
                             
                             if stock_lot_id:
@@ -497,9 +498,7 @@ class StockPicking(models.Model):
                                 self._create_common_log_line(job, csvwriter, log_message)
                         else:    
                             product_ref_prev = line[2] or ''
-                            log_message = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(product_ref_prev) + ' - Quantité livrée : ' + str(product_qty)
-                            self._create_common_log_line(job, csvwriter, log_message)  
-                            product_ref_prev = line[2] or ''
+                            
         
 
                         tracking_no = filename
