@@ -454,7 +454,7 @@ class StockPicking(models.Model):
                         #del lot_existants[:]
                         stock_pickng_id = self.search([('name', '=', order_ref)])
                                                   #limit=1)
-                        _logger.info(str(stock_pickng_id.name))
+                        _logger.info( "EST-TU LA ? "+str(stock_pickng_id.name))
                         stop = 0
                         if stock_pickng_id:
                             if stock_pickng_id[0].id in lot_traites :
