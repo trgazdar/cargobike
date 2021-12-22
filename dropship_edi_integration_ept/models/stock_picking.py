@@ -476,7 +476,7 @@ class StockPicking(models.Model):
                                     log_message = 'Impossible de traiter le BP :' + str(order_ref_prev) + ' Celui-ci n\'est pas présent dans Odoo'
                                     self._create_common_log_line(job, csvwriter, log_message)
                                     job.write({
-                                        'message': "Des erreurs sont survenues lors de l'import vérifier les logs" }) 1
+                                        'message': "Des erreurs sont survenues lors de l'import vérifier les logs" }) 
                                     stop = 1
                                     
                         else:    
