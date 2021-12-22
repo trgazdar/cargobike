@@ -421,6 +421,7 @@ class StockPicking(models.Model):
                 
                 
                 i = 1
+                j = 1
                 #select name from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL);
                 #self.env.cr.execute("select * from stock_picking where location_id =47 and (state='assigned' or state='partialy_assigned') and (is_merged=False or is_merged IS NULL)")
                 #stock_picking_ids = self.env.cr.fetchall()
@@ -505,7 +506,8 @@ class StockPicking(models.Model):
                                 _logger.info("LOGPREV " + str(product_ref_prev))
                                 _logger.info("LOGLINE2 " + str(line[2]))
                                 if str(product_ref_prev) != str(line[2]):
-                                    _logger.info("JECRIS!!!!!! ")
+                                    _logger.info("JECRIS!!!!!! J = " + j )
+                                    j= j + 1
                                     logtmp = log_message
                                     self._create_common_log_line(job, csvwriter, log_message)  
                             product_ref_prev = line[2] or ''
