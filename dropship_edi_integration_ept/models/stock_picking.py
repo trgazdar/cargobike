@@ -504,7 +504,7 @@ class StockPicking(models.Model):
                                 log_message = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(line[2]) + ' - Quantité livrée : ' + str(product_qty)
                                 _logger.info("LOGTMP " + str(logtmp))
                                 _logger.info("LOGTMESSAGE " + str(log_message))
-                                if str(log_message) != str(logtmp):
+                                if not stock_lot_id:
                                     _logger.info("JECRIS!!!!!! ")
                                     logtmp = log_message
                                     self._create_common_log_line(job, csvwriter, log_message)  
