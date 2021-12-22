@@ -537,8 +537,9 @@ class StockPicking(models.Model):
                         'res_model': 'common.log.book.ept',
                     }
                     attachment = self.env['ir.attachment'].create(vals)
-                    job.write({
-                        'message': "ERROR" })
+                    if error == 1:
+                        job.write({
+                            'message': "Des erreurs sont survenues lors de l'import vérifier les logs" })
                     job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                      attachment_ids=attachment.ids)
                 buffer.close()
