@@ -534,10 +534,11 @@ class StockPicking(models.Model):
                         'name': log_filename,
                         'datas': base64.encodestring(log_file_data),
                         'type': 'binary',
-                        'message': "ERROR",
                         'res_model': 'common.log.book.ept',
                     }
                     attachment = self.env['ir.attachment'].create(vals)
+                    job.write({
+                        'message': "ERROR" })
                     job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                      attachment_ids=attachment.ids)
                 buffer.close()
