@@ -363,7 +363,7 @@ class StockPicking(models.Model):
             lot_traites = self.unreserve_picking()
             product_code = ''
             logtmp = ''
-            error = 0
+            
             try:
                 with partner_id.get_dropship_edi_interface(operation="shipment_import") \
                         as dropship_edi_object:
@@ -445,7 +445,8 @@ class StockPicking(models.Model):
                             stop = 0
                         else:
                             stop = 1
-                            error = 1
+                            job.write({
+                                'message': "Des erreurs sont survenues lors de l'import vérifier les logs" })
                             log_message = 'ERREUR LE BP N° ' + str(order_ref) + " N'EXISTE PAS DANS ODOO"
                             self._create_common_log_line(job, csvwriter, log_message)
                         if stock_pickng_id:
@@ -474,7 +475,8 @@ class StockPicking(models.Model):
                                 else:
                                     log_message = 'Impossible de traiter le BP :' + str(order_ref_prev) + ' Celui-ci n\'est pas présent dans Odoo'
                                     self._create_common_log_line(job, csvwriter, log_message)
-                                    error = 1
+                                    job.write({
+                                        'message': "Des erreurs sont survenues lors de l'import vérifier les logs" }) 1
                                     stop = 1
                                     
                         else:    
@@ -537,9 +539,7 @@ class StockPicking(models.Model):
                         'res_model': 'common.log.book.ept',
                     }
                     attachment = self.env['ir.attachment'].create(vals)
-                    if error == 1:
-                        job.write({
-                            'message': "Des erreurs sont survenues lors de l'import vérifier les logs" })
+                    
                     job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                      attachment_ids=attachment.ids)
                 buffer.close()
