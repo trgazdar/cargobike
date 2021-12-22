@@ -468,7 +468,7 @@ class StockPicking(models.Model):
                         self._create_common_log_line(job, csvwriter, log_message)
                     
                     #Gestion des numeros de lot livrés
-                    if and stop == 0:
+                    if stop == 0:
                         if product_code == '':
                             product_code = product_ref_prev
                             product_qty = 1
