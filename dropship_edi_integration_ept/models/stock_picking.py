@@ -466,8 +466,8 @@ class StockPicking(models.Model):
                                 lot_traites.remove(stock_pickng_id[0].id)
                                 _logger.info("SUPPRESSION COUNT: " + str(len(lot_traites)) + " LOTS: " + str(lot_traites))
                         order_ref_prev = order_ref
-                        log_message = 'Traitement du BP N° ' + str(order_ref)
-                        self._create_common_log_line(job, csvwriter, log_message)
+                        log_message1 = 'Traitement du BP N° ' + str(order_ref)
+                        self._create_common_log_line(job, csvwriter, log_message1)
                     
                     #Gestion des numeros de lot livrés
                     elif stop == 0:
@@ -481,7 +481,7 @@ class StockPicking(models.Model):
                             
                             if stock_lot_id:
                                 #log_message = 'SERIAL FROM ECTRA ' + str(num_lot)
-                                self._create_common_log_line(job, csvwriter, log_message)
+                                #self._create_common_log_line(job, csvwriter, log_message)
                                 #on cherche tous les lot associé au BL en auto
                                 self.env.cr.execute("select picking_id from stock_move where reference = '" + str(order_ref_prev)+"'" )
                                 picking_en_cours = self.env.cr.fetchone()
