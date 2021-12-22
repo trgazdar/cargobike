@@ -464,7 +464,7 @@ class StockPicking(models.Model):
                         order_ref_prev = order_ref
                         self.env.cr.execute("select picking_id from stock_move where reference = '" + str(order_ref_prev)+"'" )
                         picking_en_cours = self.env.cr.fetchone()
-                        _logger.info("JE SUIS LA !!!!! " + str(order_ref_prev))
+                        _logger.info("JE SUIS LA !!!!! " + str(picking_en_cours))
 
                         log_message = 'Traitement du BP N° ' + str(order_ref)
                         self._create_common_log_line(job, csvwriter, log_message)
