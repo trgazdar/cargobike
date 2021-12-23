@@ -524,7 +524,7 @@ class StockPicking(models.Model):
             
                                
 
-            #if product_code != '':
+            if product_code != '':
 
                 for validate_picking_id in list(set(validate_picking_ids)):
                     tracking_no = validate_picking_id.carrier_tracking_ref
@@ -579,7 +579,7 @@ class StockPicking(models.Model):
                         
                         job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                         attachment_ids=attachment.ids)
-                    buffer.close()
+                buffer.close()
             #buffer.close()
             for pck_assign in lot_traites:
                 pck_asset = self.search([('id', '=', pck_assign)])
