@@ -461,6 +461,7 @@ class StockPicking(models.Model):
                     
                     #Gestion des numeros de lot livrés
                     elif stop == 0:
+                        stock_lot_id = self.env['stock.production.lot'].search([('name', '=', num_lot)],limit=1)
                         if product_code == '':
                             product_code = product_ref_prev
                             product_qty = 1
@@ -483,7 +484,7 @@ class StockPicking(models.Model):
                                         'message': "Des erreurs sont survenues lors de l'import vérifier les logs" }) 
                                     stop = 1
                                     
-                        elif num_lot == '':    
+                        elif not stock_lot_id :    
                             if order_ref_prev != line[2] and product_ref_prev != 'CBD' and str(line[2]) != '' and product_ref_prev != str(line[0]):
                                 if str(product_ref_prev) != str(line[2]):
                                     log_message2 = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(line[2]) + ' - Quantité livrée : ' + str(product_qty)
