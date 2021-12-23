@@ -517,10 +517,10 @@ class StockPicking(models.Model):
                             product_ref_prev = line[2] or ''
                             
         
-            tracking_no = filename
+                tracking_no = filename
 
-            product_vendor_code_id = self.env['product.product'].search(
-                [('default_code', '=', product_code)])
+                product_vendor_code_id = self.env['product.product'].search(
+                    [('default_code', '=', product_code)])
             
                                
 
@@ -580,7 +580,7 @@ class StockPicking(models.Model):
                         job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                         attachment_ids=attachment.ids)
                     buffer.close()
-                
+            #buffer.close()
             for pck_assign in lot_traites:
                 pck_asset = self.search([('id', '=', pck_assign)])
                 pck_asset.action_assign()
