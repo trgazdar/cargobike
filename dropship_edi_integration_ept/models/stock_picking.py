@@ -530,79 +530,22 @@ class StockPicking(models.Model):
             product_vendor_code_id = self.env['product.product'].search(
                 [('default_code', '=', product_code)])
             
-            """ self.env.cr.execute("select id from product_product where default_code = '" + str(product_code) + "'" )
-            lot_retourne = self.env.cr.fetchall()
+                               
 
-            if lot_retourne:
-                stock_move_id = self.env['stock.move'].search(
-                    [('product_id', 'in', lot_retourne),('reference', '=', order_ref_prev)], limit=1)
-                if stock_move_id:
-                    stock_move_id.picking_id.write({'is_exported': False})
-                    stock_move_id.picking_id.write({'note': str(filename)})
-                    
-                    if stock_move_id.product_uom_qty < float(product_qty):
-                        log_message = (_("1 - Product ordered quantity %s and shipped"
-                                        " quantity %s") %
-                                    (stock_move_id.product_uom_qty, product_qty))
-                        #self._create_common_log_line(job, csvwriter, log_message, order_no,
-                        #                            '', product_code,
-                        #                           lot_retourne.id)
-                    stock_move_id.move_line_ids.write({'qty_done': float(product_qty)})
-                    validate_picking_ids.append(stock_move_id.picking_id)
-                    # if tracking_no:
-                    #     if stock_move_id.picking_id.carrier_tracking_ref:
-                    #         stock_move_id.picking_id.write(
-                    #             {'carrier_tracking_ref': str(
-                    #                 '%s,%s' %
-                    #                 (stock_move_id.picking_id.carrier_tracking_ref,
-                    #                  tracking_no))})
-                    #     else:
-                    #         stock_move_id.picking_id.write(
-                    #             {'carrier_tracking_ref': tracking_no})
-            else:
-                product_id = self.env['product.product'].search([
-                    ('default_code', '=', product_code)], limit=1)
-                if product_id:
-                    stock_move_id = self.env['stock.move'].search(
-                        [('product_id', '=', product_id.id),
-                        ('origin', '=', stock_pickng_id.origin)], limit=1)
-                    if stock_move_id:
-                        if stock_move_id.product_uom_qty < float(product_qty):
-                            log_message = (_("2 - Product ordered quantity %s and"
-                                            " shipped quantity %s") %
-                                        (stock_move_id.product_uom_qty, product_qty))
-                            self._create_common_log_line(job, csvwriter, log_message,
-                                                        order_no, '',
-                                                        product_code, product_id.id)
-                        stock_move_id.move_line_ids.write({'qty_done': product_qty})
-                        
-                        validate_picking_ids.append(stock_move_id.picking_id)
-                        
-                        if tracking_no:
-                            if stock_move_id.picking_id.carrier_tracking_ref:
-                                stock_move_id.picking_id.write(
-                                    {'carrier_tracking_ref':
-                                        str('%s,%s' %
-                                            (stock_move_id.picking_id.carrier_tracking_ref,
-                                            tracking_no))})
-                            else:
-                                stock_move_id.picking_id.write(
-                                    {'carrier_tracking_ref': tracking_no})   """                      
+            #if product_code != '':
 
-            if product_code != '':
-
-                for validate_picking_id in list(set(validate_picking_ids)):
-                    tracking_no = validate_picking_id.carrier_tracking_ref
-                    try:
-                        validate_picking_id.action_done()
-                    except:
-                        log_message = ("ERROR ON DELIVERY :" + str(validate_picking_id.name))
-                        self._create_common_log_line(job, csvwriter, log_message)  
-                    validate_picking_id.write({'is_exported': True})
-                    validate_picking_id.write({'note': serialtmp})
-                    log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
-                    self._create_common_log_line(job, csvwriter, log_message,
-                                                    validate_picking_id.origin, tracking_no)
+            for validate_picking_id in list(set(validate_picking_ids)):
+                tracking_no = validate_picking_id.carrier_tracking_ref
+                try:
+                    validate_picking_id.action_done()
+                except:
+                    log_message = ("ERROR ON DELIVERY :" + str(validate_picking_id.name))
+                    self._create_common_log_line(job, csvwriter, log_message)  
+                validate_picking_id.write({'is_exported': True})
+                validate_picking_id.write({'note': serialtmp})
+                log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
+                self._create_common_log_line(job, csvwriter, log_message,
+                                                validate_picking_id.origin, tracking_no)
                         
                 
                 file = open(filename)
