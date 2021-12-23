@@ -503,7 +503,7 @@ class StockPicking(models.Model):
                                             stock_move_id.move_line_ids.write({'qty_done': product_qty})
                                             
                                             validate_picking_ids.append(stock_move_id.picking_id)
-                                            
+                                            tracking_no = filename
                                             if tracking_no:
                                                 if stock_move_id.picking_id.carrier_tracking_ref:
                                                     stock_move_id.picking_id.write(
@@ -519,12 +519,12 @@ class StockPicking(models.Model):
                             product_ref_prev = line[2] or ''
                             
         
-                        tracking_no = filename
+                        #tracking_no = filename
 
             product_vendor_code_id = self.env['product.product'].search(
                 [('default_code', '=', product_code)])
             
-            self.env.cr.execute("select id from product_product where default_code = '" + str(product_code) + "'" )
+            """ self.env.cr.execute("select id from product_product where default_code = '" + str(product_code) + "'" )
             lot_retourne = self.env.cr.fetchall()
 
             if lot_retourne:
@@ -581,7 +581,7 @@ class StockPicking(models.Model):
                                             tracking_no))})
                             else:
                                 stock_move_id.picking_id.write(
-                                    {'carrier_tracking_ref': tracking_no})                        
+                                    {'carrier_tracking_ref': tracking_no})   """                      
 
             #if product_code != '':
 
