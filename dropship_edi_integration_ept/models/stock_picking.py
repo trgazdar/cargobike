@@ -583,7 +583,7 @@ class StockPicking(models.Model):
                                 stock_move_id.picking_id.write(
                                     {'carrier_tracking_ref': tracking_no})   """                      
 
-            #if product_code != '':
+            if product_code != '':
 
                 for validate_picking_id in list(set(validate_picking_ids)):
                     tracking_no = validate_picking_id.carrier_tracking_ref
