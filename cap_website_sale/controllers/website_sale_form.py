@@ -16,8 +16,8 @@ class WebsiteSaleForceAuth(WebsiteSale):
         pricelist_context, pricelist = super()._get_pricelist_context()
 
         context = dict(request.env.context)
-        if not context.get('pricelist'):
-            if request.env.user.partner_id.property_product_pricelist:
-                pricelist_context['pricelist'] = request.env.user.partner_id.property_product_pricelist.id
+#         if not context.get('pricelist'):
+        if request.env.user.partner_id.property_product_pricelist:
+            pricelist_context['pricelist'] = request.env.user.partner_id.property_product_pricelist.id
 
         return pricelist_context, pricelist
