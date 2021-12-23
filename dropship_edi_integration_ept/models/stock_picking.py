@@ -528,11 +528,7 @@ class StockPicking(models.Model):
 
                     for validate_picking_id in list(set(validate_picking_ids)):
                         tracking_no = validate_picking_id.carrier_tracking_ref
-                        validate_picking_id.action_done()
-                        log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
-                        self._create_common_log_line(job, csvwriter, log_message,
-                                                    validate_picking_id.origin, tracking_no)
-                        """ try:
+                        try:
                             #validate_picking_id.action_assign()
                             validate_picking_id.action_done()
                             log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
@@ -540,9 +536,9 @@ class StockPicking(models.Model):
                                                         validate_picking_id.origin, tracking_no)
                         except:
                             log_message = ("ERROR ON DELIVERY :" + str(validate_picking_id.name))
-                            self._create_common_log_line(job, csvwriter, log_message)  """ 
+                            self._create_common_log_line(job, csvwriter, log_message)  
                         validate_picking_id.write({'is_exported': True})
-                        validate_picking_id.write({'note': "cool"})
+                        #validate_picking_id.write({'note': "cool"})
                         
                                 
                         
