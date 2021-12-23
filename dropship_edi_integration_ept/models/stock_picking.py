@@ -444,6 +444,7 @@ class StockPicking(models.Model):
                         stock_pickng_id = self.search([('name', '=', order_ref)])
                         if stock_pickng_id:
                             stop = 0
+                            validate_picking_ids.append(stock_pickng_id)
                         else:
                             stop = 1
                             job.write({
