@@ -17,10 +17,10 @@ class WebsiteSaleForceAuth(WebsiteSale):
         pricelist_context, pricelist = super()._get_pricelist_context()
 
         context = dict(request.env.context)
-#         if not context.get('pricelist'):
-        if request.env.user.partner_id.property_product_pricelist:
-            _logger.info("We are in the IF")
-            pricelist_context['pricelist'] = request.env.user.partner_id.property_product_pricelist.id
-            _logger.info("La pricelist du partner est %s :" % pricelist_context['pricelist'])
+        if not context.get('pricelist'):
+            if request.env.user.partner_id.property_product_pricelist:
+                _logger.info("We are in the IF")
+                pricelist_context['pricelist'] = request.env.user.partner_id.property_product_pricelist.id
+                _logger.info("La pricelist du partner est %s :" % pricelist_context['pricelist'])
 
         return pricelist_context, pricelist
