@@ -469,7 +469,7 @@ class StockPicking(models.Model):
                                 picking_en_cours = self.env.cr.fetchone()
     
                                 if picking_en_cours:
-                                    serialtmp += stock_lot_id.product_id.id.name + " : " + stock_lot_id.id.name + "\r\n"
+                                    serialtmp += product_code + " : " + stock_lot_id.name + "\r\n"
                                     _logger.info(str(server_filename) + " - insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) )
                                     self.env.cr.execute("update stock_quant set location_id=47 where lot_id = " + str(stock_lot_id.id) + " and location_id=9;")
                                     self.env.cr.execute("update stock_quant set reserved_quantity = 1 where lot_id = " + str(stock_lot_id.id) + " and location_id=47;")
