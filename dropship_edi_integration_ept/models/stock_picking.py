@@ -501,7 +501,7 @@ class StockPicking(models.Model):
                                             stock_move_id = self.env['stock.move'].search(
                                                 [('product_id', '=', product_id.id),
                                                 ('origin', '=', stock_pickng_id.origin)], limit=1)
-                                                _logger.info("STOCK MOVE ID" + str(stock_move_id))
+                                            _logger.info("STOCK MOVE ID" + str(stock_move_id))
                                             if stock_move_id:
                                                 if stock_move_id.product_uom_qty < float(product_qty):
                                                     _logger.info("STOCK MOVE ID" + str(stock_move_id))
