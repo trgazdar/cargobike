@@ -484,7 +484,11 @@ class StockPicking(models.Model):
                                         'message': "Des erreurs sont survenues lors de l'import vérifier les logs" }) 
                                     stop = 1
                                     
-                        elif len(line) == 3 and product_code != '':    
+                        elif len(line) == 3 and product_code != '':  
+                            #str(product_id.id)  
+                            self.env.cr.execute("select count(*) from stock_quant where prodcut_id ="+str(product_id.id)+"'" ) 
+                            quants_count = self.env.cr.fetchone()
+                             _logger.info("QUANTSSSSSSS : "+str(quants_count))
                             if order_ref_prev != line[2] and product_ref_prev != 'CBD' and str(line[2]) != '' and product_ref_prev != str(line[0]):
                                 if str(product_ref_prev) != str(line[2]):
                                     log_message2 = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(line[2]) + ' - Quantité livrée : ' + str(product_qty)
