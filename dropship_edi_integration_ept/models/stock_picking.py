@@ -419,7 +419,7 @@ class StockPicking(models.Model):
                 
                 stop = 0
                 for line in reader:
-                    
+                    _logger.info("NOMBRE DE CHAMPS : " + str(len(line)))
                     if len(line) > 3:
                         order_ref = line[3] or ''#3
                         order_no = line[3] or ''#3
