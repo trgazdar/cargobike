@@ -525,25 +525,15 @@ class StockPicking(models.Model):
                                
 
             if product_code != '':
+                
 
                 for validate_picking_id in list(set(validate_picking_ids)):
                     tracking_no = validate_picking_id.carrier_tracking_ref
-                    try:
-                        #validate_picking_id.action_assign()
-                        validate_picking_id.action_done()
-                        log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
-                        self._create_common_log_line(job, csvwriter, log_message,
-                                                    validate_picking_id.origin, tracking_no)
-                    except:
-                        log_message = ("ERROR ON DELIVERY :" + str(validate_picking_id.name))
-                        self._create_common_log_line(job, csvwriter, log_message)  
-                        job.write({
-                                    'message': "Des erreurs sont survenues lors de l'import vérifier les logs" }) 
-                    validate_picking_id.write({'is_exported': True})
-                    #validate_picking_id.write({'note': "cool"})
-                validate_picking_ids=[]    
-                            
-                    
+                    validate_picking_id.action_done()
+                    log_message = (_("Dropship order validated successfully."))
+                    self._create_common_log_line(job, csvwriter, log_message,
+                                                 validate_picking_id.origin, tracking_no)
+
                 file = open(filename)
                 file.seek(0)
                 file_data = file.read().encode()
@@ -556,7 +546,7 @@ class StockPicking(models.Model):
                     }
                     attachment = self.env['ir.attachment'].create(vals)
                     job.message_post(body=_("<b>Imported Shipment's File</b>"),
-                                    attachment_ids=attachment.ids)
+                                     attachment_ids=attachment.ids)
 
                 try:
                     with partner_id.get_dropship_edi_interface(
@@ -565,7 +555,7 @@ class StockPicking(models.Model):
                 except:
                     job.write({
                         'message': "Supplier %s has problem with connection or file Path."
-                                " File can not move to Archive." % partner_id.name})
+                                   " File can not move to Archive." % partner_id.name})
 
                 log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
                 buffer.seek(0)
@@ -578,11 +568,10 @@ class StockPicking(models.Model):
                         'res_model': 'common.log.book.ept',
                     }
                     attachment = self.env['ir.attachment'].create(vals)
-                    
                     job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
-                                    attachment_ids=attachment.ids)
-            buffer.close()
-            #buffer.close()
+                                     attachment_ids=attachment.ids)
+                buffer.close()
+        #return True
             for pck_assign in lot_traites:
                 pck_asset = self.search([('id', '=', pck_assign)])
                 pck_asset.action_assign()
