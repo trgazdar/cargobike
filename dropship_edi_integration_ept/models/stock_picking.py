@@ -488,7 +488,7 @@ class StockPicking(models.Model):
                             #str(product_id.id)  
                             product_id = self.env['product.product'].search([
                                             ('default_code', '=', str(line[2]))], limit=1)
-                            self.env.cr.execute("select count(*) from stock_quant where product_id ="+str(product_id.id)+"'" ) 
+                            self.env.cr.execute("select count(*) from stock_quant where product_id ="+str(product_id.id) ) 
                             quants_count = self.env.cr.fetchone()
                             _logger.info("QUANTSSSSSSS : "+str(quants_count))
                             if order_ref_prev != line[2] and product_ref_prev != 'CBD' and str(line[2]) != '' and product_ref_prev != str(line[0]):
