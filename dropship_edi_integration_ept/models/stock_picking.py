@@ -362,7 +362,8 @@ class StockPicking(models.Model):
             lot_traites = []
             lot_traites = self.unreserve_picking()
             product_code = ''
-            logtmp = ''
+            serialtmp = ''
+
             
             try:
                 with partner_id.get_dropship_edi_interface(operation="shipment_import") \
@@ -468,6 +469,7 @@ class StockPicking(models.Model):
                                 picking_en_cours = self.env.cr.fetchone()
     
                                 if picking_en_cours:
+                                    serialtmp += stock_lot_id.product_id.name + " : " + stock_lot_id.id.name + "\r\n"
                                     _logger.info(str(server_filename) + " - insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) )
                                     self.env.cr.execute("update stock_quant set location_id=47 where lot_id = " + str(stock_lot_id.id) + " and location_id=9;")
                                     self.env.cr.execute("update stock_quant set reserved_quantity = 1 where lot_id = " + str(stock_lot_id.id) + " and location_id=47;")
@@ -500,6 +502,7 @@ class StockPicking(models.Model):
                         log_message = ("ERROR ON DELIVERY :" + str(validate_picking_id.name))
                         self._create_common_log_line(job, csvwriter, log_message)  
                     validate_picking_id.write({'is_exported': True})
+                    validate_picking_id.write({'note': serialtmp})
                     log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
                     self._create_common_log_line(job, csvwriter, log_message,
                                                     validate_picking_id.origin, tracking_no)
