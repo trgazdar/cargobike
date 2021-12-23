@@ -562,9 +562,9 @@ class StockPicking(models.Model):
                     self._create_common_log_line(job, csvwriter, log_message)  
                 validate_picking_id.write({'is_exported': True})
                 validate_picking_id.write({'note': "cool"})
-                log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
-                self._create_common_log_line(job, csvwriter, log_message,
-                                                validate_picking_id.origin, '')
+                #log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
+                #self._create_common_log_line(job, csvwriter, log_message,
+                #                                validate_picking_id.origin, '')
                         
                 
                 file = open(filename)
