@@ -444,7 +444,7 @@ class StockPicking(models.Model):
                         stock_pickng_id = self.search([('name', '=', order_ref)])
                         if stock_pickng_id:
                             stop = 0
-                            validate_picking_ids.append(stock_pickng_id)
+                            #validate_picking_ids.append(stock_pickng_id)
                             _logger.info("AJOUT DES PICKING : " + str(validate_picking_ids))
                         else:
                             stop = 1
@@ -493,18 +493,35 @@ class StockPicking(models.Model):
                                     if picking_en_cours:
                                         product_id = self.env['product.product'].search([
                                             ('default_code', '=', str(line[2]))], limit=1)
-                                        self.env.cr.execute("insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(product_id.id) + " ,1," + str(product_qty) + " ,1," + str(product_qty) + ",47,9,'assigned','" + str(order_ref_prev) + "',1 )") 
-                                        tracking_no = filename
-                                        if tracking_no:
-                                            if stock_move_id.picking_id.carrier_tracking_ref:
-                                                stock_move_id.picking_id.write(
-                                                    {'carrier_tracking_ref':
-                                                        str('%s,%s' %
-                                                            (stock_move_id.picking_id.carrier_tracking_ref,
-                                                            tracking_no))})
-                                            else:
-                                                stock_move_id.picking_id.write(
-                                                    {'carrier_tracking_ref': tracking_no})
+                                        #self.env.cr.execute("insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(product_id.id) + " ,1," + str(product_qty) + " ,1," + str(product_qty) + ",47,9,'assigned','" + str(order_ref_prev) + "',1 )") 
+                                        
+                                        
+                                        if product_id:
+                                            stock_move_id = self.env['stock.move'].search(
+                                                [('product_id', '=', product_id.id),
+                                                ('origin', '=', stock_pickng_id.origin)], limit=1)
+                                            if stock_move_id:
+                                                if stock_move_id.product_uom_qty < float(product_qty):
+                                                    log_message = (_("2 - Product ordered quantity %s and"
+                                                                    " shipped quantity %s") %
+                                                                (stock_move_id.product_uom_qty, product_qty))
+                                                    self._create_common_log_line(job, csvwriter, log_message,
+                                                                                order_no, '',
+                                                                                product_code, product_id.id)
+                                                stock_move_id.move_line_ids.write({'qty_done': product_qty})
+                                                
+                                                validate_picking_ids.append(stock_move_id.picking_id)
+                                                tracking_no = filename
+                                                if tracking_no:
+                                                    if stock_move_id.picking_id.carrier_tracking_ref:
+                                                        stock_move_id.picking_id.write(
+                                                            {'carrier_tracking_ref':
+                                                                str('%s,%s' %
+                                                                    (stock_move_id.picking_id.carrier_tracking_ref,
+                                                                    tracking_no))})
+                                                    else:
+                                                        stock_move_id.picking_id.write(
+                                                            {'carrier_tracking_ref': tracking_no})
 
                                     """ product_id = self.env['product.product'].search([
                                         ('default_code', '=', product_code)], limit=1)
@@ -556,7 +573,7 @@ class StockPicking(models.Model):
                     log_message = ("ERROR ON DELIVERY :" + str(validate_picking_id.name))
                     self._create_common_log_line(job, csvwriter, log_message)  
                 validate_picking_id.write({'is_exported': True})
-                validate_picking_id.write({'note': serialtmp})
+                validate_picking_id.write({'note': "cool"})
                 log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
                 self._create_common_log_line(job, csvwriter, log_message,
                                                 validate_picking_id.origin, tracking_no)
