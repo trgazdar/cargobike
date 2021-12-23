@@ -526,61 +526,61 @@ class StockPicking(models.Model):
 
             #if product_code != '':
 
-            for validate_picking_id in list(set(validate_picking_ids)):
-                tracking_no = validate_picking_id.carrier_tracking_ref
-                try:
-                    #validate_picking_id.action_assign()
-                    validate_picking_id.action_done()
-                    log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
-                    self._create_common_log_line(job, csvwriter, log_message,
-                                                validate_picking_id.origin, tracking_no)
-                except:
-                    log_message = ("ERROR ON DELIVERY :" + str(validate_picking_id.name))
-                    self._create_common_log_line(job, csvwriter, log_message)  
-                validate_picking_id.write({'is_exported': True})
-                validate_picking_id.write({'note': "cool"})
-                
-                        
-                
-                file = open(filename)
-                file.seek(0)
-                file_data = file.read().encode()
-                if file_data:
-                    vals = {
-                        'name': server_filename,
-                        'datas': base64.encodestring(file_data),
-                        'type': 'binary',
-                        'res_model': 'common.log.book.ept',
-                    }
-                    attachment = self.env['ir.attachment'].create(vals)
-                    job.message_post(body=_("<b>Imported Shipment's File</b>"),
-                                     attachment_ids=attachment.ids)
-
-                try:
-                    with partner_id.get_dropship_edi_interface(
-                            operation="shipment_import") as dropship_tpw_interface:
-                        dropship_tpw_interface.archive_file([server_filename])
-                except:
-                    job.write({
-                        'message': "Supplier %s has problem with connection or file Path."
-                                   " File can not move to Archive." % partner_id.name})
-
-                log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
-                buffer.seek(0)
-                log_file_data = buffer.read().encode()
-                if log_file_data:
-                    vals = {
-                        'name': log_filename,
-                        'datas': base64.encodestring(log_file_data),
-                        'type': 'binary',
-                        'res_model': 'common.log.book.ept',
-                    }
-                    attachment = self.env['ir.attachment'].create(vals)
+                for validate_picking_id in list(set(validate_picking_ids)):
+                    tracking_no = validate_picking_id.carrier_tracking_ref
+                    try:
+                        #validate_picking_id.action_assign()
+                        validate_picking_id.action_done()
+                        log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
+                        self._create_common_log_line(job, csvwriter, log_message,
+                                                    validate_picking_id.origin, tracking_no)
+                    except:
+                        log_message = ("ERROR ON DELIVERY :" + str(validate_picking_id.name))
+                        self._create_common_log_line(job, csvwriter, log_message)  
+                    validate_picking_id.write({'is_exported': True})
+                    validate_picking_id.write({'note': "cool"})
                     
-                    job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
-                                     attachment_ids=attachment.ids)
-                buffer.close()
-            buffer.close()
+                            
+                    
+                    file = open(filename)
+                    file.seek(0)
+                    file_data = file.read().encode()
+                    if file_data:
+                        vals = {
+                            'name': server_filename,
+                            'datas': base64.encodestring(file_data),
+                            'type': 'binary',
+                            'res_model': 'common.log.book.ept',
+                        }
+                        attachment = self.env['ir.attachment'].create(vals)
+                        job.message_post(body=_("<b>Imported Shipment's File</b>"),
+                                        attachment_ids=attachment.ids)
+
+                    try:
+                        with partner_id.get_dropship_edi_interface(
+                                operation="shipment_import") as dropship_tpw_interface:
+                            dropship_tpw_interface.archive_file([server_filename])
+                    except:
+                        job.write({
+                            'message': "Supplier %s has problem with connection or file Path."
+                                    " File can not move to Archive." % partner_id.name})
+
+                    log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
+                    buffer.seek(0)
+                    log_file_data = buffer.read().encode()
+                    if log_file_data:
+                        vals = {
+                            'name': log_filename,
+                            'datas': base64.encodestring(log_file_data),
+                            'type': 'binary',
+                            'res_model': 'common.log.book.ept',
+                        }
+                        attachment = self.env['ir.attachment'].create(vals)
+                        
+                        job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
+                                        attachment_ids=attachment.ids)
+                    buffer.close()
+                
             for pck_assign in lot_traites:
                 pck_asset = self.search([('id', '=', pck_assign)])
                 pck_asset.action_assign()
