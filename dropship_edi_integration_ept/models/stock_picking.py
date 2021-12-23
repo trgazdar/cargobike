@@ -509,7 +509,7 @@ class StockPicking(models.Model):
                                                             tracking_no))})
                                             else:
                                                 stock_move_id.picking_id.write(
-                                                    {'carrier_tracking_ref': tracking_no})
+                                                    {'carrier_tracking_ref': tracking_no}) 
 
                                     """ product_id = self.env['product.product'].search([
                                         ('default_code', '=', product_code)], limit=1)
@@ -556,6 +556,7 @@ class StockPicking(models.Model):
             for validate_picking_id in list(set(validate_picking_ids)):
                 tracking_no = validate_picking_id.carrier_tracking_ref
                 try:
+                    #validate_picking_id.action_assign()
                     validate_picking_id.action_done()
                 except:
                     log_message = ("ERROR ON DELIVERY :" + str(validate_picking_id.name))
@@ -604,7 +605,7 @@ class StockPicking(models.Model):
                     
                     job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                      attachment_ids=attachment.ids)
-            buffer.close()
+                buffer.close()
 
             for pck_assign in lot_traites:
                 pck_asset = self.search([('id', '=', pck_assign)])
