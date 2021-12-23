@@ -497,11 +497,14 @@ class StockPicking(models.Model):
                                         
                                         
                                         if product_id:
+                                            _logger.info("PRODUCT ID" + str(product_id))
                                             stock_move_id = self.env['stock.move'].search(
                                                 [('product_id', '=', product_id.id),
                                                 ('origin', '=', stock_pickng_id.origin)], limit=1)
+                                                _logger.info("STOCK MOVE ID" + str(stock_move_id))
                                             if stock_move_id:
                                                 if stock_move_id.product_uom_qty < float(product_qty):
+                                                    _logger.info("STOCK MOVE ID" + str(stock_move_id))
                                                     log_message = (_("2 - Product ordered quantity %s and"
                                                                     " shipped quantity %s") %
                                                                 (stock_move_id.product_uom_qty, product_qty))
@@ -509,7 +512,7 @@ class StockPicking(models.Model):
                                                                                 order_no, '',
                                                                                 product_code, product_id.id)
                                                 stock_move_id.move_line_ids.write({'qty_done': product_qty})
-                                                
+                                                _logger.info("JAI ECRIS")
                                                 validate_picking_ids.append(stock_move_id.picking_id)
                                                 tracking_no = filename
                                                 """ if tracking_no:
