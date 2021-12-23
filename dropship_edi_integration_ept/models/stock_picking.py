@@ -512,7 +512,7 @@ class StockPicking(models.Model):
                                                 
                                                 validate_picking_ids.append(stock_move_id.picking_id)
                                                 tracking_no = filename
-                                                if tracking_no:
+                                                """ if tracking_no:
                                                     if stock_move_id.picking_id.carrier_tracking_ref:
                                                         stock_move_id.picking_id.write(
                                                             {'carrier_tracking_ref':
@@ -521,7 +521,7 @@ class StockPicking(models.Model):
                                                                     tracking_no))})
                                                     else:
                                                         stock_move_id.picking_id.write(
-                                                            {'carrier_tracking_ref': tracking_no})
+                                                            {'carrier_tracking_ref': tracking_no}) """
 
                                     """ product_id = self.env['product.product'].search([
                                         ('default_code', '=', product_code)], limit=1)
