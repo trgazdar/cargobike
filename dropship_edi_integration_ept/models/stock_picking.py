@@ -483,7 +483,7 @@ class StockPicking(models.Model):
                                         'message': "Des erreurs sont survenues lors de l'import vérifier les logs" }) 
                                     stop = 1
                                     
-                        elif num_lot == ''::    
+                        elif num_lot == '':    
                             if order_ref_prev != line[2] and product_ref_prev != 'CBD' and str(line[2]) != '' and product_ref_prev != str(line[0]):
                                 if str(product_ref_prev) != str(line[2]):
                                     log_message2 = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(line[2]) + ' - Quantité livrée : ' + str(product_qty)
