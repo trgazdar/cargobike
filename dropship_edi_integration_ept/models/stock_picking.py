@@ -544,7 +544,7 @@ class StockPicking(models.Model):
                             product_ref_prev = line[2] or ''
                             
         
-                        #tracking_no = filename
+            tracking_no = filename
 
             product_vendor_code_id = self.env['product.product'].search(
                 [('default_code', '=', product_code)])
