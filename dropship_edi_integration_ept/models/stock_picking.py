@@ -486,6 +486,35 @@ class StockPicking(models.Model):
                                 if str(product_ref_prev) != str(line[2]):
                                     log_message2 = 'Delivery : ' + str(order_ref_prev) + ' - Reference : ' + str(line[2]) + ' - Quantité livrée : ' + str(product_qty)
                                     self._create_common_log_line(job, csvwriter, log_message2)  
+                                    product_id = self.env['product.product'].search([
+                                        ('default_code', '=', product_code)], limit=1)
+                                    if product_id:
+                                        stock_move_id = self.env['stock.move'].search(
+                                            [('product_id', '=', product_id.id),
+                                            ('origin', '=', stock_pickng_id.origin)], limit=1)
+                                        if stock_move_id:
+                                            if stock_move_id.product_uom_qty < float(product_qty):
+                                                log_message = (_("2 - Product ordered quantity %s and"
+                                                                " shipped quantity %s") %
+                                                            (stock_move_id.product_uom_qty, product_qty))
+                                                self._create_common_log_line(job, csvwriter, log_message,
+                                                                            order_no, '',
+                                                                            product_code, product_id.id)
+                                            stock_move_id.move_line_ids.write({'qty_done': product_qty})
+                                            
+                                            validate_picking_ids.append(stock_move_id.picking_id)
+                                            
+                                            if tracking_no:
+                                                if stock_move_id.picking_id.carrier_tracking_ref:
+                                                    stock_move_id.picking_id.write(
+                                                        {'carrier_tracking_ref':
+                                                            str('%s,%s' %
+                                                                (stock_move_id.picking_id.carrier_tracking_ref,
+                                                                tracking_no))})
+                                                else:
+                                                    stock_move_id.picking_id.write(
+                                                        {'carrier_tracking_ref': tracking_no})                                          
+                                    
 
                             product_ref_prev = line[2] or ''
                             
