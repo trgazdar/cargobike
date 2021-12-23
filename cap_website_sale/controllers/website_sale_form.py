@@ -13,11 +13,14 @@ class WebsiteSaleForceAuth(WebsiteSale):
         """
             Surcharge de la méthode standard pour exploiter la liste de prix de l'utilisateur si définie
         """
+        _logger.info("We are in _get_pricelist_context")
         pricelist_context, pricelist = super()._get_pricelist_context()
 
         context = dict(request.env.context)
 #         if not context.get('pricelist'):
         if request.env.user.partner_id.property_product_pricelist:
+            _logger.info("We are in the IF")
             pricelist_context['pricelist'] = request.env.user.partner_id.property_product_pricelist.id
+            _logger.info("La pricelist du partner est %s :" % pricelist_context['pricelist'])
 
         return pricelist_context, pricelist
