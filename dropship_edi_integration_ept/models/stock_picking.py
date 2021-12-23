@@ -493,7 +493,12 @@ class StockPicking(models.Model):
                                     if picking_en_cours:
                                         product_id = self.env['product.product'].search([
                                             ('default_code', '=', str(line[2]))], limit=1)
+                                        stock_move_id = self.env['stock.move'].search(
+                                            [('product_id', '=', product_id.id),
+                                            ('origin', '=', stock_pickng_id.origin)], limit=1)
+                                        
                                         self.env.cr.execute("insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(product_id.id) + " ,1," + str(product_qty) + " ,"+ str(product_qty) + "," + str(product_qty) + ",47,9,'assigned','" + str(order_ref_prev) + "',1 )")
+                                        validate_picking_ids.append(stock_move_id.picking_id)
                                         tracking_no = filename
                                         if tracking_no:
                                             if stock_move_id.picking_id.carrier_tracking_ref:
