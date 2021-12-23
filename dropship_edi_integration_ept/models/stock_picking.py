@@ -445,6 +445,7 @@ class StockPicking(models.Model):
                         if stock_pickng_id:
                             stop = 0
                             validate_picking_ids.append(stock_pickng_id)
+                            _logger.info("AJOUT DES PICKING : " + str(validate_picking_ids))
                         else:
                             stop = 1
                             job.write({
