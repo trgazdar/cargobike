@@ -579,7 +579,7 @@ class StockPicking(models.Model):
                     
                     job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
                                      attachment_ids=attachment.ids)
-            buffer.close()
+                buffer.close()
 
             for pck_assign in lot_traites:
                 pck_asset = self.search([('id', '=', pck_assign)])
