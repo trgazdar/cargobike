@@ -523,8 +523,9 @@ class StockPicking(models.Model):
                 for validate_picking_id in list(set(validate_picking_ids)):
                     try:
                         tracking_no = validate_picking_id.carrier_tracking_ref
-                        validate_picking_id.action_assign()
-                        validate_picking_id.action_done()
+                        validate_picking_id.write(
+                                {'state': 'assigned'}) 
+                        #validate_picking_id.action_done()
                         log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
                         self._create_common_log_line(job, csvwriter, log_message,
                                                     validate_picking_id.origin, tracking_no)
