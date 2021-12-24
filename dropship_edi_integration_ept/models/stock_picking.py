@@ -539,6 +539,8 @@ class StockPicking(models.Model):
                                                         {'is_imported': True}) 
                         validate_picking_id.write(
                                                         {'import_date': date.today()}) 
+                        job.write({
+                                    'message': "Des erreurs sont survenues lors de l'import vérifier les logs" }) 
                         log_message = (_("ERROR : " + str(validate_picking_id.name)))
                         self._create_common_log_line(job, csvwriter, log_message,
                                                     validate_picking_id.origin, tracking_no)
