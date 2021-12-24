@@ -554,29 +554,29 @@ class StockPicking(models.Model):
                     job.message_post(body=_("<b>Imported Shipment's File</b>"),
                                      attachment_ids=attachment.ids)
 
-                    try:
-                        with partner_id.get_dropship_edi_interface(
-                                operation="shipment_import") as dropship_tpw_interface:
-                            dropship_tpw_interface.archive_file([server_filename])
-                    except:
-                        job.write({
-                            'message': "Supplier %s has problem with connection or file Path."
-                                    " File can not move to Archive." % partner_id.name})
+                try:
+                    with partner_id.get_dropship_edi_interface(
+                            operation="shipment_import") as dropship_tpw_interface:
+                        dropship_tpw_interface.archive_file([server_filename])
+                except:
+                    job.write({
+                        'message': "Supplier %s has problem with connection or file Path."
+                                   " File can not move to Archive." % partner_id.name})
 
-                    log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
-                    buffer.seek(0)
-                    log_file_data = buffer.read().encode()
-                    if log_file_data:
-                        vals = {
-                            'name': log_filename,
-                            'datas': base64.encodestring(log_file_data),
-                            'type': 'binary',
-                            'res_model': 'common.log.book.ept',
-                        }
-                        attachment = self.env['ir.attachment'].create(vals)
-                        job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
-                                        attachment_ids=attachment.ids)
-                    buffer.close()
+                log_filename = "%s_%s" % (server_filename[:-4], 'log_details.csv')
+                buffer.seek(0)
+                log_file_data = buffer.read().encode()
+                if log_file_data:
+                    vals = {
+                        'name': log_filename,
+                        'datas': base64.encodestring(log_file_data),
+                        'type': 'binary',
+                        'res_model': 'common.log.book.ept',
+                    }
+                    attachment = self.env['ir.attachment'].create(vals)
+                    job.message_post(body=_("<b>Imported Shipment's Log File</b>"),
+                                     attachment_ids=attachment.ids)
+                buffer.close()
         #return True
             for pck_assign in lot_traites:
                 pck_asset = self.search([('id', '=', pck_assign)])
