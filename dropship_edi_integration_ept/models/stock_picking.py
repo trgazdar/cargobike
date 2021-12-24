@@ -490,7 +490,6 @@ class StockPicking(models.Model):
                                             ('default_code', '=', str(line[2]))], limit=1)
                             self.env.cr.execute("select count(lot_id) from stock_quant where product_id ="+str(product_id.id) ) 
                             quants_count = self.env.cr.fetchone()
-                            _logger.info("QUANTSSSSSSS : "+str(quants_count))
                             if quants_count[0] == 0:
                                 if order_ref_prev != line[2] and product_ref_prev != 'CBD' and str(line[2]) != '' and product_ref_prev != str(line[0]):
                                     if str(product_ref_prev) != str(line[2]):
@@ -518,18 +517,13 @@ class StockPicking(models.Model):
                             
         
                 tracking_no = filename
-
-                product_vendor_code_id = self.env['product.product'].search(
-                    [('default_code', '=', product_code)])
-            
-                               
-
             if product_code != '':
                 
 
                 for validate_picking_id in list(set(validate_picking_ids)):
                     try:
                         tracking_no = validate_picking_id.carrier_tracking_ref
+                        validate_picking_id.action_assign()
                         validate_picking_id.action_done()
                         log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
                         self._create_common_log_line(job, csvwriter, log_message,
