@@ -11,6 +11,8 @@
                     <field name="merge_in" optional="show"/>
                     <field name="is_exported" optional="show"/>
                     <field name="is_blocked" optional="show"/>
+                    <field name="is_imported" optional="show"/>
+                    <field name="import_date" optional="show"/>
                 </field>
             </field>
         </record>
@@ -22,6 +24,8 @@
                 <field name="origin" position="after">
                     <field name="is_exported" optional="show"/>
                     <field name="is_blocked" optional="show"/>
+                    <field name="is_imported" optional="show"/>
+                    <field name="import_date" optional="show"/>
                 </field>
             </field>
         </record>
