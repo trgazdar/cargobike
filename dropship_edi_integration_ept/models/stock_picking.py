@@ -528,13 +528,17 @@ class StockPicking(models.Model):
                         tracking_no = validate_picking_id.carrier_tracking_ref
                         validate_picking_id.action_done()
                         log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
-                        stock_move_id.picking_id.write(
+                        validate_picking_id.write(
                                                         {'is_imported': True}) 
-                        stock_move_id.picking_id.write(
+                        validate_picking_id.write(
                                                         {'import_date': date.today()})                                 
                         self._create_common_log_line(job, csvwriter, log_message,
                                                     validate_picking_id.origin, tracking_no)
                     except:
+                        validate_picking_id.write(
+                                                        {'is_imported': True}) 
+                        validate_picking_id.write(
+                                                        {'import_date': date.today()}) 
                         log_message = (_("ERROR : " + str(validate_picking_id.name)))
                         self._create_common_log_line(job, csvwriter, log_message,
                                                     validate_picking_id.origin, tracking_no)
