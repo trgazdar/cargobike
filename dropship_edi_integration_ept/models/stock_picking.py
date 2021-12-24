@@ -157,7 +157,7 @@ class StockPicking(models.Model):
         :param partner_ids: suppliers data
         :return: True
         """
-        _logger.info('DANS LA FONCTION')
+
         for partner_id in partner_ids:
             #47 pour la prod
             picking_ids = self.search(
@@ -290,9 +290,8 @@ class StockPicking(models.Model):
         stock_picking_ids = self.search([('location_id', '=', 47),
                                                    ('state', 'in', ['assigned', 'partialy_assigned']),
                                                    ('is_merged', 'in', [False, None])])
-        _logger.info(str(stock_picking_ids))
+
         for picking_ready in stock_picking_ids:
-            _logger.info(str(picking_ready.name))
             try: 
                 picking_ready.do_unreserve()
                 lot_traites.append(picking_ready.id)
@@ -414,14 +413,13 @@ class StockPicking(models.Model):
                 stock_pickng_id = 0
                 order_ref_prev = ''
                 product_ref_prev = ''
-                tracking_no = filename
+                tracking_no = server_filename
                 
                 i = 1
 
                 
                 stop = 0
                 for line in reader:
-                    _logger.info("NOMBRE DE CHAMPS : " + str(len(line)))
                     if len(line) > 3:
                         order_ref = line[3] or ''#3
                         order_no = line[3] or ''#3
@@ -446,8 +444,6 @@ class StockPicking(models.Model):
                         stock_pickng_id = self.search([('name', '=', order_ref)])
                         if stock_pickng_id:
                             stop = 0
-                            #validate_picking_ids.append(stock_pickng_id)
-                            _logger.info("AJOUT DES PICKING : " + str(validate_picking_ids))
                         else:
                             stop = 1
                             job.write({
@@ -475,7 +471,6 @@ class StockPicking(models.Model):
     
                                 if picking_en_cours:
                                     serialtmp += product_code + " : " + stock_lot_id.name + "\r\n"
-                                    _logger.info(str(server_filename) + " - insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) )
                                     self.env.cr.execute("update stock_quant set location_id=47 where lot_id = " + str(stock_lot_id.id) + " and location_id=9;")
                                     self.env.cr.execute("update stock_quant set reserved_quantity = 1 where lot_id = " + str(stock_lot_id.id) + " and location_id=47;")
                                     self.env.cr.execute("insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,lot_id,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(stock_lot_id.product_id.id) + " ,1,1,1,1," + str(stock_lot_id.id) + ",47,9,'assigned','" + str(order_ref_prev) + "',1 )")
@@ -509,9 +504,9 @@ class StockPicking(models.Model):
                                             self.env.cr.execute("insert into stock_move_line (date, picking_id, product_id, product_uom_id, product_qty, product_uom_qty,qty_done,location_id,location_dest_id,state,reference,company_id) values( '2021-12-16'," + str(picking_en_cours[0]) + " , " + str(product_id.id) + " ,1," + str(product_qty) + " ,"+ str(product_qty) + "," + str(product_qty) + ",47,9,'assigned','" + str(order_ref_prev) + "',1 )")
                                             self.env.cr.execute("update stock_quant set reserved_quantity = reserved_quantity + "+str(product_qty)+ " where product_id="+str(product_id.id) +" and location_id=47")
                                             validate_picking_ids.append(stock_move_id.picking_id)
-                                            tracking_no = filename
+                                            tracking_no = server_filename
                                             stock_move_id.picking_id.write(
-                                                        {'carrier_tracking_ref': filename}) 
+                                                        {'carrier_tracking_ref': server_filename}) 
 
                                         
                                     
@@ -519,7 +514,7 @@ class StockPicking(models.Model):
                             product_ref_prev = line[2] or ''
                             
         
-                tracking_no = filename
+                tracking_no = server_filename
             if product_code != '':
                 
 
