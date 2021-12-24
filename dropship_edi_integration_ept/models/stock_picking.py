@@ -1,5 +1,5 @@
 from io import StringIO
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import base64
 from csv import DictWriter
 import csv
@@ -12,6 +12,8 @@ class StockPicking(models.Model):
     _order = 'partner_id'
     is_exported = fields.Boolean(string="Is Exported?", default=False)
     is_blocked = fields.Boolean(string="Is Blocked?", default=False)
+    is_imported = fields.Boolean(string="ECTRA RETURN", default=False)
+    import_date = fields.Date('Import date')
 
     def export_shipment_orders_to_ftp(self, pickings=False, partner_ids=False):
         """
@@ -526,6 +528,10 @@ class StockPicking(models.Model):
                         tracking_no = validate_picking_id.carrier_tracking_ref
                         validate_picking_id.action_done()
                         log_message = (_("Delivery validated successfully : " + str(validate_picking_id.name)))
+                        stock_move_id.picking_id.write(
+                                                        {'is_imported': True}) 
+                        stock_move_id.picking_id.write(
+                                                        {'import_date': date.today()})                                 
                         self._create_common_log_line(job, csvwriter, log_message,
                                                     validate_picking_id.origin, tracking_no)
                     except:
