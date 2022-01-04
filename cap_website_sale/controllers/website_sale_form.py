@@ -22,6 +22,6 @@ class WebsiteSaleForceAuth(WebsiteSale):
                 _logger.info("We are in the IF")
                 pricelist_context['pricelist'] = request.env.user.partner_id.property_product_pricelist.id
                 _logger.info("La pricelist du partner est %s :" % pricelist_context['pricelist'])
-                _logger.info("La pricelist du partner actuel est : %s " % self.env['res.partner'].property_product_pricelist
+                _logger.info("La pricelist du partner actuel est : %s " % self.env['res.partner'].search([('id', '=', '1')]).property_product_pricelist
 
         return pricelist_context, pricelist
