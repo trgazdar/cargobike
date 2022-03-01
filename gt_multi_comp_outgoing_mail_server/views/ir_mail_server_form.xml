@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--Form View-->
+    <record id="gt_ir_mail_server_form_inherit" model="ir.ui.view">
+        <field name="name">gt.ir.mail.server.form.inherit</field>
+        <field name="model">ir.mail_server</field>
+        <field name="inherit_id" ref="base.ir_mail_server_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='smtp_pass']" position="after">
+                <field name="company_id" groups="base.group_multi_company"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!--Tree View--> 
+    <record id="gt_ir_mail_server_tree_inherit" model="ir.ui.view">
+        <field name="name">gt.ir.mail.server.tree.inherit</field>
+        <field name="model">ir.mail_server</field>
+        <field name="inherit_id" ref="base.ir_mail_server_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='smtp_encryption']" position="after">
+                <field name="company_id" groups="base.group_multi_company"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
